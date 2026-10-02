@@ -1,0 +1,1313 @@
+<!doctype html>
+<html lang="ko" class="h-full">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="theme-color" content="#fdf8f6" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <title>웨딩홀 투어 프리뷰</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              roseGold: {
+                50: "#fdf8f6",
+                100: "#fbeeeb",
+                200: "#f5d9d3",
+                300: "#eeb8ad",
+                400: "#e28b7a",
+                500: "#d1624d",
+                600: "#b84834",
+                700: "#9b3b29",
+                800: "#7f3325",
+                900: "#6a2e23",
+              },
+            },
+            fontFamily: {
+              sans: ["Noto Sans KR", "sans-serif"],
+            },
+          },
+        },
+      };
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+      integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+      crossorigin=""
+    />
+    <script
+      src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+      integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+      crossorigin=""
+    ></script>
+    <style>
+      .leaflet-container {
+        font-family: "Noto Sans KR", sans-serif;
+        background: #f4f1ef;
+      }
+      .leaflet-popup-content-wrapper {
+        border-radius: 12px;
+      }
+      .pin-mode #leaflet-map {
+        outline: 3px solid #d1624d;
+        outline-offset: -3px;
+      }
+      .hall-pin {
+        background: transparent;
+        border: 0;
+      }
+    </style>
+  </head>
+  <body class="bg-roseGold-50 text-gray-800 min-h-full flex flex-col antialiased">
+    <header class="bg-white border-b border-roseGold-200 sticky top-0 z-50 shadow-sm">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 flex items-center justify-between gap-3">
+        <div>
+          <h1 class="text-lg font-bold text-gray-900 tracking-tight">웨딩홀 투어 프리뷰</h1>
+          <p class="text-xs text-gray-500">구파발 · 봉천에서 어디부터 갈지 정합니다</p>
+        </div>
+        <nav class="hidden md:flex flex-wrap gap-1 bg-roseGold-100/60 p-1 rounded-xl" aria-label="화면">
+          <button type="button" data-tab-btn="map" data-tab-style="desk" class="px-4 py-2 text-sm font-medium rounded-lg bg-white text-roseGold-700 shadow-sm">지도</button>
+          <button type="button" data-tab-btn="cards" data-tab-style="desk" class="px-4 py-2 text-sm font-medium rounded-lg text-gray-600">홀 카드</button>
+          <button type="button" data-tab-btn="table" data-tab-style="desk" class="px-4 py-2 text-sm font-medium rounded-lg text-gray-600">비교표</button>
+          <button type="button" data-tab-btn="checklist" data-tab-style="desk" class="px-4 py-2 text-sm font-medium rounded-lg text-gray-600">체크리스트</button>
+          <button type="button" data-tab-btn="memo" data-tab-style="desk" class="px-4 py-2 text-sm font-medium rounded-lg text-gray-600">메모</button>
+        </nav>
+      </div>
+    </header>
+    <nav class="md:hidden fixed bottom-0 inset-x-0 z-50 bg-white border-t border-roseGold-200 pb-[env(safe-area-inset-bottom)]" aria-label="화면">
+      <div class="grid grid-cols-5">
+        <button type="button" data-tab-btn="map" data-tab-style="mobile" class="min-h-12 text-[11px] font-medium text-roseGold-700">지도</button>
+        <button type="button" data-tab-btn="cards" data-tab-style="mobile" class="min-h-12 text-[11px] font-medium text-gray-500">홀 카드</button>
+        <button type="button" data-tab-btn="table" data-tab-style="mobile" class="min-h-12 text-[11px] font-medium text-gray-500">비교</button>
+        <button type="button" data-tab-btn="checklist" data-tab-style="mobile" class="min-h-12 text-[11px] font-medium text-gray-500">체크</button>
+        <button type="button" data-tab-btn="memo" data-tab-style="mobile" class="min-h-12 text-[11px] font-medium text-gray-500">메모</button>
+      </div>
+    </nav>
+
+    <div id="pin-banner" class="hidden bg-roseGold-600 text-white">
+      <div class="max-w-7xl mx-auto px-4 py-2 flex items-center justify-between gap-3 text-sm">
+        <p id="pin-banner-text">지도를 클릭해 위치를 찍으세요.</p>
+        <button type="button" id="pin-cancel" class="underline min-h-11">취소</button>
+      </div>
+    </div>
+
+    <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 pt-4 pb-24 md:py-6 space-y-4 md:space-y-6">
+      <section data-tab-content="map" class="space-y-4">
+        <div id="recommendation" class="bg-white rounded-2xl border border-roseGold-100 shadow-sm p-4 sm:p-5" aria-live="polite"></div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-4">
+          <div class="lg:col-span-2 bg-white rounded-2xl border border-roseGold-100 overflow-hidden h-[46vh] min-h-[240px] max-h-[420px] lg:h-[560px] lg:max-h-none relative z-0">
+            <div id="leaflet-map" class="w-full h-full"></div>
+          </div>
+          <div class="bg-white rounded-2xl border border-roseGold-100 p-3 sm:p-4 flex flex-col lg:h-[560px]">
+            <h2 class="font-bold text-sm mb-2">순위</h2>
+            <div id="venue-list" class="flex-1 lg:overflow-y-auto space-y-2 pr-1"></div>
+          </div>
+        </div>
+
+
+        <div class="bg-white rounded-2xl border border-roseGold-100 shadow-sm p-4 sm:p-5 space-y-4">
+          <div class="flex flex-wrap items-end justify-between gap-3">
+            <div>
+              <h2 class="font-bold text-gray-900">출발지</h2>
+              <p class="text-xs text-gray-500 mt-1">신랑은 구파발역, 신부는 봉천역으로 잡아 두었습니다. 가족은 따로 추가하세요.</p>
+            </div>
+            <button type="button" id="fit-map" class="text-sm text-roseGold-700 underline min-h-11">지도 전체 보기</button>
+          </div>
+          <ul id="origin-list" class="space-y-2"></ul>
+          <form id="place-form" class="flex flex-col sm:flex-row gap-2">
+            <label class="sr-only" for="place-query">장소 검색</label>
+            <input id="place-query" class="flex-1 border border-roseGold-200 rounded-xl px-3 py-2 text-sm" placeholder="가족 위치 검색. 예: 수원역, 일산" autocomplete="off" />
+            <button type="submit" class="bg-roseGold-500 text-white rounded-xl px-4 min-h-11 text-sm font-medium">검색</button>
+            <button type="button" id="add-family-pin" class="border border-roseGold-300 text-roseGold-800 rounded-xl px-4 min-h-11 text-sm">지도에서 가족 찍기</button>
+          </form>
+          <p id="place-hint" class="text-xs text-gray-500">검색 결과를 고르면 가족 출발지로 들어갑니다. 신랑·신부를 바꾸려면 해당 줄의 변경을 먼저 누르세요.</p>
+          <ul id="place-results" class="text-sm space-y-1"></ul>
+          <p id="place-status" class="text-xs text-roseGold-700 hidden" role="status"></p>
+
+          <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-3 pt-2 border-t border-roseGold-100">
+            <label class="text-xs text-gray-600">신랑 쪽 <span id="w-groom-val" class="font-bold text-gray-900">40</span>
+              <input id="w-groom" type="range" min="0" max="100" value="40" class="w-full" />
+            </label>
+            <label class="text-xs text-gray-600">신부 쪽 <span id="w-bride-val" class="font-bold text-gray-900">40</span>
+              <input id="w-bride" type="range" min="0" max="100" value="40" class="w-full" />
+            </label>
+            <label class="text-xs text-gray-600">가족 중 먼 사람 <span id="w-family-val" class="font-bold text-gray-900">20</span>
+              <input id="w-family" type="range" min="0" max="100" value="20" class="w-full" />
+              <span id="w-family-hint" class="block text-[11px] text-gray-400">가족을 추가하면 반영됩니다</span>
+            </label>
+            <label class="text-xs text-gray-600">식대 <span id="w-meal-val" class="font-bold text-gray-900">0</span>
+              <input id="w-meal" type="range" min="0" max="100" value="0" class="w-full" />
+              <span class="block text-[11px] text-gray-400">0이면 이동만 봅니다</span>
+            </label>
+          </div>
+
+          <div class="flex flex-col sm:flex-row sm:items-center gap-3 justify-between">
+            <label class="text-sm text-gray-700 flex items-center gap-2">
+              정렬
+              <select id="sort-mode" class="border border-roseGold-200 rounded-xl px-3 py-2 text-sm bg-white">
+                <option value="score">맞춤 점수</option>
+                <option value="balance">둘 중 더 먼 쪽</option>
+                <option value="groom">신랑에게 가까운 순</option>
+                <option value="bride">신부에게 가까운 순</option>
+                <option value="family">가장 먼 가족이 가까운 순</option>
+                <option value="meal">식대 낮은 순</option>
+                <option value="manual">직접 순서</option>
+              </select>
+            </label>
+            <label class="text-sm text-gray-700 flex items-center gap-2">
+              <input id="show-seongbuk" type="checkbox" class="w-4 h-4" />
+              성북구 홀 보기
+            </label>
+            <div class="flex gap-2">
+              <button type="button" id="open-add" class="bg-gray-900 text-white rounded-xl px-4 min-h-11 text-sm">홀 직접 추가</button>
+              <button type="button" id="reset-data" class="text-sm text-gray-500 underline min-h-11">처음 상태로</button>
+            </div>
+          </div>
+          <p class="text-xs text-slate-500">포레스트원은 성북구 동소문로라 기본 순위에서 빠져 있습니다. 보기를 켜면 맨 아래에 회색으로만 나옵니다. 레노스블랑쉬(성동구), 더빅토리아(강북구)는 순위에 포함됩니다.</p>
+          <details class="text-xs text-gray-500">
+            <summary class="cursor-pointer text-gray-700">점수가 나오는 방식</summary>
+            <p class="mt-2 leading-relaxed">신랑·신부 이동을 75분이면 0점, 15분이면 100점으로 바꿔 가중 평균합니다. 가족은 그중 가장 오래 걸리는 사람만 넣습니다. 식대는 4만 원을 100점, 8만 원을 0점으로 보고, 슬라이더가 0이면 점수에서 빠집니다. 시간은 직선거리로 잡은 대략값이라 실제 지하철과 10분 안팎으로 다를 수 있습니다. 식대는 소개 페이지 숫자라 상담 견적과 다릅니다.</p>
+          </details>
+        </div>
+
+        <form id="add-panel" class="hidden bg-white rounded-2xl border border-roseGold-200 shadow-sm p-4 sm:p-5 space-y-3">
+          <div class="flex items-center justify-between">
+            <h2 class="font-bold">홀 추가</h2>
+            <button type="button" id="close-add" class="text-sm text-gray-500 underline min-h-11">닫기</button>
+          </div>
+          <p class="text-xs text-gray-500">카페 글은 가져오지 않습니다. 링크와 직접 적은 한 줄만 붙입니다. 이 브라우저에만 저장됩니다.</p>
+          <div class="grid sm:grid-cols-2 gap-3">
+            <label class="text-xs text-gray-600">이름
+              <input name="name" required class="mt-1 w-full border border-roseGold-200 rounded-xl px-3 py-2 text-sm" />
+            </label>
+            <label class="text-xs text-gray-600">구
+              <input name="district" placeholder="예: 마포구" class="mt-1 w-full border border-roseGold-200 rounded-xl px-3 py-2 text-sm" />
+            </label>
+            <label class="text-xs text-gray-600 sm:col-span-2">주소
+              <input name="address" class="mt-1 w-full border border-roseGold-200 rounded-xl px-3 py-2 text-sm" />
+            </label>
+            <label class="text-xs text-gray-600">가까운 역
+              <input name="station" class="mt-1 w-full border border-roseGold-200 rounded-xl px-3 py-2 text-sm" />
+            </label>
+            <label class="text-xs text-gray-600">식대 (원)
+              <input name="meal" type="number" min="0" step="1000" inputmode="numeric" class="mt-1 w-full border border-roseGold-200 rounded-xl px-3 py-2 text-sm" />
+            </label>
+            <label class="text-xs text-gray-600">보증 인원
+              <input name="guests" placeholder="예: 최소 200명" class="mt-1 w-full border border-roseGold-200 rounded-xl px-3 py-2 text-sm" />
+            </label>
+            <label class="text-xs text-gray-600">분위기
+              <input name="type" class="mt-1 w-full border border-roseGold-200 rounded-xl px-3 py-2 text-sm" />
+            </label>
+            <label class="text-xs text-gray-600 sm:col-span-2">주차
+              <input name="parking" class="mt-1 w-full border border-roseGold-200 rounded-xl px-3 py-2 text-sm" />
+            </label>
+            <label class="text-xs text-gray-600 sm:col-span-2">참고 링크
+              <input name="link" type="url" placeholder="https://" class="mt-1 w-full border border-roseGold-200 rounded-xl px-3 py-2 text-sm" />
+            </label>
+            <label class="text-xs text-gray-600 sm:col-span-2">내 메모
+              <textarea name="note" rows="2" class="mt-1 w-full border border-roseGold-200 rounded-xl px-3 py-2 text-sm"></textarea>
+            </label>
+          </div>
+          <div class="flex flex-col sm:flex-row gap-2">
+            <input id="hall-query" class="flex-1 border border-roseGold-200 rounded-xl px-3 py-2 text-sm" placeholder="주소나 홀 이름으로 위치 검색" autocomplete="off" />
+            <button type="button" id="hall-search" class="border border-roseGold-300 rounded-xl px-4 min-h-11 text-sm">위치 검색</button>
+            <button type="button" id="hall-pin" class="border border-roseGold-300 rounded-xl px-4 min-h-11 text-sm">지도에서 찍기</button>
+          </div>
+          <ul id="hall-results" class="text-sm space-y-1"></ul>
+          <p class="text-xs text-gray-600">위치 <span id="hall-coord-label">아직 없음</span></p>
+          <input type="hidden" name="lat" id="hall-lat" />
+          <input type="hidden" name="lng" id="hall-lng" />
+          <p id="add-error" class="text-sm text-rose-700 hidden" role="alert"></p>
+          <button type="submit" class="bg-roseGold-500 text-white rounded-xl px-4 min-h-11 text-sm font-medium">이 홀 저장</button>
+        </form>
+
+        <p class="text-[11px] text-gray-400 leading-relaxed">위치는 공개 주소로 찍었습니다. 제이오스티엘 경인로 565, 웨딩시티 새말로 97, 규수당 문래로 164, 포레스트원 동소문로 47, 레노스블랑쉬 고산자로 202, 더빅토리아 도봉로 16. 식대는 다이렉트결혼준비 소개 페이지 기준입니다.</p>
+      </section>
+
+      <section data-tab-content="cards" class="hidden space-y-4">
+        <h2 class="text-xl font-bold">홀 카드</h2>
+        <div id="venue-cards" class="grid md:grid-cols-2 gap-4"></div>
+      </section>
+
+      <section data-tab-content="table" class="hidden space-y-4">
+        <h2 class="text-xl font-bold">비교표</h2>
+        <p class="text-xs text-gray-500">분 수는 대략 이동 시간입니다. 식대를 고치려면 홀 이름을 누르세요.</p>
+        <div class="bg-white rounded-2xl border border-roseGold-100 overflow-x-auto">
+          <table class="w-full text-left text-sm">
+            <thead class="bg-roseGold-100/70 text-roseGold-900">
+              <tr>
+                <th class="p-3 font-semibold">순위</th>
+                <th class="p-3 font-semibold">홀</th>
+                <th class="p-3 font-semibold">신랑</th>
+                <th class="p-3 font-semibold">신부</th>
+                <th class="p-3 font-semibold">가족</th>
+                <th class="p-3 font-semibold">식대</th>
+                <th class="p-3 font-semibold">역</th>
+                <th class="p-3 font-semibold">내 메모</th>
+              </tr>
+            </thead>
+            <tbody id="comparison-body" class="divide-y divide-gray-100"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <section data-tab-content="checklist" class="hidden space-y-4">
+        <div class="flex items-center justify-between gap-3">
+          <h2 class="text-xl font-bold">투어 체크리스트</h2>
+          <button type="button" id="reset-checklist" class="text-sm text-roseGold-700 underline min-h-11">체크 초기화</button>
+        </div>
+        <div id="checklist-container" class="grid md:grid-cols-2 gap-4"></div>
+      </section>
+
+      <section data-tab-content="memo" class="hidden space-y-4">
+        <div class="flex items-center justify-between">
+          <h2 class="text-xl font-bold">투어 메모</h2>
+          <span id="memo-save-status" class="hidden text-xs text-emerald-700 bg-emerald-50 px-2 py-1 rounded-full">저장됨</span>
+        </div>
+        <textarea id="tour-memo-textarea" rows="12" class="w-full p-4 border border-roseGold-200 rounded-2xl text-sm leading-relaxed" placeholder="홀마다 상담에서 들은 식대, 예식 간격, 주차, 느낀 점을 적어두세요."></textarea>
+      </section>
+    </main>
+
+    <div id="venue-modal" class="fixed inset-0 z-50 bg-black/50 hidden items-center justify-center p-4">
+      <div class="bg-white w-full max-w-lg rounded-3xl shadow-2xl max-h-[90vh] overflow-y-auto" role="dialog" aria-modal="true" aria-labelledby="detail-title">
+        <div class="p-5 border-b border-roseGold-100 flex justify-between gap-3">
+          <div>
+            <p id="detail-district" class="text-xs text-gray-500"></p>
+            <h3 id="detail-title" class="text-xl font-bold"></h3>
+          </div>
+          <button type="button" id="detail-close" class="text-gray-500 min-h-11 min-w-11" aria-label="닫기">닫기</button>
+        </div>
+        <div class="p-5 space-y-4 text-sm">
+          <p id="detail-times" class="bg-roseGold-50 rounded-xl p-3 leading-relaxed"></p>
+          <dl id="detail-facts" class="grid grid-cols-1 gap-2 text-sm"></dl>
+          <label class="block text-xs text-gray-600">식대 수정 (원)
+            <input id="detail-meal" type="number" min="0" step="1000" class="mt-1 w-full border border-roseGold-200 rounded-xl px-3 py-2 text-sm" />
+          </label>
+          <label class="block text-xs text-gray-600">참고 링크
+            <input id="detail-link" type="url" class="mt-1 w-full border border-roseGold-200 rounded-xl px-3 py-2 text-sm" />
+          </label>
+          <label class="block text-xs text-gray-600">내 메모
+            <textarea id="detail-note" rows="4" class="mt-1 w-full border border-roseGold-200 rounded-xl px-3 py-2 text-sm"></textarea>
+          </label>
+          <div class="flex flex-wrap gap-2 justify-between">
+            <button type="button" id="detail-focus" class="text-sm text-roseGold-700 underline min-h-11">지도에서 보기</button>
+            <button type="button" id="detail-delete" class="hidden text-sm text-rose-700 underline min-h-11">이 홀 삭제</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      const SEED = [
+        {
+          id: "jostiel",
+          name: "제이오스티엘",
+          district: "구로구",
+          address: "서울 구로구 경인로 565",
+          station: "1호선 구로역",
+          lat: 37.5036399,
+          lng: 126.8797139,
+          type: "단독홀 · 뷔페",
+          meal: 52000,
+          guests: "최소 150명",
+          parking: "구로역 인근. 하객 주차 지원은 상담 때 확인",
+          link: "https://www.directwedding.co.kr/weddinghall/hall0437",
+        },
+        {
+          id: "weddingcity",
+          name: "웨딩시티",
+          district: "구로구",
+          address: "서울 구로구 새말로 97 신도림테크노마트 8층",
+          station: "1·2호선 신도림역 연결",
+          lat: 37.5070089,
+          lng: 126.8902959,
+          type: "여러 홀 · 뷔페",
+          meal: 63000,
+          guests: "최소 220명",
+          parking: "테크노마트 주차. 소개 페이지 기준 약 3시간",
+          link: "https://www.directwedding.co.kr/weddinghall/hall0400",
+        },
+        {
+          id: "kyusoodang",
+          name: "규수당",
+          district: "영등포구",
+          address: "서울 영등포구 문래로 164",
+          station: "2호선 문래역",
+          lat: 37.5178032,
+          lng: 126.9000578,
+          type: "단독홀 · 뷔페",
+          meal: 62000,
+          guests: "최소 200명",
+          parking: "문래역 도보권. 주차 조건은 상담 때 확인",
+          link: "https://www.directwedding.co.kr/weddinghall/hall0053",
+        },
+        {
+          id: "forestone",
+          name: "포레스트원",
+          district: "성북구",
+          address: "서울 성북구 동소문로 47",
+          station: "4호선 한성대입구역",
+          lat: 37.590901,
+          lng: 127.0107286,
+          type: "뷔페",
+          meal: 58000,
+          guests: "최소 200명",
+          parking: "소개 페이지 기준 약 300대, 1시간 30분",
+          link: "https://www.directwedding.co.kr/weddinghall/hall0496",
+        },
+        {
+          id: "renos",
+          name: "레노스블랑쉬",
+          district: "성동구",
+          address: "서울 성동구 고산자로 202",
+          station: "왕십리·행당역 사이",
+          lat: 37.5582206,
+          lng: 127.034382,
+          type: "일반홀 · 뷔페",
+          meal: 48000,
+          guests: "최소 200명",
+          parking: "주차 조건은 상담 때 확인",
+          link: "https://www.directwedding.co.kr/weddinghall/hall0178",
+        },
+        {
+          id: "victoria",
+          name: "더빅토리아",
+          district: "강북구",
+          address: "서울 강북구 도봉로 16",
+          station: "4호선 미아사거리역",
+          lat: 37.6108764,
+          lng: 127.030773,
+          type: "빅토리아홀 · 하늘정원홀 · 뷔페",
+          meal: 58000,
+          guests: "최소 200명",
+          parking: "소개 페이지 기준 약 400대",
+          link: "https://www.directwedding.co.kr/weddinghall/hall0135",
+        },
+      ];
+
+      const DEFAULT_ORIGINS = [
+        { id: "groom", role: "groom", label: "신랑", place: "구파발역", lat: 37.6370034, lng: 126.9185772 },
+        { id: "bride", role: "bride", label: "신부", place: "봉천역", lat: 37.4836652, lng: 126.9409914 },
+      ];
+
+      const CHECKLIST = [
+        {
+          title: "홀과 예식 간격",
+          items: [
+            "예식 간격이 60분인가, 그 이상인가",
+            "단독홀인가, 다른 예식과 하객이 섞이는가",
+            "버진로드 길이, 층고, 조명이 마음에 드는가",
+            "신부대기실에서 로비·화장실 동선이 짧은가",
+          ],
+        },
+        {
+          title: "식사",
+          items: [
+            "연회장 좌석이 붐비지 않는가",
+            "메뉴가 하객 연령을 커버하는가",
+            "혼주 자리가 따로 있는가",
+            "주류·음료가 식대에 포함되는가",
+          ],
+        },
+        {
+          title: "오가는 길",
+          items: [
+            "지하철에서 걸어올 만한 거리인가",
+            "주차가 동시 하객을 받는가",
+            "무료 주차 시간이 예식과 식사에 충분한가",
+            "지방 하객 버스가 설 자리가 있는가",
+          ],
+        },
+        {
+          title: "견적",
+          items: [
+            "스냅·영상·원판이 강제 옵션인가",
+            "꽃장식·연출료가 따로인가",
+            "당일 계약 서비스 항목을 적었는가",
+            "취소 위약금이 서면으로 있는가",
+          ],
+        },
+      ];
+
+      let state = loadState();
+      let pinMode = null;
+      let openId = null;
+      let map;
+      let hallLayer;
+      let originLayer;
+      let markers = {};
+      let noteTimer = 0;
+      let memoTimer = 0;
+
+      function loadState() {
+        return {
+          userVenues: readJSON("hallmap.userVenues", []),
+          overrides: readJSON("hallmap.overrides", {}),
+          origins: readJSON("hallmap.origins", DEFAULT_ORIGINS),
+          weights: Object.assign({ groom: 40, bride: 40, family: 20, meal: 0 }, readJSON("hallmap.weights", {})),
+          sort: localStorage.getItem("hallmap.sort") || "score",
+          manualOrder: readJSON("hallmap.manualOrder", []),
+          showSeongbuk: localStorage.getItem("hallmap.showSeongbuk") === "1",
+        };
+      }
+
+      function readJSON(key, fallback) {
+        try {
+          const raw = localStorage.getItem(key);
+          return raw ? JSON.parse(raw) : fallback;
+        } catch (err) {
+          return fallback;
+        }
+      }
+
+      function persist() {
+        const pairs = {
+          "hallmap.userVenues": state.userVenues,
+          "hallmap.overrides": state.overrides,
+          "hallmap.origins": state.origins,
+          "hallmap.weights": state.weights,
+          "hallmap.manualOrder": state.manualOrder,
+        };
+        Object.entries(pairs).forEach(([key, value]) => {
+          localStorage.setItem(key, JSON.stringify(value));
+        });
+        localStorage.setItem("hallmap.sort", state.sort);
+        localStorage.setItem("hallmap.showSeongbuk", state.showSeongbuk ? "1" : "0");
+      }
+
+      function esc(value) {
+        return String(value ?? "").replace(/[&<>"']/g, (ch) => ({
+          "&": "&amp;",
+          "<": "&lt;",
+          ">": "&gt;",
+          '"': "&quot;",
+          "'": "&#39;",
+        })[ch]);
+      }
+
+      function safeUrl(value) {
+        try {
+          const url = new URL(value);
+          if (url.protocol === "http:" || url.protocol === "https:") return url.href;
+        } catch (err) {
+          return "";
+        }
+        return "";
+      }
+
+      function won(value) {
+        if (!value) return "미입력";
+        const man = value / 10000;
+        const text = Number.isInteger(man) ? String(man) : man.toFixed(1);
+        return text + "만 원";
+      }
+
+      function kmBetween(a, b) {
+        const R = 6371;
+        const dLat = ((b.lat - a.lat) * Math.PI) / 180;
+        const dLng = ((b.lng - a.lng) * Math.PI) / 180;
+        const lat1 = (a.lat * Math.PI) / 180;
+        const lat2 = (b.lat * Math.PI) / 180;
+        const h = Math.sin(dLat / 2) ** 2 + Math.cos(lat1) * Math.cos(lat2) * Math.sin(dLng / 2) ** 2;
+        return 2 * R * Math.asin(Math.min(1, Math.sqrt(h)));
+      }
+
+      function minutesBetween(a, b) {
+        if (!a || !b) return null;
+        return Math.max(12, Math.round(kmBetween(a, b) * 2.4 + 12));
+      }
+
+      function isSeongbuk(district) {
+        return String(district || "").includes("성북");
+      }
+
+      function isWest(venue) {
+        const district = venue.district || "";
+        return district.includes("구로") || district.includes("영등포");
+      }
+
+      function allVenues() {
+        return SEED.concat(state.userVenues).map((venue) => {
+          const extra = state.overrides[venue.id] || {};
+          const merged = Object.assign({}, venue, extra);
+          merged.parked = isSeongbuk(merged.district);
+          merged.user = Boolean(venue.user);
+          if (extra.meal === undefined) merged.meal = venue.meal || null;
+          return merged;
+        });
+      }
+
+      function originByRole(role) {
+        return state.origins.find((origin) => origin.role === role) || null;
+      }
+
+      function metricsOf(venue) {
+        const families = state.origins.filter((origin) => origin.role === "family");
+        const familyTimes = families.map((origin) => ({
+          label: origin.label,
+          min: minutesBetween(origin, venue),
+        }));
+        const familySorted = familyTimes.slice().sort((a, b) => b.min - a.min);
+        return {
+          groomMin: minutesBetween(originByRole("groom"), venue),
+          brideMin: minutesBetween(originByRole("bride"), venue),
+          familyTimes,
+          familyMin: familySorted.length ? familySorted[0].min : null,
+          familyWho: familySorted.length ? familySorted[0].label : "",
+        };
+      }
+
+      function timeScore(min) {
+        if (min == null) return null;
+        return Math.max(0, Math.min(100, ((75 - min) / 60) * 100));
+      }
+
+      function fitOf(metrics) {
+        const hasFamily = state.origins.some((origin) => origin.role === "family");
+        let acc = 0;
+        let weight = 0;
+        const add = (w, score) => {
+          if (!w || score == null) return;
+          acc += w * score;
+          weight += w;
+        };
+        add(state.weights.groom, timeScore(metrics.groomMin));
+        add(state.weights.bride, timeScore(metrics.brideMin));
+        if (hasFamily) add(state.weights.family, timeScore(metrics.familyMin));
+        if (state.weights.meal && metrics.meal) {
+          add(state.weights.meal, Math.max(0, Math.min(100, ((80000 - metrics.meal) / 40000) * 100)));
+        }
+        return weight ? acc / weight : 0;
+      }
+
+      function cmpNum(a, b) {
+        if (a == null && b == null) return 0;
+        if (a == null) return 1;
+        if (b == null) return -1;
+        return a - b;
+      }
+
+      function buildView() {
+        const rows = allVenues().map((venue) => {
+          const metrics = metricsOf(venue);
+          return Object.assign({}, venue, metrics, { fit: fitOf(Object.assign({}, venue, metrics)) });
+        });
+        const live = rows.filter((venue) => !venue.parked);
+        const parked = rows.filter((venue) => venue.parked).sort((a, b) => b.fit - a.fit);
+        const byFit = (a, b) => b.fit - a.fit || cmpNum(a.brideMin, b.brideMin) || cmpNum(a.groomMin, b.groomMin) || a.name.localeCompare(b.name, "ko");
+        const sorters = {
+          score: byFit,
+          groom: (a, b) => cmpNum(a.groomMin, b.groomMin) || byFit(a, b),
+          bride: (a, b) => cmpNum(a.brideMin, b.brideMin) || byFit(a, b),
+          family: (a, b) => cmpNum(a.familyMin, b.familyMin) || byFit(a, b),
+          balance: (a, b) => cmpNum(Math.max(a.groomMin, a.brideMin), Math.max(b.groomMin, b.brideMin)) || byFit(a, b),
+          meal: (a, b) => cmpNum(a.meal || null, b.meal || null) || byFit(a, b),
+        };
+        let ranked;
+        if (state.sort === "manual") {
+          const index = new Map(state.manualOrder.map((id, i) => [id, i]));
+          ranked = live.slice().sort((a, b) => (index.get(a.id) ?? 9999) - (index.get(b.id) ?? 9999) || byFit(a, b));
+        } else {
+          ranked = live.slice().sort(sorters[state.sort] || byFit);
+        }
+        return { ranked, parked };
+      }
+
+      function scoreName() {
+        return state.weights.meal > 0 ? "맞춤" : "이동";
+      }
+
+      function familyText(venue) {
+        if (!venue.familyTimes.length) return "";
+        return venue.familyTimes.map((item) => item.label + " " + item.min + "분").join(" · ");
+      }
+
+      function toneClass(venue) {
+        if (venue.parked) return "bg-slate-200 text-slate-600";
+        if (isWest(venue)) return "bg-indigo-100 text-indigo-800";
+        return "bg-emerald-100 text-emerald-800";
+      }
+
+      function renderRecommendation(view) {
+        const box = document.getElementById("recommendation");
+        const top = view.ranked.slice(0, 3);
+        if (!top.length) {
+          box.innerHTML = "<p class=\"font-bold\">비교할 홀이 없습니다.</p>";
+          return;
+        }
+        const items = top
+          .map((venue, index) => {
+            return `<li class="flex flex-wrap items-baseline justify-between gap-2 border-t border-roseGold-100 py-2 first:border-0">
+              <span class="font-bold">${index + 1}. ${esc(venue.name)}</span>
+              <span class="text-sm text-gray-600">신랑 ${venue.groomMin}분 · 신부 ${venue.brideMin}분 · ${scoreName()} ${Math.round(venue.fit)}점</span>
+            </li>`;
+          })
+          .join("");
+        const north = view.ranked.find((venue) => !isWest(venue));
+        const west = view.ranked.find((venue) => isWest(venue));
+        let aside = "";
+        if (north && west && north.id !== west.id) {
+          aside = `<p class="text-xs text-gray-500 mt-2">신부 기준, 구로·영등포 1위 ${esc(west.name)} ${west.brideMin}분, 강북·성동 1위 ${esc(north.name)} ${north.brideMin}분.</p>`;
+        }
+        box.innerHTML = `<p class="text-xs font-semibold text-roseGold-700 mb-1">이 조건에서 먼저 볼 곳</p><ol>${items}</ol>${aside}`;
+      }
+
+      function rowHtml(venue, rank, movable) {
+        const moves = movable
+          ? `<div class="flex shrink-0">
+              <button type="button" data-move="-1" data-id="${esc(venue.id)}" class="min-h-11 min-w-11 text-xs text-gray-500" aria-label="${esc(venue.name)} 위로">위</button>
+              <button type="button" data-move="1" data-id="${esc(venue.id)}" class="min-h-11 min-w-11 text-xs text-gray-500" aria-label="${esc(venue.name)} 아래로">아래</button>
+            </div>`
+          : "";
+        const familyLine = venue.familyTimes.length ? " · " + familyText(venue) : "";
+        return `<article data-id="${esc(venue.id)}" class="rounded-xl border border-roseGold-100 p-3 ${venue.parked ? "opacity-70" : ""}">
+          <div class="flex items-center gap-2">
+            <button type="button" data-open="${esc(venue.id)}" class="flex-1 text-left">
+              <div class="flex flex-wrap items-center gap-2">
+                <span class="text-xs font-bold text-gray-400">${venue.parked ? "보류" : rank}</span>
+                <span class="text-xs px-2 py-0.5 rounded-full font-semibold ${toneClass(venue)}">${esc(venue.parked ? venue.district + " · 보류" : venue.district)}</span>
+                <span class="font-bold">${esc(venue.name)}</span>
+                ${venue.user ? '<span class="text-[11px] text-gray-400">내가 추가</span>' : ""}
+              </div>
+              <p class="text-xs text-gray-600 mt-1">신랑 ${venue.groomMin}분 · 신부 ${venue.brideMin}분${esc(familyLine)}</p>
+              <p class="text-xs text-gray-500 mt-0.5">${esc(venue.station || "")} · 식대 ${esc(won(venue.meal))} · ${scoreName()} ${Math.round(venue.fit)}점</p>
+            </button>
+            ${moves}
+          </div>
+        </article>`;
+      }
+
+      function renderList(view) {
+        const parked = state.showSeongbuk ? view.parked : [];
+        const live = view.ranked.map((venue, index) => rowHtml(venue, index + 1, true)).join("");
+        const held = parked.length
+          ? `<h3 class="text-xs font-bold text-slate-500 pt-2">성북구 · 보류</h3>` + parked.map((venue) => rowHtml(venue, "보류", false)).join("")
+          : "";
+        document.getElementById("venue-list").innerHTML = live + held;
+      }
+
+      function renderCards(view) {
+        const rows = view.ranked.concat(state.showSeongbuk ? view.parked : []);
+        document.getElementById("venue-cards").innerHTML = rows
+          .map((venue, index) => {
+            return `<article class="bg-white rounded-2xl border border-roseGold-100 p-5 flex flex-col gap-3 ${venue.parked ? "opacity-70" : ""}">
+              <div class="flex justify-between gap-2">
+                <span class="text-xs px-2 py-0.5 rounded-full font-semibold ${toneClass(venue)}">${esc(venue.district)}</span>
+                <span class="text-xs text-gray-500">${venue.parked ? "보류" : index + 1 + "순위"} · ${Math.round(venue.fit)}점</span>
+              </div>
+              <div>
+                <h3 class="text-lg font-bold">${esc(venue.name)}</h3>
+                <p class="text-xs text-roseGold-700 mt-1">${esc(venue.type || "")}</p>
+              </div>
+              <p class="text-sm">신랑 ${venue.groomMin}분 · 신부 ${venue.brideMin}분</p>
+              ${venue.familyTimes.length ? `<p class="text-xs text-gray-500">${esc(familyText(venue))}</p>` : ""}
+              <p class="text-xs text-gray-600">${esc(venue.address || "")}</p>
+              ${venue.note ? `<p class="text-xs text-gray-600">${esc(venue.note)}</p>` : ""}
+              <button type="button" data-open="${esc(venue.id)}" class="mt-auto bg-roseGold-500 text-white rounded-xl min-h-11 text-sm">상세와 메모</button>
+            </article>`;
+          })
+          .join("");
+      }
+
+      function renderTable(view) {
+        const rows = view.ranked.concat(state.showSeongbuk ? view.parked : []);
+        document.getElementById("comparison-body").innerHTML = rows
+          .map((venue, index) => {
+            return `<tr class="${venue.parked ? "opacity-60" : ""}">
+              <td class="p-3">${venue.parked ? "보류" : index + 1}</td>
+              <td class="p-3 font-bold"><button type="button" data-open="${esc(venue.id)}" class="underline decoration-roseGold-300">${esc(venue.name)}</button><div class="text-xs font-normal text-gray-500">${esc(venue.district)}</div></td>
+              <td class="p-3">${venue.groomMin}분</td>
+              <td class="p-3">${venue.brideMin}분</td>
+              <td class="p-3 text-xs">${esc(familyText(venue))}</td>
+              <td class="p-3">${esc(won(venue.meal))}</td>
+              <td class="p-3 text-xs">${esc(venue.station || "")}</td>
+              <td class="p-3 text-xs max-w-xs">${esc(venue.note || "")}</td>
+            </tr>`;
+          })
+          .join("");
+      }
+
+      function renderOrigins() {
+        document.getElementById("origin-list").innerHTML = state.origins
+          .map((origin) => {
+            const roleName = origin.role === "groom" ? "신랑" : origin.role === "bride" ? "신부" : "가족";
+            const label = origin.role === "family"
+              ? `<input data-origin-label="${esc(origin.id)}" value="${esc(origin.label)}" class="border border-roseGold-200 rounded-lg px-2 py-1 w-28 text-sm" aria-label="가족 이름" />`
+              : `<span class="font-bold">${esc(origin.label)}</span>`;
+            const remove = origin.role === "family"
+              ? `<button type="button" data-remove-origin="${esc(origin.id)}" class="text-xs text-gray-500 underline min-h-11">삭제</button>`
+              : "";
+            return `<li class="flex flex-wrap items-center gap-2 text-sm">
+              <span class="text-xs px-2 py-0.5 rounded-full bg-gray-100">${roleName}</span>
+              ${label}
+              <span class="text-gray-600">${esc(origin.place)}</span>
+              <button type="button" data-edit-origin="${esc(origin.id)}" class="text-roseGold-700 underline min-h-11">변경</button>
+              ${remove}
+            </li>`;
+          })
+          .join("");
+        const hasFamily = state.origins.some((origin) => origin.role === "family");
+        document.getElementById("w-family").disabled = !hasFamily;
+        document.getElementById("w-family-hint").textContent = hasFamily
+          ? "가장 오래 걸리는 가족 기준"
+          : "가족을 추가하면 반영됩니다";
+        ["groom", "bride", "family", "meal"].forEach((key) => {
+          document.getElementById("w-" + key + "-val").textContent = state.weights[key];
+        });
+      }
+
+      function markerHtml(color, text) {
+        return `<div style="background:${color};color:white;width:28px;height:28px;border-radius:999px;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;border:2px solid white;box-shadow:0 1px 4px rgba(0,0,0,.25)">${text}</div>`;
+      }
+
+      function renderMap(view) {
+        if (!map) return;
+        hallLayer.clearLayers();
+        originLayer.clearLayers();
+        markers = {};
+        const visible = view.ranked.concat(state.showSeongbuk ? view.parked : []);
+        visible.forEach((venue, index) => {
+          const color = venue.parked ? "#94a3b8" : isWest(venue) ? "#4f46e5" : "#059669";
+          const icon = L.divIcon({
+            className: "hall-pin",
+            html: markerHtml(color, venue.parked ? "·" : String(index + 1)),
+            iconSize: [28, 28],
+            iconAnchor: [14, 14],
+          });
+          const marker = L.marker([venue.lat, venue.lng], { icon }).addTo(hallLayer);
+          marker.bindPopup(
+            `<div style="min-width:160px">
+              <strong>${esc(venue.name)}</strong>
+              <p style="margin:4px 0;font-size:12px">신랑 ${venue.groomMin}분 · 신부 ${venue.brideMin}분</p>
+              <button type="button" data-open="${esc(venue.id)}" style="background:#d1624d;color:white;border:0;border-radius:8px;padding:6px 10px;width:100%">상세</button>
+            </div>`,
+          );
+          markers[venue.id] = marker;
+        });
+        state.origins.forEach((origin) => {
+          const color = origin.role === "groom" ? "#1d4ed8" : origin.role === "bride" ? "#be185d" : "#a16207";
+          const text = origin.role === "groom" ? "신" : origin.role === "bride" ? "부" : "가";
+          const icon = L.divIcon({
+            className: "hall-pin",
+            html: markerHtml(color, text),
+            iconSize: [28, 28],
+            iconAnchor: [14, 14],
+          });
+          L.marker([origin.lat, origin.lng], { icon, zIndexOffset: 400 })
+            .addTo(originLayer)
+            .bindPopup(`<strong>${esc(origin.label)}</strong><br>${esc(origin.place)}`);
+        });
+      }
+
+      function renderAll() {
+        const view = buildView();
+        renderRecommendation(view);
+        renderList(view);
+        renderCards(view);
+        renderTable(view);
+        renderOrigins();
+        renderMap(view);
+      }
+
+      function fitToAll() {
+        const view = buildView();
+        const points = [];
+        view.ranked.forEach((venue) => points.push([venue.lat, venue.lng]));
+        if (state.showSeongbuk) view.parked.forEach((venue) => points.push([venue.lat, venue.lng]));
+        state.origins.forEach((origin) => points.push([origin.lat, origin.lng]));
+        if (!points.length || !map) return;
+        map.invalidateSize();
+        map.fitBounds(points, { padding: [28, 28] });
+      }
+
+      function paintTabs(tabId) {
+        document.querySelectorAll("[data-tab-content]").forEach((section) => {
+          section.classList.toggle("hidden", section.dataset.tabContent !== tabId);
+        });
+        document.querySelectorAll("[data-tab-btn]").forEach((button) => {
+          const on = button.dataset.tabBtn === tabId;
+          if (button.dataset.tabStyle === "mobile") {
+            button.className = "min-h-12 text-[11px] font-medium " + (on ? "text-roseGold-700" : "text-gray-500");
+          } else {
+            button.className = "px-4 py-2 text-sm font-medium rounded-lg " + (on ? "bg-white text-roseGold-700 shadow-sm" : "text-gray-600");
+          }
+        });
+        if (tabId === "map" && map) setTimeout(() => map.invalidateSize(), 150);
+      }
+
+      function switchTab(tabId) {
+        paintTabs(tabId);
+      }
+
+      function setPinMode(mode, text) {
+        pinMode = mode;
+        document.body.classList.toggle("pin-mode", Boolean(mode));
+        document.getElementById("pin-banner").classList.toggle("hidden", !mode);
+        if (text) document.getElementById("pin-banner-text").textContent = text;
+        if (mode) document.getElementById("leaflet-map").scrollIntoView({ block: "center" });
+      }
+
+      function setPlaceStatus(message) {
+        const el = document.getElementById("place-status");
+        el.textContent = message || "";
+        el.classList.toggle("hidden", !message);
+      }
+
+      async function searchPlaces(query) {
+        const url = new URL("https://nominatim.openstreetmap.org/search");
+        url.searchParams.set("format", "json");
+        url.searchParams.set("limit", "5");
+        url.searchParams.set("countrycodes", "kr");
+        url.searchParams.set("q", query);
+        const response = await fetch(url, { headers: { "Accept-Language": "ko" } });
+        if (!response.ok) throw new Error("search failed");
+        return response.json();
+      }
+
+      function applyPlace(lat, lng, place) {
+        if (pinMode && pinMode !== "new-family" && pinMode !== "hall") {
+          const origin = state.origins.find((item) => item.id === pinMode);
+          if (origin) {
+            origin.lat = lat;
+            origin.lng = lng;
+            origin.place = place;
+          }
+        } else if (pinMode !== "hall") {
+          const count = state.origins.filter((item) => item.role === "family").length + 1;
+          state.origins.push({
+            id: "fam_" + Date.now(),
+            role: "family",
+            label: "가족 " + count,
+            place,
+            lat,
+            lng,
+          });
+        }
+        setPinMode(null);
+        persist();
+        renderAll();
+        fitToAll();
+      }
+
+      function setHallCoord(lat, lng, label) {
+        document.getElementById("hall-lat").value = lat.toFixed(5);
+        document.getElementById("hall-lng").value = lng.toFixed(5);
+        document.getElementById("hall-coord-label").textContent = label || lat.toFixed(5) + ", " + lng.toFixed(5);
+      }
+
+      function resultList(items, onPick) {
+        if (!items.length) return "<li class=\"text-xs text-gray-500\">결과가 없습니다. 지도에서 찍으세요.</li>";
+        return items
+          .map((item, index) => {
+            const name = item.display_name.split(",").slice(0, 3).join(" ");
+            return `<li><button type="button" data-result="${index}" class="text-left w-full px-2 py-2 rounded-lg hover:bg-roseGold-50">${esc(name)}</button></li>`;
+          })
+          .join("");
+      }
+
+      function factRow(label, value) {
+        if (!value) return "";
+        return `<div><dt class="text-xs text-gray-500">${esc(label)}</dt><dd>${esc(value)}</dd></div>`;
+      }
+
+      function openDetail(id) {
+        const venue = buildView().ranked.concat(buildView().parked).find((item) => item.id === id);
+        if (!venue) return;
+        openId = id;
+        document.getElementById("detail-title").textContent = venue.name;
+        document.getElementById("detail-district").textContent = venue.parked ? venue.district + " · 순위 제외" : venue.district;
+        document.getElementById("detail-times").textContent =
+          "신랑 " + venue.groomMin + "분, 신부 " + venue.brideMin + "분. " + (familyText(venue) ? familyText(venue) + ". " : "") + scoreName() + " 점수 " + Math.round(venue.fit) + ".";
+        const href = safeUrl(venue.link);
+        const link = href
+          ? `<div><dt class="text-xs text-gray-500">소개</dt><dd><a class="text-roseGold-700 underline" href="${esc(href)}" target="_blank" rel="noreferrer">소개 페이지</a></dd></div>`
+          : "";
+        document.getElementById("detail-facts").innerHTML =
+          factRow("주소", venue.address) +
+          factRow("역", venue.station) +
+          factRow("분위기", venue.type) +
+          factRow("보증", venue.guests) +
+          factRow("주차", venue.parking) +
+          link;
+        document.getElementById("detail-meal").value = venue.meal || "";
+        document.getElementById("detail-link").value = venue.link || "";
+        document.getElementById("detail-note").value = venue.note || "";
+        document.getElementById("detail-delete").classList.toggle("hidden", !venue.user);
+        const modal = document.getElementById("venue-modal");
+        modal.classList.remove("hidden");
+        modal.classList.add("flex");
+      }
+
+      function closeDetail() {
+        openId = null;
+        const modal = document.getElementById("venue-modal");
+        modal.classList.add("hidden");
+        modal.classList.remove("flex");
+      }
+
+      function saveOverride(patch, options) {
+        if (!openId) return;
+        const next = Object.assign({}, state.overrides[openId] || {});
+        Object.entries(patch).forEach(([key, value]) => {
+          if (value === "" || value == null) delete next[key];
+          else next[key] = value;
+        });
+        if (Object.keys(next).length) state.overrides[openId] = next;
+        else delete state.overrides[openId];
+        persist();
+        if (options && options.render === false) return;
+        renderAll();
+        if (openId) {
+          const venue = buildView().ranked.concat(buildView().parked).find((item) => item.id === openId);
+          if (venue) {
+            document.getElementById("detail-times").textContent =
+              "신랑 " + venue.groomMin + "분, 신부 " + venue.brideMin + "분. " + (familyText(venue) ? familyText(venue) + ". " : "") + scoreName() + " 점수 " + Math.round(venue.fit) + ".";
+          }
+        }
+      }
+
+      function moveVenue(id, dir) {
+        const ranked = buildView().ranked;
+        const ids = state.sort === "manual" ? state.manualOrder.filter((item) => ranked.some((venue) => venue.id === item)) : ranked.map((venue) => venue.id);
+        ranked.forEach((venue) => {
+          if (!ids.includes(venue.id)) ids.push(venue.id);
+        });
+        const index = ids.indexOf(id);
+        const next = index + dir;
+        if (index < 0 || next < 0 || next >= ids.length) return;
+        const swapped = ids.slice();
+        const hold = swapped[index];
+        swapped[index] = swapped[next];
+        swapped[next] = hold;
+        state.manualOrder = swapped;
+        state.sort = "manual";
+        document.getElementById("sort-mode").value = "manual";
+        persist();
+        renderAll();
+      }
+
+      function renderChecklist() {
+        const saved = readJSON("wedding_checklist", {});
+        document.getElementById("checklist-container").innerHTML = CHECKLIST.map((group, groupIndex) => {
+          const items = group.items
+            .map((item, itemIndex) => {
+              const key = groupIndex + "-" + itemIndex;
+              return `<label class="flex gap-2 text-sm"><input type="checkbox" data-check="${key}" ${saved[key] ? "checked" : ""} class="mt-1" /> <span>${esc(item)}</span></label>`;
+            })
+            .join("");
+          return `<div class="bg-white rounded-2xl border border-roseGold-100 p-4 space-y-2"><h3 class="font-bold">${esc(group.title)}</h3>${items}</div>`;
+        }).join("");
+      }
+
+      function syncControls() {
+        document.getElementById("sort-mode").value = state.sort;
+        document.getElementById("show-seongbuk").checked = state.showSeongbuk;
+        ["groom", "bride", "family", "meal"].forEach((key) => {
+          document.getElementById("w-" + key).value = state.weights[key];
+        });
+      }
+
+      function initMap() {
+        map = L.map("leaflet-map");
+        L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
+          maxZoom: 19,
+          attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+        }).addTo(map);
+        hallLayer = L.layerGroup().addTo(map);
+        originLayer = L.layerGroup().addTo(map);
+        map.on("click", (event) => {
+          if (!pinMode) return;
+          const lat = event.latlng.lat;
+          const lng = event.latlng.lng;
+          if (pinMode === "hall") {
+            setHallCoord(lat, lng, "지도에서 찍음");
+            setPinMode(null);
+            document.getElementById("add-panel").scrollIntoView({ block: "nearest" });
+            return;
+          }
+          applyPlace(lat, lng, "지도에서 찍은 위치");
+        });
+      }
+
+      document.addEventListener("click", (event) => {
+        const tab = event.target.closest("[data-tab-btn]");
+        if (tab) switchTab(tab.dataset.tabBtn);
+        const open = event.target.closest("[data-open]");
+        if (open) openDetail(open.dataset.open);
+        const move = event.target.closest("[data-move]");
+        if (move) moveVenue(move.dataset.id, Number(move.dataset.move));
+        const edit = event.target.closest("[data-edit-origin]");
+        if (edit) {
+          const origin = state.origins.find((item) => item.id === edit.dataset.editOrigin);
+          setPinMode(edit.dataset.editOrigin, (origin ? origin.label : "출발지") + " 위치를 검색하거나 지도를 클릭하세요.");
+          document.getElementById("place-hint").textContent = "지금 변경 중: " + (origin ? origin.label : "");
+        }
+        const remove = event.target.closest("[data-remove-origin]");
+        if (remove) {
+          state.origins = state.origins.filter((item) => item.id !== remove.dataset.removeOrigin);
+          persist();
+          renderAll();
+          fitToAll();
+        }
+      });
+
+      document.getElementById("origin-list").addEventListener("change", (event) => {
+        const input = event.target.closest("[data-origin-label]");
+        if (!input) return;
+        const origin = state.origins.find((item) => item.id === input.dataset.originLabel);
+        if (!origin) return;
+        origin.label = input.value.trim() || origin.label;
+        persist();
+        renderAll();
+      });
+
+      document.getElementById("place-form").addEventListener("submit", async (event) => {
+        event.preventDefault();
+        const query = document.getElementById("place-query").value.trim();
+        if (!query) return;
+        setPlaceStatus("검색 중");
+        try {
+          const items = await searchPlaces(query);
+          document.getElementById("place-results").innerHTML = resultList(items);
+          document.getElementById("place-results").dataset.items = JSON.stringify(
+            items.map((item) => ({ lat: Number(item.lat), lng: Number(item.lon), name: item.display_name.split(",").slice(0, 2).join(" ") })),
+          );
+          setPlaceStatus(items.length ? "" : "결과가 없습니다. 지도에서 찍으세요.");
+        } catch (err) {
+          setPlaceStatus("검색이 되지 않습니다. 지도에서 찍으세요.");
+        }
+      });
+
+      document.getElementById("place-results").addEventListener("click", (event) => {
+        const button = event.target.closest("[data-result]");
+        if (!button) return;
+        const items = JSON.parse(document.getElementById("place-results").dataset.items || "[]");
+        const picked = items[Number(button.dataset.result)];
+        if (!picked) return;
+        if (pinMode === "hall") return;
+        applyPlace(picked.lat, picked.lng, picked.name);
+        document.getElementById("place-results").innerHTML = "";
+        document.getElementById("place-query").value = "";
+        document.getElementById("place-hint").textContent = "검색 결과를 고르면 가족 출발지로 들어갑니다. 신랑·신부를 바꾸려면 해당 줄의 변경을 먼저 누르세요.";
+      });
+
+      document.getElementById("add-family-pin").addEventListener("click", () => {
+        setPinMode("new-family", "가족 위치를 지도에서 클릭하세요.");
+      });
+
+      document.getElementById("pin-cancel").addEventListener("click", () => setPinMode(null));
+      document.getElementById("fit-map").addEventListener("click", fitToAll);
+
+      ["groom", "bride", "family", "meal"].forEach((key) => {
+        document.getElementById("w-" + key).addEventListener("input", (event) => {
+          state.weights[key] = Number(event.target.value);
+          persist();
+          renderAll();
+        });
+      });
+
+      document.getElementById("sort-mode").addEventListener("change", (event) => {
+        const mode = event.target.value;
+        if (mode === "manual" && state.sort !== "manual") {
+          state.manualOrder = buildView().ranked.map((venue) => venue.id);
+        }
+        state.sort = mode;
+        persist();
+        renderAll();
+      });
+
+      document.getElementById("show-seongbuk").addEventListener("change", (event) => {
+        state.showSeongbuk = event.target.checked;
+        persist();
+        renderAll();
+        fitToAll();
+      });
+
+      document.getElementById("open-add").addEventListener("click", () => {
+        document.getElementById("add-panel").classList.remove("hidden");
+        document.getElementById("add-panel").querySelector("[name=name]").focus();
+      });
+      document.getElementById("close-add").addEventListener("click", () => {
+        document.getElementById("add-panel").classList.add("hidden");
+      });
+
+      document.getElementById("hall-search").addEventListener("click", async () => {
+        const query = document.getElementById("hall-query").value.trim();
+        const error = document.getElementById("add-error");
+        if (!query) return;
+        error.classList.add("hidden");
+        try {
+          const items = await searchPlaces(query);
+          document.getElementById("hall-results").innerHTML = resultList(items);
+          document.getElementById("hall-results").dataset.items = JSON.stringify(
+            items.map((item) => ({ lat: Number(item.lat), lng: Number(item.lon), name: item.display_name.split(",").slice(0, 3).join(" ") })),
+          );
+        } catch (err) {
+          error.textContent = "검색이 되지 않습니다. 지도에서 찍으세요.";
+          error.classList.remove("hidden");
+        }
+      });
+
+      document.getElementById("hall-results").addEventListener("click", (event) => {
+        const button = event.target.closest("[data-result]");
+        if (!button) return;
+        const items = JSON.parse(document.getElementById("hall-results").dataset.items || "[]");
+        const picked = items[Number(button.dataset.result)];
+        if (!picked) return;
+        setHallCoord(picked.lat, picked.lng, picked.name);
+        const address = document.querySelector("#add-panel [name=address]");
+        if (!address.value) address.value = picked.name;
+        document.getElementById("hall-results").innerHTML = "";
+      });
+
+      document.getElementById("hall-pin").addEventListener("click", () => {
+        setPinMode("hall", "추가할 홀 위치를 지도에서 클릭하세요.");
+        switchTab("map");
+      });
+
+      document.getElementById("add-panel").addEventListener("submit", (event) => {
+        event.preventDefault();
+        const form = event.target;
+        const error = document.getElementById("add-error");
+        const data = new FormData(form);
+        const latRaw = String(data.get("lat") || "").trim();
+        const lngRaw = String(data.get("lng") || "").trim();
+        const lat = Number(latRaw);
+        const lng = Number(lngRaw);
+        const name = String(data.get("name") || "").trim();
+        if (!name || !latRaw || !lngRaw || !Number.isFinite(lat) || !Number.isFinite(lng)) {
+          error.textContent = "이름과 위치가 필요합니다. 검색하거나 지도에서 찍으세요.";
+          error.classList.remove("hidden");
+          return;
+        }
+        const meal = Number(data.get("meal"));
+        state.userVenues.push({
+          id: "u_" + Date.now(),
+          user: true,
+          name,
+          district: String(data.get("district") || "").trim() || "기타",
+          address: String(data.get("address") || "").trim(),
+          station: String(data.get("station") || "").trim(),
+          lat,
+          lng,
+          type: String(data.get("type") || "").trim(),
+          meal: Number.isFinite(meal) && meal > 0 ? meal : null,
+          guests: String(data.get("guests") || "").trim(),
+          parking: String(data.get("parking") || "").trim(),
+          link: String(data.get("link") || "").trim(),
+          note: String(data.get("note") || "").trim(),
+        });
+        persist();
+        form.reset();
+        document.getElementById("hall-coord-label").textContent = "아직 없음";
+        error.classList.add("hidden");
+        renderAll();
+        fitToAll();
+      });
+
+      document.getElementById("reset-data").addEventListener("click", () => {
+        const ok = confirm("추가한 홀, 가족 출발지, 식대 수정, 순서를 지울까요? 체크리스트와 투어 메모는 남습니다.");
+        if (!ok) return;
+        ["hallmap.userVenues", "hallmap.overrides", "hallmap.origins", "hallmap.weights", "hallmap.sort", "hallmap.manualOrder", "hallmap.showSeongbuk"].forEach((key) => {
+          localStorage.removeItem(key);
+        });
+        state = loadState();
+        syncControls();
+        renderAll();
+        fitToAll();
+      });
+
+      function closeDetailAndRefresh() {
+        closeDetail();
+        renderAll();
+      }
+
+      document.getElementById("detail-close").addEventListener("click", closeDetailAndRefresh);
+      document.getElementById("venue-modal").addEventListener("click", (event) => {
+        if (event.target.id === "venue-modal") closeDetailAndRefresh();
+      });
+      document.getElementById("detail-meal").addEventListener("change", (event) => {
+        const value = Number(event.target.value);
+        saveOverride({ meal: Number.isFinite(value) && value > 0 ? value : "" });
+      });
+      document.getElementById("detail-link").addEventListener("change", (event) => {
+        saveOverride({ link: event.target.value.trim() });
+      });
+      document.getElementById("detail-note").addEventListener("input", (event) => {
+        const value = event.target.value;
+        clearTimeout(noteTimer);
+        noteTimer = setTimeout(() => saveOverride({ note: value.trim() }, { render: false }), 250);
+      });
+      document.getElementById("detail-focus").addEventListener("click", () => {
+        const id = openId;
+        const venue = allVenues().find((item) => item.id === id);
+        closeDetail();
+        if (venue && venue.parked && !state.showSeongbuk) {
+          state.showSeongbuk = true;
+          document.getElementById("show-seongbuk").checked = true;
+          persist();
+        }
+        renderAll();
+        switchTab("map");
+        if (venue) {
+          map.setView([venue.lat, venue.lng], 15);
+          markers[id]?.openPopup();
+        }
+      });
+      document.getElementById("detail-delete").addEventListener("click", () => {
+        const venue = state.userVenues.find((item) => item.id === openId);
+        if (!venue) return;
+        if (!confirm("이 홀을 목록에서 지울까요?")) return;
+        state.userVenues = state.userVenues.filter((item) => item.id !== openId);
+        delete state.overrides[openId];
+        closeDetail();
+        persist();
+        renderAll();
+      });
+
+      document.getElementById("checklist-container").addEventListener("change", () => {
+        const data = {};
+        document.querySelectorAll("#checklist-container input").forEach((box) => {
+          data[box.dataset.check] = box.checked;
+        });
+        localStorage.setItem("wedding_checklist", JSON.stringify(data));
+      });
+      document.getElementById("reset-checklist").addEventListener("click", () => {
+        localStorage.removeItem("wedding_checklist");
+        renderChecklist();
+      });
+
+      const memo = document.getElementById("tour-memo-textarea");
+      memo.value = localStorage.getItem("wedding_tour_memo") || "";
+      memo.addEventListener("input", () => {
+        localStorage.setItem("wedding_tour_memo", memo.value);
+        const status = document.getElementById("memo-save-status");
+        status.classList.remove("hidden");
+        clearTimeout(memoTimer);
+        memoTimer = setTimeout(() => status.classList.add("hidden"), 1000);
+      });
+
+      document.addEventListener("keydown", (event) => {
+        if (event.key === "Escape") {
+          setPinMode(null);
+          if (openId) closeDetailAndRefresh();
+        }
+      });
+
+      initMap();
+      syncControls();
+      renderChecklist();
+      renderAll();
+      setTimeout(fitToAll, 50);
+    </script>
+  </body>
+</html>
