@@ -150,7 +150,7 @@
           <div class="pt-2 border-t border-roseGold-100 space-y-3">
             <div>
               <h2 class="font-bold text-gray-900">정렬 기준</h2>
-              <p class="text-xs text-gray-500 mt-1">이동과 식대 비중을 바꾸고, 분위기나 주차처럼 사람마다 다른 기준을 추가하세요. 추가한 기준은 홀 상세에서 1점부터 5점까지 매깁니다. 0은 점수에서 빠집니다.</p>
+              <p class="text-xs text-gray-500 mt-1">밝기·층고·규모·주차·동선은 넣어 두었습니다. 1이 왼쪽, 5가 오른쪽입니다. 비중 0이면 순위에 빠지고, 점은 홀 상세에서 매깁니다.</p>
             </div>
             <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-3">
               <label class="text-xs text-gray-600">신랑 이동 <span id="w-groom-val" class="font-bold text-gray-900">40</span>
@@ -196,7 +196,7 @@
           </div>
           <details class="text-xs text-gray-500">
             <summary class="cursor-pointer text-gray-700">점수가 나오는 방식</summary>
-            <p class="mt-2 leading-relaxed">신랑·신부 이동을 75분이면 0점, 15분이면 100점으로 바꿔 가중 평균합니다. 가족은 그중 가장 오래 걸리는 사람만 넣습니다. 식대는 4만 원을 100점, 8만 원을 0점으로 보고, 슬라이더가 0이면 점수에서 빠집니다. 추가한 기준은 1점을 0점, 5점을 100점으로 넣고, 점을 안 매긴 홀은 그 기준만 빠집니다. 시간은 직선거리로 잡은 대략값이라 실제 지하철과 10분 안팎으로 다를 수 있습니다. 보류도 같은 직선거리입니다. 중심은 신랑과 신부의 한가운데이고, 그 반경 밖은 구와 상관없이 순위에서 빠집니다. 식대는 소개 페이지 숫자라 상담 견적과 다릅니다.</p>
+            <p class="mt-2 leading-relaxed">신랑·신부 이동을 75분이면 0점, 15분이면 100점으로 바꿔 가중 평균합니다. 가족은 그중 가장 오래 걸리는 사람만 넣습니다. 식대는 4만 원을 100점, 8만 원을 0점으로 보고, 슬라이더가 0이면 점수에서 빠집니다. 밝기처럼 넣은 기준은 1점을 0점, 5점을 100점으로 넣고, 점을 안 매긴 홀은 그 기준만 빠집니다. 시간은 직선거리로 잡은 대략값이라 실제 지하철과 10분 안팎으로 다를 수 있습니다. 보류도 같은 직선거리입니다. 중심은 신랑과 신부의 한가운데이고, 그 반경 밖은 구와 상관없이 순위에서 빠집니다. 금액은 소개 페이지에 적힌 식대·대관료·꽃장식만 보여 주며, 날짜와 옵션에 따라 달라집니다.</p>
           </details>
         </div>
 
@@ -221,6 +221,18 @@
             </label>
             <label class="text-xs text-gray-600">식대 (원)
               <input name="meal" type="number" min="0" step="1000" inputmode="numeric" class="mt-1 w-full border border-roseGold-200 rounded-xl px-3 py-2 text-sm" />
+            </label>
+            <label class="text-xs text-gray-600">대관료 (원)
+              <input name="rental" type="number" min="0" step="100000" inputmode="numeric" class="mt-1 w-full border border-roseGold-200 rounded-xl px-3 py-2 text-sm" />
+            </label>
+            <label class="text-xs text-gray-600">최소 인원
+              <input name="minGuests" type="number" min="0" step="10" inputmode="numeric" class="mt-1 w-full border border-roseGold-200 rounded-xl px-3 py-2 text-sm" />
+            </label>
+            <label class="text-xs text-gray-600">꽃장식
+              <select name="flower" class="mt-1 w-full border border-roseGold-200 rounded-xl px-3 py-2 text-sm bg-white">
+                <option value="">모름</option>
+                <option value="포함">대관료에 포함</option>
+              </select>
             </label>
             <label class="text-xs text-gray-600">보증 인원
               <input name="guests" placeholder="예: 최소 200명" class="mt-1 w-full border border-roseGold-200 rounded-xl px-3 py-2 text-sm" />
@@ -251,7 +263,7 @@
           <button type="submit" class="bg-roseGold-500 text-white rounded-xl px-4 min-h-11 text-sm font-medium">이 홀 저장</button>
         </form>
 
-        <p class="text-[11px] text-gray-400 leading-relaxed">위치는 공개 주소로 찍었습니다. 제이오스티엘 경인로 565, 웨딩시티 새말로 97, 규수당 문래로 164, 포레스트원 동소문로 47, 레노스블랑쉬 고산자로 202, 더빅토리아 도봉로 16. 식대는 다이렉트결혼준비 소개 페이지 기준입니다.</p>
+        <p class="text-[11px] text-gray-400 leading-relaxed">위치는 공개 주소로 찍었습니다. 금액은 2026-10-02 다이렉트결혼준비 소개 페이지의 식대·대관료·꽃장식만 적었습니다. 더뉴컨벤션은 공항대로36길 57, 보타닉파크는 마곡중앙5로 6입니다. 기본 8km 밖이면 보류로 내려갑니다.</p>
       </section>
 
       <section data-tab-content="cards" class="hidden space-y-4">
@@ -271,7 +283,7 @@
                 <th class="p-3 font-semibold">신랑</th>
                 <th class="p-3 font-semibold">신부</th>
                 <th class="p-3 font-semibold">가족</th>
-                <th class="p-3 font-semibold">식대</th>
+                <th class="p-3 font-semibold">금액대</th>
                 <th class="p-3 font-semibold">역</th>
                 <th class="p-3 font-semibold">내 메모</th>
               </tr>
@@ -286,6 +298,14 @@
           <h2 class="text-xl font-bold">투어 체크리스트</h2>
           <button type="button" id="reset-checklist" class="text-sm text-roseGold-700 underline min-h-11">체크 초기화</button>
         </div>
+        <div class="bg-white rounded-2xl border border-roseGold-100 p-4 space-y-3">
+          <label class="text-sm font-bold block">홀마다
+            <select id="check-hall" class="mt-1 w-full border border-roseGold-200 rounded-xl px-3 py-2 text-sm font-normal bg-white"></select>
+          </label>
+          <div id="hall-checklist" class="grid md:grid-cols-2 gap-4"></div>
+        </div>
+        <h3 class="font-bold">공통</h3>
+        <p class="text-xs text-gray-500">홀과 상관없이 이 브라우저에 남습니다.</p>
         <div id="checklist-container" class="grid md:grid-cols-2 gap-4"></div>
       </section>
 
@@ -325,12 +345,47 @@
           </div>
           <div id="detail-scores" class="space-y-2"></div>
           <dl id="detail-facts" class="grid grid-cols-1 gap-2 text-sm"></dl>
-          <label class="block text-xs text-gray-600">식대 수정 (원)
-            <input id="detail-meal" type="number" min="0" step="1000" class="mt-1 w-full border border-roseGold-200 rounded-xl px-3 py-2 text-sm" />
+          <div class="grid grid-cols-2 gap-2">
+            <label class="text-xs text-gray-600">식대 (원)
+              <input id="detail-meal" type="number" min="0" step="1000" class="mt-1 w-full border border-roseGold-200 rounded-xl px-3 py-2 text-sm" />
+            </label>
+            <label class="text-xs text-gray-600">식대 높은 쪽
+              <input id="detail-meal-to" type="number" min="0" step="1000" class="mt-1 w-full border border-roseGold-200 rounded-xl px-3 py-2 text-sm" />
+            </label>
+            <label class="text-xs text-gray-600">대관료 (원)
+              <input id="detail-rental" type="number" min="0" step="100000" class="mt-1 w-full border border-roseGold-200 rounded-xl px-3 py-2 text-sm" />
+            </label>
+            <label class="text-xs text-gray-600">대관료 높은 쪽
+              <input id="detail-rental-to" type="number" min="0" step="100000" class="mt-1 w-full border border-roseGold-200 rounded-xl px-3 py-2 text-sm" />
+            </label>
+            <label class="text-xs text-gray-600">최소 인원
+              <input id="detail-min" type="number" min="0" step="10" class="mt-1 w-full border border-roseGold-200 rounded-xl px-3 py-2 text-sm" />
+            </label>
+            <label class="text-xs text-gray-600">꽃장식
+              <select id="detail-flower" class="mt-1 w-full border border-roseGold-200 rounded-xl px-3 py-2 text-sm bg-white">
+                <option value="">미입력</option>
+                <option value="포함">대관료에 포함</option>
+                <option value="금액">금액 따로</option>
+              </select>
+            </label>
+          </div>
+          <input id="detail-flower-won" type="number" min="0" step="100000" placeholder="꽃장식 원" class="hidden w-full border border-roseGold-200 rounded-xl px-3 py-2 text-sm" />
+          <label class="block text-xs text-gray-600">금액에서 빠진 말
+            <input id="detail-extra" class="mt-1 w-full border border-roseGold-200 rounded-xl px-3 py-2 text-sm" />
           </label>
-          <label class="block text-xs text-gray-600">참고 링크
-            <input id="detail-link" type="url" class="mt-1 w-full border border-roseGold-200 rounded-xl px-3 py-2 text-sm" />
-          </label>
+          <p id="detail-quote" class="text-xs text-gray-600 leading-relaxed"></p>
+          <div class="space-y-1">
+            <div id="detail-refs" class="space-y-1"></div>
+            <form id="detail-ref-form" class="flex gap-2">
+              <input id="detail-ref-url" type="url" placeholder="참고 링크 추가" class="flex-1 border border-roseGold-200 rounded-xl px-3 py-2 text-sm" />
+              <button type="submit" class="border border-roseGold-300 rounded-xl px-3 min-h-11 text-sm">추가</button>
+            </form>
+            <p class="text-xs text-gray-500">다른 사이트 글과 사진은 가져오지 않습니다. 링크는 직접 붙인 것만 남습니다.</p>
+          </div>
+          <details class="border border-roseGold-100 rounded-xl p-3">
+            <summary class="cursor-pointer font-bold">이 홀 체크</summary>
+            <div id="detail-checks" class="mt-3 grid gap-3"></div>
+          </details>
           <label class="block text-xs text-gray-600">내 메모
             <textarea id="detail-note" rows="4" class="mt-1 w-full border border-roseGold-200 rounded-xl px-3 py-2 text-sm"></textarea>
           </label>
@@ -353,10 +408,18 @@
           lat: 37.5036399,
           lng: 126.8797139,
           type: "단독홀 · 뷔페",
-          meal: 52000,
+          meal: 58000,
+          rental: 3500000,
+          flower: "포함",
+          extra: "연출료는 필수인데 소개 페이지에 금액이 없습니다.",
+          minGuests: 150,
           guests: "최소 150명",
-          parking: "구로역 인근. 하객 주차 지원은 상담 때 확인",
+          parking: "소개 페이지 기준 약 3000대, 웨딩 고객 종일 무료",
           link: "https://www.directwedding.co.kr/weddinghall/hall0437",
+          refs: [
+            { title: "다이렉트결혼준비", url: "https://www.directwedding.co.kr/weddinghall/hall0437" },
+            { title: "역세권 소개", url: "https://www.directwedding.co.kr/blog/subway-near-weddinghall" },
+          ],
         },
         {
           id: "weddingcity",
@@ -368,9 +431,15 @@
           lng: 126.8902959,
           type: "여러 홀 · 뷔페",
           meal: 63000,
+          rental: 6000000,
+          rentalTo: 8000000,
+          flower: "포함",
+          extra: "연출료 0원에서 30만 원은 홀 옵션이라 합계에 넣지 않았습니다.",
+          minGuests: 220,
           guests: "최소 220명",
-          parking: "테크노마트 주차. 소개 페이지 기준 약 3시간",
+          parking: "소개 페이지 기준 약 2500대, 3시간",
           link: "https://www.directwedding.co.kr/weddinghall/hall0400",
+          refs: [{ title: "다이렉트결혼준비", url: "https://www.directwedding.co.kr/weddinghall/hall0400" }],
         },
         {
           id: "kyusoodang",
@@ -381,10 +450,15 @@
           lat: 37.5178032,
           lng: 126.9000578,
           type: "단독홀 · 뷔페",
-          meal: 62000,
+          meal: 70000,
+          rental: 6800000,
+          flower: "포함",
+          extra: "연출료는 필수인데 소개 페이지에 금액이 없습니다.",
+          minGuests: 200,
           guests: "최소 200명",
-          parking: "문래역 도보권. 주차 조건은 상담 때 확인",
+          parking: "문래역 도보권. 주차 대수는 소개 페이지에 없습니다.",
           link: "https://www.directwedding.co.kr/weddinghall/hall0053",
+          refs: [{ title: "다이렉트결혼준비", url: "https://www.directwedding.co.kr/weddinghall/hall0053" }],
         },
         {
           id: "forestone",
@@ -394,11 +468,16 @@
           station: "4호선 한성대입구역",
           lat: 37.590901,
           lng: 127.0107286,
-          type: "뷔페",
-          meal: 58000,
+          type: "밝은 홀 · 뷔페",
+          meal: 65000,
+          rental: 6800000,
+          flower: "포함",
+          extra: "연출료는 없다고 적혀 있습니다. 소개 문장에 밝은 홀이라고 있습니다.",
+          minGuests: 200,
           guests: "최소 200명",
           parking: "소개 페이지 기준 약 300대, 1시간 30분",
           link: "https://www.directwedding.co.kr/weddinghall/hall0496",
+          refs: [{ title: "다이렉트결혼준비", url: "https://www.directwedding.co.kr/weddinghall/hall0496" }],
         },
         {
           id: "renos",
@@ -409,10 +488,15 @@
           lat: 37.5582206,
           lng: 127.034382,
           type: "일반홀 · 뷔페",
-          meal: 48000,
+          meal: 55000,
+          rental: 3300000,
+          flower: "포함",
+          extra: "연출료는 대관료에 포함이라고 적혀 있습니다.",
+          minGuests: 200,
           guests: "최소 200명",
-          parking: "주차 조건은 상담 때 확인",
+          parking: "주차 대수는 소개 페이지에 없습니다.",
           link: "https://www.directwedding.co.kr/weddinghall/hall0178",
+          refs: [{ title: "다이렉트결혼준비", url: "https://www.directwedding.co.kr/weddinghall/hall0178" }],
         },
         {
           id: "victoria",
@@ -423,11 +507,71 @@
           lat: 37.6108764,
           lng: 127.030773,
           type: "빅토리아홀 · 하늘정원홀 · 뷔페",
-          meal: 58000,
+          meal: 63000,
+          rental: 4500000,
+          rentalTo: 5500000,
+          flower: "포함",
+          extra: "연출료는 없다고 적혀 있습니다. 대관료는 홀마다 450만 원, 550만 원입니다.",
+          minGuests: 200,
           guests: "최소 200명",
           parking: "소개 페이지 기준 약 400대",
           link: "https://www.directwedding.co.kr/weddinghall/hall0135",
+          refs: [{ title: "다이렉트결혼준비", url: "https://www.directwedding.co.kr/weddinghall/hall0135" }],
         },
+        {
+          id: "newcon",
+          name: "더뉴컨벤션",
+          district: "강서구",
+          address: "서울 강서구 공항대로36길 57",
+          station: "5호선 발산역 도보 3분",
+          lat: 37.5563586,
+          lng: 126.8369448,
+          type: "르노브홀 밝은 톤 · 더뉴홀 · 뷔페",
+          meal: 82000,
+          mealTo: 95000,
+          rental: 9000000,
+          rentalTo: 13000000,
+          flower: "포함",
+          extra: "한쪽 홀 연출료 300만 원은 합계에 넣지 않았습니다. 식대는 8.2만~9.5만 원입니다.",
+          minGuests: 200,
+          guests: "최소 200명",
+          parking: "주차 대수는 소개 페이지에 없습니다.",
+          link: "https://www.directwedding.co.kr/weddinghall/hall0122",
+          refs: [
+            { title: "다이렉트결혼준비", url: "https://www.directwedding.co.kr/weddinghall/hall0122" },
+            { title: "역세권 소개", url: "https://www.directwedding.co.kr/blog/subway-near-weddinghall" },
+          ],
+        },
+        {
+          id: "botanic",
+          name: "보타닉파크",
+          district: "강서구",
+          address: "서울 강서구 마곡중앙5로 6 보타닉푸르지오시티",
+          station: "9호선 마곡나루역 연결",
+          lat: 37.5671307,
+          lng: 126.826639,
+          type: "카라홀 밝음 · 오키드홀 어두움 · 뷔페",
+          meal: 82000,
+          rental: 7000000,
+          flower: "포함",
+          extra: "대관료 700만 원은 소개 페이지에 한 줄만 있습니다. 홀이 둘이라 다른 홀 금액은 비워 둡니다. 연출료는 없다고 적혀 있습니다.",
+          minGuests: 250,
+          guests: "최소 250명",
+          parking: "소개 페이지 기준 약 1000대, 2시간",
+          link: "https://www.directwedding.co.kr/weddinghall/hall0223",
+          refs: [
+            { title: "다이렉트결혼준비", url: "https://www.directwedding.co.kr/weddinghall/hall0223" },
+            { title: "역세권 소개", url: "https://www.directwedding.co.kr/blog/subway-near-weddinghall" },
+          ],
+        },
+      ];
+
+      const PRESETS = [
+        { id: "p_light", name: "밝기", low: "어두움", high: "밝음" },
+        { id: "p_height", name: "층고", low: "낮음", high: "높음" },
+        { id: "p_size", name: "규모", low: "작음", high: "큼" },
+        { id: "p_park", name: "주차", low: "불편", high: "편함" },
+        { id: "p_flow", name: "동선", low: "복잡", high: "짧음" },
       ];
 
       const DEFAULT_ORIGINS = [
@@ -493,6 +637,7 @@
           weights: loadWeights(readCriteria()),
           criteria: readCriteria(),
           scores: readScores(),
+          checks: readJSON("hallmap.checks", {}),
           sort: loadSort(readCriteria()),
           manualOrder: readJSON("hallmap.manualOrder", []),
           radiusKm: readRadius(),
@@ -503,10 +648,23 @@
       function readCriteria() {
         const list = readJSON("hallmap.criteria", []);
         if (!Array.isArray(list)) return [];
-        return list
+        let items = list
           .filter((item) => item && typeof item.id === "string" && typeof item.name === "string" && item.name.trim())
-          .slice(0, 8)
-          .map((item) => ({ id: item.id, name: item.name.trim().slice(0, 20) }));
+          .slice(0, 16)
+          .map((item) => ({
+            id: item.id,
+            name: item.name.trim().slice(0, 20),
+            low: typeof item.low === "string" ? item.low.slice(0, 8) : "",
+            high: typeof item.high === "string" ? item.high.slice(0, 8) : "",
+          }));
+        if (localStorage.getItem("hallmap.presetsSeeded") !== "1") {
+          const ids = new Set(items.map((item) => item.id));
+          PRESETS.forEach((preset) => {
+            if (!ids.has(preset.id)) items.push(preset);
+          });
+          items = items.slice(0, 16);
+        }
+        return items;
       }
 
       function readScores() {
@@ -519,14 +677,16 @@
         const weights = Object.assign({ groom: 40, bride: 40, family: 20, meal: 0 }, readJSON("hallmap.weights", {}));
         criteria.forEach((criterion) => {
           const num = Number(weights[criterion.id]);
-          weights[criterion.id] = Number.isFinite(num) ? Math.max(0, Math.min(100, num)) : 20;
+          const fallback = String(criterion.id).startsWith("p_") ? 0 : 20;
+          weights[criterion.id] = Number.isFinite(num) ? Math.max(0, Math.min(100, num)) : fallback;
         });
         return weights;
       }
 
       function loadSort(criteria) {
         const sort = localStorage.getItem("hallmap.sort") || "score";
-        if (sort.startsWith("c:") && !criteria.some((criterion) => criterion.id === sort.slice(2))) return "score";
+        const id = sort.startsWith("cl:") ? sort.slice(3) : sort.startsWith("c:") ? sort.slice(2) : "";
+        if (id && !criteria.some((criterion) => criterion.id === id)) return "score";
         return sort;
       }
 
@@ -555,6 +715,7 @@
             "hallmap.weights": state.weights,
             "hallmap.criteria": state.criteria,
             "hallmap.scores": state.scores,
+            "hallmap.checks": state.checks,
             "hallmap.manualOrder": state.manualOrder,
           };
           Object.entries(pairs).forEach(([key, value]) => {
@@ -563,6 +724,7 @@
           localStorage.setItem("hallmap.sort", state.sort);
           localStorage.setItem("hallmap.radiusKm", String(state.radiusKm));
           localStorage.setItem("hallmap.showParked", state.showParked ? "1" : "0");
+          localStorage.setItem("hallmap.presetsSeeded", "1");
           return true;
         } catch (err) {
           return false;
@@ -594,6 +756,42 @@
         const man = value / 10000;
         const text = Number.isInteger(man) ? String(man) : man.toFixed(1);
         return text + "만 원";
+      }
+
+      function priceBits(venue) {
+        const meal = venue.meal ? won(venue.meal) + (venue.mealTo ? "~" + won(venue.mealTo) : "") : "";
+        const rental = venue.rental ? won(venue.rental) + (venue.rentalTo ? "~" + won(venue.rentalTo) : "") : "";
+        const flower = venue.flower === "포함" ? "꽃 포함" : Number(venue.flower) > 0 ? "꽃 " + won(venue.flower) : "";
+        return [meal && "식대 " + meal, rental && "대관 " + rental, flower].filter(Boolean).join(" · ") || "금액 미입력";
+      }
+
+      function quoteNote(venue) {
+        const flowerKnown = venue.flower === "포함" || Number(venue.flower) > 0;
+        const tail = venue.extra ? " " + venue.extra : "";
+        if (!venue.meal || !venue.rental || !venue.minGuests || !flowerKnown) {
+          return "식대, 대관료, 꽃장식, 최소 인원 중 빈 항목이 있어 합계를 만들지 않습니다." + tail;
+        }
+        const flower = venue.flower === "포함" ? 0 : Number(venue.flower);
+        const low = venue.minGuests * Number(venue.meal) + Number(venue.rental) + flower;
+        const high = venue.minGuests * Number(venue.mealTo || venue.meal) + Number(venue.rentalTo || venue.rental) + flower;
+        let text = "최소 " + venue.minGuests + "명, 소개 페이지 숫자만 더하면 " + won(low);
+        if (high !== low) text += "~" + won(high);
+        return text + ". 상담 견적이 아닙니다." + tail;
+      }
+
+      function refList(venue) {
+        const override = state.overrides[venue.id];
+        const refs = override && Array.isArray(override.refs) ? override.refs : Array.isArray(venue.refs) ? venue.refs : [];
+        const out = [];
+        refs.forEach((ref) => {
+          const url = safeUrl(ref && ref.url);
+          if (url && !out.some((item) => item.url === url)) out.push({ title: (ref.title || "참고").slice(0, 24), url });
+        });
+        if (!(override && Array.isArray(override.refs))) {
+          const link = safeUrl(venue.link);
+          if (link && !out.some((item) => item.url === link)) out.unshift({ title: "소개 페이지", url: link });
+        }
+        return out;
       }
 
       function kmBetween(a, b) {
@@ -630,7 +828,7 @@
 
       function isWest(venue) {
         const district = venue.district || "";
-        return district.includes("구로") || district.includes("영등포");
+        return /구로|영등포|강서|양천/.test(district);
       }
 
       function allVenues() {
@@ -734,6 +932,9 @@
         if (state.sort === "manual") {
           const index = new Map(state.manualOrder.map((id, i) => [id, i]));
           ranked = live.slice().sort((a, b) => (index.get(a.id) ?? 9999) - (index.get(b.id) ?? 9999) || byFit(a, b));
+        } else if (state.sort.startsWith("cl:")) {
+          const criterionId = state.sort.slice(3);
+          ranked = live.slice().sort((a, b) => cmpNum(markOf(a.id, criterionId), markOf(b.id, criterionId)) || byFit(a, b));
         } else if (state.sort.startsWith("c:")) {
           const criterionId = state.sort.slice(2);
           ranked = live.slice().sort((a, b) => cmpScoreDesc(markOf(a.id, criterionId), markOf(b.id, criterionId)) || byFit(a, b));
@@ -841,7 +1042,7 @@
                   ${venue.user ? '<span class="text-[11px] text-gray-400">내가 추가</span>' : ""}
                 </span>
                 <span class="block text-xs text-gray-600 mt-1">신랑 ${venue.groomMin}분 · 신부 ${venue.brideMin}분${esc(familyLine)}</span>
-                <span class="block text-xs text-gray-500 mt-0.5">${esc([venue.station, venue.centerKm != null ? "가운데 " + kmText(venue.centerKm) : "", "식대 " + won(venue.meal), scoreName() + " " + Math.round(venue.fit) + "점"].filter(Boolean).join(" · "))}</span>
+                <span class="block text-xs text-gray-500 mt-0.5">${esc([venue.station, venue.centerKm != null ? "가운데 " + kmText(venue.centerKm) : "", priceBits(venue), scoreName() + " " + Math.round(venue.fit) + "점"].filter(Boolean).join(" · "))}</span>
                 ${marks ? `<span class="block text-xs text-roseGold-700 mt-0.5">${esc(marks)}</span>` : ""}
               </span>
             </button>
@@ -875,6 +1076,7 @@
                 <p class="text-xs text-roseGold-700 mt-1">${esc(venue.type || "")}</p>
               </div>
               <p class="text-sm">신랑 ${venue.groomMin}분 · 신부 ${venue.brideMin}분 · 가운데 ${esc(kmText(venue.centerKm))}</p>
+              <p class="text-xs text-gray-700">${esc(priceBits(venue))}</p>
               ${marks ? `<p class="text-xs text-roseGold-700">${esc(marks)}</p>` : ""}
               ${venue.familyTimes.length ? `<p class="text-xs text-gray-500">${esc(familyText(venue))}</p>` : ""}
               <p class="text-xs text-gray-600">${esc(venue.address || "")}</p>
@@ -895,7 +1097,7 @@
               <td class="p-3">${venue.groomMin}분</td>
               <td class="p-3">${venue.brideMin}분</td>
               <td class="p-3 text-xs">${esc(familyText(venue))}</td>
-              <td class="p-3">${esc(won(venue.meal))}</td>
+              <td class="p-3 text-xs whitespace-normal min-w-[14rem]">${esc(priceBits(venue))}</td>
               <td class="p-3 text-xs">${esc(venue.station || "")}</td>
               <td class="p-3 text-xs max-w-xs">${esc(venue.note || "")}</td>
             </tr>`;
@@ -1003,7 +1205,11 @@
         renderCriteria();
         renderMap(view);
         renderRadius();
-        if (openId) paintDetailScores();
+        renderChecklist();
+        if (openId) {
+          paintDetailScores();
+          paintDetailChecks();
+        }
       }
 
       function fitToAll() {
@@ -1113,22 +1319,18 @@
         document.getElementById("detail-title").textContent = venue.name;
         document.getElementById("detail-district").textContent = venue.parked ? venue.district + " · 반경 밖" : venue.district;
         document.getElementById("detail-times").textContent = timeSentence(venue);
-        const href = safeUrl(venue.link);
-        const link = href
-          ? `<div><dt class="text-xs text-gray-500">소개</dt><dd><a class="text-roseGold-700 underline" href="${esc(href)}" target="_blank" rel="noreferrer">소개 페이지</a></dd></div>`
-          : "";
         document.getElementById("detail-facts").innerHTML =
           factRow("주소", venue.address) +
           factRow("역", venue.station) +
           factRow("분위기", venue.type) +
           factRow("보증", venue.guests) +
-          factRow("주차", venue.parking) +
-          link;
-        document.getElementById("detail-meal").value = venue.meal || "";
-        document.getElementById("detail-link").value = venue.link || "";
+          factRow("주차", venue.parking);
         document.getElementById("detail-note").value = venue.note || "";
+        paintDetailMoney(venue);
+        paintDetailRefs(venue);
         paintDetailPhoto(venue);
         paintDetailScores();
+        paintDetailChecks();
         document.getElementById("detail-delete").classList.toggle("hidden", !venue.user);
         const modal = document.getElementById("venue-modal");
         modal.classList.remove("hidden");
@@ -1167,6 +1369,7 @@
         }
         box.innerHTML = state.criteria
           .map((criterion) => {
+            const poles = criterion.low ? `<span class="block text-[11px] text-gray-400">1 ${esc(criterion.low)} · 5 ${esc(criterion.high)}</span>` : "";
             const current = markOf(openId, criterion.id);
             const buttons = [1, 2, 3, 4, 5]
               .map((score) => {
@@ -1174,7 +1377,7 @@
                 return `<button type="button" data-criterion="${esc(criterion.id)}" data-score="${score}" class="min-h-11 min-w-11 rounded-xl border text-sm ${on ? "bg-roseGold-500 text-white border-roseGold-500" : "border-roseGold-200"}">${score}</button>`;
               })
               .join("");
-            return `<div class="flex items-center justify-between gap-2"><span class="text-sm">${esc(criterion.name)}</span><div class="flex gap-1">${buttons}</div></div>`;
+            return `<div class="flex items-center justify-between gap-2"><span class="text-sm">${esc(criterion.name)}${poles}</span><div class="flex gap-1">${buttons}</div></div>`;
           })
           .join("");
       }
@@ -1214,9 +1417,11 @@
           box.innerHTML = state.criteria
             .map((criterion) => {
               const weight = state.weights[criterion.id] || 0;
+              const hint = criterion.low ? `<span class="block text-[11px] text-gray-400">1 ${esc(criterion.low)} · 5 ${esc(criterion.high)}</span>` : "";
               return `<div>
                 <label class="text-xs text-gray-600">${esc(criterion.name)} <span id="w-${esc(criterion.id)}-val" class="font-bold text-gray-900">${weight}</span>
                   <input data-weight="${esc(criterion.id)}" type="range" min="0" max="100" value="${weight}" class="w-full" />
+                  ${hint}
                 </label>
                 <button type="button" data-remove-criterion="${esc(criterion.id)}" class="text-xs text-gray-500 underline min-h-11">이 기준 삭제</button>
               </div>`;
@@ -1241,11 +1446,18 @@
           select.querySelectorAll("[data-custom-sort]").forEach((option) => option.remove());
           const manual = select.querySelector('option[value="manual"]');
           state.criteria.forEach((criterion) => {
-            const option = document.createElement("option");
-            option.value = "c:" + criterion.id;
-            option.dataset.customSort = "1";
-            option.textContent = criterion.name + " 높은 순";
-            select.insertBefore(option, manual);
+            const high = document.createElement("option");
+            high.value = "c:" + criterion.id;
+            high.dataset.customSort = "1";
+            high.textContent = criterion.high ? criterion.name + " " + criterion.high + " 우선" : criterion.name + " 높은 순";
+            select.insertBefore(high, manual);
+            if (criterion.low) {
+              const low = document.createElement("option");
+              low.value = "cl:" + criterion.id;
+              low.dataset.customSort = "1";
+              low.textContent = criterion.name + " " + criterion.low + " 우선";
+              select.insertBefore(low, manual);
+            }
           });
         }
         if (document.activeElement !== select) select.value = state.sort;
@@ -1310,6 +1522,69 @@
         renderAll();
       }
 
+      function moneyOrEmpty(value) {
+        const num = Number(value);
+        return Number.isFinite(num) && num > 0 ? num : "";
+      }
+
+      function openVenue() {
+        if (!openId) return null;
+        const view = buildView();
+        return view.ranked.concat(view.parked).find((item) => item.id === openId) || null;
+      }
+
+      function paintDetailMoney(venue) {
+        if (!venue) return;
+        const put = (id, value) => {
+          const el = document.getElementById(id);
+          if (el && document.activeElement !== el) el.value = value || "";
+        };
+        put("detail-meal", venue.meal);
+        put("detail-meal-to", venue.mealTo);
+        put("detail-rental", venue.rental);
+        put("detail-rental-to", venue.rentalTo);
+        put("detail-min", venue.minGuests);
+        put("detail-extra", venue.extra);
+        const flower = document.getElementById("detail-flower");
+        const wonInput = document.getElementById("detail-flower-won");
+        if (flower && document.activeElement !== flower) {
+          flower.value = venue.flower === "포함" ? "포함" : Number(venue.flower) > 0 ? "금액" : "";
+        }
+        if (wonInput && flower) {
+          wonInput.classList.toggle("hidden", flower.value !== "금액");
+          if (document.activeElement !== wonInput) wonInput.value = Number(venue.flower) > 0 ? venue.flower : "";
+        }
+        const quote = document.getElementById("detail-quote");
+        if (quote) quote.textContent = quoteNote(venue);
+      }
+
+      function paintDetailRefs(venue) {
+        const box = document.getElementById("detail-refs");
+        if (!box || !venue) return;
+        const refs = refList(venue);
+        box.innerHTML = refs
+          .map((ref, index) => `<div class="flex items-center gap-2"><a class="text-roseGold-700 underline truncate" href="${esc(ref.url)}" target="_blank" rel="noreferrer">${esc(ref.title)}</a><button type="button" data-drop-ref="${index}" class="text-xs text-gray-500 min-h-11 shrink-0">빼기</button></div>`)
+          .join("");
+      }
+
+      function checkGroups(saved, attr) {
+        return CHECKLIST.map((group, groupIndex) => {
+          const items = group.items
+            .map((item, itemIndex) => {
+              const key = groupIndex + "-" + itemIndex;
+              return `<label class="flex gap-2 text-sm"><input type="checkbox" ${attr}="${key}" ${saved[key] ? "checked" : ""} class="mt-1" /> <span>${esc(item)}</span></label>`;
+            })
+            .join("");
+          return `<div class="space-y-2"><h3 class="font-bold text-sm">${esc(group.title)}</h3>${items}</div>`;
+        }).join("");
+      }
+
+      function paintDetailChecks() {
+        const box = document.getElementById("detail-checks");
+        if (!openId || !box) return;
+        box.innerHTML = checkGroups((state.checks && state.checks[openId]) || {}, "data-detail-check");
+      }
+
       function renderChecklist() {
         const saved = readJSON("wedding_checklist", {});
         document.getElementById("checklist-container").innerHTML = CHECKLIST.map((group, groupIndex) => {
@@ -1321,6 +1596,30 @@
             .join("");
           return `<div class="bg-white rounded-2xl border border-roseGold-100 p-4 space-y-2"><h3 class="font-bold">${esc(group.title)}</h3>${items}</div>`;
         }).join("");
+        const select = document.getElementById("check-hall");
+        const venues = allVenues();
+        const sig = venues.map((venue) => venue.id).join(",");
+        if (select.dataset.sig !== sig) {
+          const keep = select.value;
+          select.dataset.sig = sig;
+          select.innerHTML = venues.map((venue) => `<option value="${esc(venue.id)}">${esc(venue.name)}</option>`).join("");
+          if (venues.some((venue) => venue.id === keep)) select.value = keep;
+        }
+        const id = select.value;
+        document.getElementById("hall-checklist").innerHTML = id ? checkGroups((state.checks && state.checks[id]) || {}, "data-hall-check") : "";
+      }
+
+      function setHallCheck(id, key, on) {
+        if (!id) return;
+        if (!state.checks || Array.isArray(state.checks)) state.checks = {};
+        const bucket = Object.assign({}, state.checks[id] || {});
+        if (on) bucket[key] = true;
+        else delete bucket[key];
+        if (Object.keys(bucket).length) state.checks[id] = bucket;
+        else delete state.checks[id];
+        persist();
+        renderChecklist();
+        if (openId === id) paintDetailChecks();
       }
 
       function syncControls() {
@@ -1437,7 +1736,7 @@
         event.preventDefault();
         const input = document.getElementById("criterion-name");
         const name = input.value.trim();
-        if (!name || state.criteria.length >= 8) return;
+        if (!name || state.criteria.length >= 16) return;
         const id = "c_" + Date.now();
         state.criteria.push({ id, name: name.slice(0, 20) });
         state.weights[id] = 20;
@@ -1468,7 +1767,7 @@
           delete state.scores[venueId][id];
           if (!Object.keys(state.scores[venueId]).length) delete state.scores[venueId];
         });
-        if (state.sort === "c:" + id) {
+        if (state.sort === "c:" + id || state.sort === "cl:" + id) {
           state.sort = "score";
           document.getElementById("sort-mode").value = "score";
         }
@@ -1558,6 +1857,9 @@
           return;
         }
         const meal = Number(data.get("meal"));
+        const rental = Number(data.get("rental"));
+        const minGuests = Number(data.get("minGuests"));
+        const flower = String(data.get("flower") || "");
         state.userVenues.push({
           id: "u_" + Date.now(),
           user: true,
@@ -1569,6 +1871,9 @@
           lng,
           type: String(data.get("type") || "").trim(),
           meal: Number.isFinite(meal) && meal > 0 ? meal : null,
+          rental: Number.isFinite(rental) && rental > 0 ? rental : null,
+          minGuests: Number.isFinite(minGuests) && minGuests > 0 ? minGuests : null,
+          flower: flower === "포함" ? "포함" : "",
           guests: String(data.get("guests") || "").trim(),
           parking: String(data.get("parking") || "").trim(),
           link: String(data.get("link") || "").trim(),
@@ -1583,9 +1888,9 @@
       });
 
       document.getElementById("reset-data").addEventListener("click", () => {
-        const ok = confirm("추가한 홀, 가족 출발지, 식대 수정, 순서를 지울까요? 체크리스트와 투어 메모는 남습니다.");
+        const ok = confirm("추가한 홀, 가족 출발지, 금액 수정, 홀별 체크, 순서를 지울까요? 공통 체크리스트와 투어 메모는 남습니다.");
         if (!ok) return;
-        ["hallmap.userVenues", "hallmap.overrides", "hallmap.origins", "hallmap.weights", "hallmap.criteria", "hallmap.scores", "hallmap.sort", "hallmap.manualOrder", "hallmap.showSeongbuk", "hallmap.showParked", "hallmap.radiusKm"].forEach((key) => {
+        ["hallmap.userVenues", "hallmap.overrides", "hallmap.origins", "hallmap.weights", "hallmap.criteria", "hallmap.scores", "hallmap.checks", "hallmap.sort", "hallmap.manualOrder", "hallmap.showSeongbuk", "hallmap.showParked", "hallmap.radiusKm", "hallmap.presetsSeeded"].forEach((key) => {
           localStorage.removeItem(key);
         });
         state = loadState();
@@ -1603,12 +1908,59 @@
       document.getElementById("venue-modal").addEventListener("click", (event) => {
         if (event.target.id === "venue-modal") closeDetailAndRefresh();
       });
-      document.getElementById("detail-meal").addEventListener("change", (event) => {
-        const value = Number(event.target.value);
-        saveOverride({ meal: Number.isFinite(value) && value > 0 ? value : "" });
+      ["detail-meal", "detail-meal-to", "detail-rental", "detail-rental-to", "detail-min"].forEach((id) => {
+        document.getElementById(id).addEventListener("change", (event) => {
+          const key = { "detail-meal": "meal", "detail-meal-to": "mealTo", "detail-rental": "rental", "detail-rental-to": "rentalTo", "detail-min": "minGuests" }[id];
+          saveOverride({ [key]: moneyOrEmpty(event.target.value) });
+          paintDetailMoney(openVenue());
+        });
       });
-      document.getElementById("detail-link").addEventListener("change", (event) => {
-        saveOverride({ link: event.target.value.trim() });
+      document.getElementById("detail-flower").addEventListener("change", (event) => {
+        const mode = event.target.value;
+        const wonInput = document.getElementById("detail-flower-won");
+        wonInput.classList.toggle("hidden", mode !== "금액");
+        if (mode === "포함") saveOverride({ flower: "포함" });
+        else if (mode === "") saveOverride({ flower: "" });
+        else if (moneyOrEmpty(wonInput.value)) saveOverride({ flower: moneyOrEmpty(wonInput.value) });
+        if (mode !== "금액" || moneyOrEmpty(wonInput.value)) paintDetailMoney(openVenue());
+      });
+      document.getElementById("detail-flower-won").addEventListener("change", (event) => {
+        if (document.getElementById("detail-flower").value !== "금액") return;
+        saveOverride({ flower: moneyOrEmpty(event.target.value) });
+        paintDetailMoney(openVenue());
+      });
+      document.getElementById("detail-extra").addEventListener("change", (event) => {
+        saveOverride({ extra: event.target.value.trim() });
+        paintDetailMoney(openVenue());
+      });
+      document.getElementById("detail-ref-form").addEventListener("submit", (event) => {
+        event.preventDefault();
+        const input = document.getElementById("detail-ref-url");
+        const url = safeUrl(input.value.trim());
+        const venue = openVenue();
+        if (!url || !venue) return;
+        const refs = refList(venue).slice();
+        if (!refs.some((ref) => ref.url === url)) {
+          let title = "참고";
+          try { title = new URL(url).hostname.replace(/^www\./, "").slice(0, 24); } catch (err) { title = "참고"; }
+          refs.push({ title, url });
+        }
+        saveOverride({ refs, link: refs[0] ? refs[0].url : "" });
+        input.value = "";
+        paintDetailRefs(openVenue());
+      });
+      document.getElementById("detail-refs").addEventListener("click", (event) => {
+        const button = event.target.closest("[data-drop-ref]");
+        const venue = openVenue();
+        if (!button || !venue) return;
+        const refs = refList(venue).filter((_, index) => index !== Number(button.dataset.dropRef));
+        saveOverride({ refs, link: refs[0] ? refs[0].url : "" });
+        paintDetailRefs(openVenue());
+      });
+      document.getElementById("detail-checks").addEventListener("change", (event) => {
+        const box = event.target.closest("[data-detail-check]");
+        if (!box || !openId) return;
+        setHallCheck(openId, box.dataset.detailCheck, box.checked);
       });
       document.getElementById("detail-note").addEventListener("input", (event) => {
         const value = event.target.value;
@@ -1665,6 +2017,7 @@
         if (!confirm("이 홀을 목록에서 지울까요?")) return;
         state.userVenues = state.userVenues.filter((item) => item.id !== openId);
         delete state.overrides[openId];
+        if (state.checks) delete state.checks[openId];
         closeDetail();
         persist();
         renderAll();
@@ -1677,9 +2030,18 @@
         });
         localStorage.setItem("wedding_checklist", JSON.stringify(data));
       });
+      document.getElementById("check-hall").addEventListener("change", renderChecklist);
+      document.getElementById("hall-checklist").addEventListener("change", (event) => {
+        const box = event.target.closest("[data-hall-check]");
+        if (!box) return;
+        setHallCheck(document.getElementById("check-hall").value, box.dataset.hallCheck, box.checked);
+      });
       document.getElementById("reset-checklist").addEventListener("click", () => {
         localStorage.removeItem("wedding_checklist");
+        state.checks = {};
+        persist();
         renderChecklist();
+        paintDetailChecks();
       });
 
       const memo = document.getElementById("tour-memo-textarea");
