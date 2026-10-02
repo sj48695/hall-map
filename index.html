@@ -103,8 +103,22 @@
       <section data-tab-content="map" class="space-y-4">
         <div id="recommendation" class="bg-white rounded-2xl border border-roseGold-100 shadow-sm p-4 sm:p-5" aria-live="polite"></div>
 
+        <div class="bg-white rounded-2xl border border-roseGold-100 shadow-sm px-4 py-3 space-y-2">
+          <div class="flex items-center gap-3">
+            <label class="text-sm text-gray-700 flex-1 min-w-0">
+              한가운데 <span id="radius-val" class="font-bold text-gray-900">8</span>km
+              <input id="radius-km" type="range" min="4" max="18" step="0.5" value="8" class="w-full" />
+            </label>
+            <label class="text-sm text-gray-700 flex items-center gap-2 shrink-0">
+              <input id="show-parked" type="checkbox" class="w-4 h-4" />
+              반경 밖도 보기
+            </label>
+          </div>
+          <p id="radius-note" class="text-xs text-slate-500"></p>
+        </div>
+
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-4">
-          <div class="lg:col-span-2 bg-white rounded-2xl border border-roseGold-100 overflow-hidden h-[46vh] min-h-[240px] max-h-[420px] lg:h-[560px] lg:max-h-none relative z-0">
+          <div class="lg:col-span-2 bg-white rounded-2xl border border-roseGold-100 overflow-hidden h-[40vh] min-h-[220px] max-h-[360px] lg:h-[560px] lg:max-h-none relative z-0">
             <div id="leaflet-map" class="w-full h-full"></div>
           </div>
           <div class="bg-white rounded-2xl border border-roseGold-100 p-3 sm:p-4 flex flex-col lg:h-[560px]">
@@ -163,19 +177,14 @@
                 <option value="manual">직접 순서</option>
               </select>
             </label>
-            <label class="text-sm text-gray-700 flex items-center gap-2">
-              <input id="show-seongbuk" type="checkbox" class="w-4 h-4" />
-              성북구 홀 보기
-            </label>
             <div class="flex gap-2">
               <button type="button" id="open-add" class="bg-gray-900 text-white rounded-xl px-4 min-h-11 text-sm">홀 직접 추가</button>
               <button type="button" id="reset-data" class="text-sm text-gray-500 underline min-h-11">처음 상태로</button>
             </div>
           </div>
-          <p class="text-xs text-slate-500">포레스트원은 성북구 동소문로라 기본 순위에서 빠져 있습니다. 보기를 켜면 맨 아래에 회색으로만 나옵니다. 레노스블랑쉬(성동구), 더빅토리아(강북구)는 순위에 포함됩니다.</p>
           <details class="text-xs text-gray-500">
             <summary class="cursor-pointer text-gray-700">점수가 나오는 방식</summary>
-            <p class="mt-2 leading-relaxed">신랑·신부 이동을 75분이면 0점, 15분이면 100점으로 바꿔 가중 평균합니다. 가족은 그중 가장 오래 걸리는 사람만 넣습니다. 식대는 4만 원을 100점, 8만 원을 0점으로 보고, 슬라이더가 0이면 점수에서 빠집니다. 시간은 직선거리로 잡은 대략값이라 실제 지하철과 10분 안팎으로 다를 수 있습니다. 식대는 소개 페이지 숫자라 상담 견적과 다릅니다.</p>
+            <p class="mt-2 leading-relaxed">신랑·신부 이동을 75분이면 0점, 15분이면 100점으로 바꿔 가중 평균합니다. 가족은 그중 가장 오래 걸리는 사람만 넣습니다. 식대는 4만 원을 100점, 8만 원을 0점으로 보고, 슬라이더가 0이면 점수에서 빠집니다. 시간은 직선거리로 잡은 대략값이라 실제 지하철과 10분 안팎으로 다를 수 있습니다. 보류도 같은 직선거리입니다. 중심은 신랑과 신부의 한가운데이고, 그 반경 밖은 구와 상관없이 순위에서 빠집니다. 식대는 소개 페이지 숫자라 상담 견적과 다릅니다.</p>
           </details>
         </div>
 
@@ -442,6 +451,7 @@
       let pinMode = null;
       let openId = null;
       let map;
+      let radiusLayer;
       let hallLayer;
       let originLayer;
       let markers = {};
@@ -456,8 +466,16 @@
           weights: Object.assign({ groom: 40, bride: 40, family: 20, meal: 0 }, readJSON("hallmap.weights", {})),
           sort: localStorage.getItem("hallmap.sort") || "score",
           manualOrder: readJSON("hallmap.manualOrder", []),
-          showSeongbuk: localStorage.getItem("hallmap.showSeongbuk") === "1",
+          radiusKm: readRadius(),
+          showParked: localStorage.getItem("hallmap.showParked") === "1",
         };
+      }
+
+      function readRadius() {
+        const raw = localStorage.getItem("hallmap.radiusKm");
+        const num = Number(raw);
+        if (raw == null || raw === "" || !Number.isFinite(num)) return 8;
+        return Math.min(18, Math.max(4, Math.round(num * 2) / 2));
       }
 
       function readJSON(key, fallback) {
@@ -481,7 +499,8 @@
           localStorage.setItem(key, JSON.stringify(value));
         });
         localStorage.setItem("hallmap.sort", state.sort);
-        localStorage.setItem("hallmap.showSeongbuk", state.showSeongbuk ? "1" : "0");
+        localStorage.setItem("hallmap.radiusKm", String(state.radiusKm));
+        localStorage.setItem("hallmap.showParked", state.showParked ? "1" : "0");
       }
 
       function esc(value) {
@@ -526,8 +545,21 @@
         return Math.max(12, Math.round(kmBetween(a, b) * 2.4 + 12));
       }
 
-      function isSeongbuk(district) {
-        return String(district || "").includes("성북");
+      function formatRadius(km) {
+        const snapped = Math.round(km * 2) / 2;
+        return Number.isInteger(snapped) ? String(snapped) : snapped.toFixed(1);
+      }
+
+      function kmText(km) {
+        if (km == null || !Number.isFinite(km)) return "";
+        return (Math.round(km * 10) / 10).toFixed(1) + "km";
+      }
+
+      function coupleCenter() {
+        const groom = originByRole("groom");
+        const bride = originByRole("bride");
+        if (groom && bride) return { lat: (groom.lat + bride.lat) / 2, lng: (groom.lng + bride.lng) / 2 };
+        return groom || bride || null;
       }
 
       function isWest(venue) {
@@ -539,7 +571,9 @@
         return SEED.concat(state.userVenues).map((venue) => {
           const extra = state.overrides[venue.id] || {};
           const merged = Object.assign({}, venue, extra);
-          merged.parked = isSeongbuk(merged.district);
+          const center = coupleCenter();
+          merged.centerKm = center ? kmBetween(center, merged) : null;
+          merged.parked = merged.centerKm != null && merged.centerKm > state.radiusKm;
           merged.user = Boolean(venue.user);
           if (extra.meal === undefined) merged.meal = venue.meal || null;
           return merged;
@@ -622,6 +656,19 @@
         return { ranked, parked };
       }
 
+      function shown(view) {
+        return state.showParked ? view.ranked.concat(view.parked) : view.ranked;
+      }
+
+      function radiusNote(view) {
+        const km = formatRadius(state.radiusKm);
+        if (!view.parked.length) {
+          return "신랑과 신부 한가운데에서 직선 " + km + "km 안에 있는 홀만 순위에 넣습니다. 지금은 모두 안입니다.";
+        }
+        const names = view.parked.map((venue) => venue.name + " " + kmText(venue.centerKm)).join(", ");
+        return "신랑과 신부 한가운데에서 직선 " + km + "km 밖은 보류입니다. " + names + ".";
+      }
+
       function scoreName() {
         return state.weights.meal > 0 ? "맞춤" : "이동";
       }
@@ -639,9 +686,11 @@
 
       function renderRecommendation(view) {
         const box = document.getElementById("recommendation");
+        const note = document.getElementById("radius-note");
+        if (note) note.textContent = radiusNote(view);
         const top = view.ranked.slice(0, 3);
         if (!top.length) {
-          box.innerHTML = "<p class=\"font-bold\">비교할 홀이 없습니다.</p>";
+          box.innerHTML = "<p class=\"font-bold\">이 반경 안에 홀이 없습니다. 반경을 넓히거나, 반경 밖도 보기를 켜세요.</p>";
           return;
         }
         const items = top
@@ -656,7 +705,7 @@
         const west = view.ranked.find((venue) => isWest(venue));
         let aside = "";
         if (north && west && north.id !== west.id) {
-          aside = `<p class="text-xs text-gray-500 mt-2">신부 기준, 구로·영등포 1위 ${esc(west.name)} ${west.brideMin}분, 강북·성동 1위 ${esc(north.name)} ${north.brideMin}분.</p>`;
+          aside = `<p class="text-xs text-gray-500 mt-2">신부 기준, ${esc(west.district)} 1위 ${esc(west.name)} ${west.brideMin}분, ${esc(north.district)} 1위 ${esc(north.name)} ${north.brideMin}분.</p>`;
         }
         box.innerHTML = `<p class="text-xs font-semibold text-roseGold-700 mb-1">이 조건에서 먼저 볼 곳</p><ol>${items}</ol>${aside}`;
       }
@@ -674,12 +723,12 @@
             <button type="button" data-open="${esc(venue.id)}" class="flex-1 text-left">
               <div class="flex flex-wrap items-center gap-2">
                 <span class="text-xs font-bold text-gray-400">${venue.parked ? "보류" : rank}</span>
-                <span class="text-xs px-2 py-0.5 rounded-full font-semibold ${toneClass(venue)}">${esc(venue.parked ? venue.district + " · 보류" : venue.district)}</span>
+                <span class="text-xs px-2 py-0.5 rounded-full font-semibold ${toneClass(venue)}">${esc(venue.district)}</span>
                 <span class="font-bold">${esc(venue.name)}</span>
                 ${venue.user ? '<span class="text-[11px] text-gray-400">내가 추가</span>' : ""}
               </div>
               <p class="text-xs text-gray-600 mt-1">신랑 ${venue.groomMin}분 · 신부 ${venue.brideMin}분${esc(familyLine)}</p>
-              <p class="text-xs text-gray-500 mt-0.5">${esc(venue.station || "")} · 식대 ${esc(won(venue.meal))} · ${scoreName()} ${Math.round(venue.fit)}점</p>
+              <p class="text-xs text-gray-500 mt-0.5">${esc([venue.station, venue.centerKm != null ? "가운데 " + kmText(venue.centerKm) : "", "식대 " + won(venue.meal), scoreName() + " " + Math.round(venue.fit) + "점"].filter(Boolean).join(" · "))}</p>
             </button>
             ${moves}
           </div>
@@ -687,16 +736,16 @@
       }
 
       function renderList(view) {
-        const parked = state.showSeongbuk ? view.parked : [];
+        const parked = state.showParked ? view.parked : [];
         const live = view.ranked.map((venue, index) => rowHtml(venue, index + 1, true)).join("");
         const held = parked.length
-          ? `<h3 class="text-xs font-bold text-slate-500 pt-2">성북구 · 보류</h3>` + parked.map((venue) => rowHtml(venue, "보류", false)).join("")
+          ? `<h3 class="text-xs font-bold text-slate-500 pt-2">반경 밖 · 보류</h3>` + parked.map((venue) => rowHtml(venue, "보류", false)).join("")
           : "";
         document.getElementById("venue-list").innerHTML = live + held;
       }
 
       function renderCards(view) {
-        const rows = view.ranked.concat(state.showSeongbuk ? view.parked : []);
+        const rows = shown(view);
         document.getElementById("venue-cards").innerHTML = rows
           .map((venue, index) => {
             return `<article class="bg-white rounded-2xl border border-roseGold-100 p-5 flex flex-col gap-3 ${venue.parked ? "opacity-70" : ""}">
@@ -708,7 +757,7 @@
                 <h3 class="text-lg font-bold">${esc(venue.name)}</h3>
                 <p class="text-xs text-roseGold-700 mt-1">${esc(venue.type || "")}</p>
               </div>
-              <p class="text-sm">신랑 ${venue.groomMin}분 · 신부 ${venue.brideMin}분</p>
+              <p class="text-sm">신랑 ${venue.groomMin}분 · 신부 ${venue.brideMin}분 · 가운데 ${esc(kmText(venue.centerKm))}</p>
               ${venue.familyTimes.length ? `<p class="text-xs text-gray-500">${esc(familyText(venue))}</p>` : ""}
               <p class="text-xs text-gray-600">${esc(venue.address || "")}</p>
               ${venue.note ? `<p class="text-xs text-gray-600">${esc(venue.note)}</p>` : ""}
@@ -719,12 +768,12 @@
       }
 
       function renderTable(view) {
-        const rows = view.ranked.concat(state.showSeongbuk ? view.parked : []);
+        const rows = shown(view);
         document.getElementById("comparison-body").innerHTML = rows
           .map((venue, index) => {
             return `<tr class="${venue.parked ? "opacity-60" : ""}">
               <td class="p-3">${venue.parked ? "보류" : index + 1}</td>
-              <td class="p-3 font-bold"><button type="button" data-open="${esc(venue.id)}" class="underline decoration-roseGold-300">${esc(venue.name)}</button><div class="text-xs font-normal text-gray-500">${esc(venue.district)}</div></td>
+              <td class="p-3 font-bold"><button type="button" data-open="${esc(venue.id)}" class="underline decoration-roseGold-300">${esc(venue.name)}</button><div class="text-xs font-normal text-gray-500">${esc(venue.district)} · 가운데 ${esc(kmText(venue.centerKm))}</div></td>
               <td class="p-3">${venue.groomMin}분</td>
               <td class="p-3">${venue.brideMin}분</td>
               <td class="p-3 text-xs">${esc(familyText(venue))}</td>
@@ -769,12 +818,29 @@
         return `<div style="background:${color};color:white;width:28px;height:28px;border-radius:999px;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;border:2px solid white;box-shadow:0 1px 4px rgba(0,0,0,.25)">${text}</div>`;
       }
 
+      function renderRadius() {
+        if (!radiusLayer) return;
+        radiusLayer.clearLayers();
+        const center = coupleCenter();
+        if (!center) return;
+        L.circle([center.lat, center.lng], {
+          radius: state.radiusKm * 1000,
+          color: "#d1624d",
+          weight: 1.5,
+          opacity: 0.9,
+          fillColor: "#d1624d",
+          fillOpacity: 0.05,
+          dashArray: "5 6",
+          interactive: false,
+        }).addTo(radiusLayer);
+      }
+
       function renderMap(view) {
         if (!map) return;
         hallLayer.clearLayers();
         originLayer.clearLayers();
         markers = {};
-        const visible = view.ranked.concat(state.showSeongbuk ? view.parked : []);
+        const visible = shown(view);
         visible.forEach((venue, index) => {
           const color = venue.parked ? "#94a3b8" : isWest(venue) ? "#4f46e5" : "#059669";
           const icon = L.divIcon({
@@ -787,7 +853,7 @@
           marker.bindPopup(
             `<div style="min-width:160px">
               <strong>${esc(venue.name)}</strong>
-              <p style="margin:4px 0;font-size:12px">신랑 ${venue.groomMin}분 · 신부 ${venue.brideMin}분</p>
+              <p style="margin:4px 0;font-size:12px">신랑 ${venue.groomMin}분 · 신부 ${venue.brideMin}분 · 가운데 ${esc(kmText(venue.centerKm))}</p>
               <button type="button" data-open="${esc(venue.id)}" style="background:#d1624d;color:white;border:0;border-radius:8px;padding:6px 10px;width:100%">상세</button>
             </div>`,
           );
@@ -816,13 +882,13 @@
         renderTable(view);
         renderOrigins();
         renderMap(view);
+        renderRadius();
       }
 
       function fitToAll() {
         const view = buildView();
         const points = [];
-        view.ranked.forEach((venue) => points.push([venue.lat, venue.lng]));
-        if (state.showSeongbuk) view.parked.forEach((venue) => points.push([venue.lat, venue.lng]));
+        shown(view).forEach((venue) => points.push([venue.lat, venue.lng]));
         state.origins.forEach((origin) => points.push([origin.lat, origin.lng]));
         if (!points.length || !map) return;
         map.invalidateSize();
@@ -924,9 +990,8 @@
         if (!venue) return;
         openId = id;
         document.getElementById("detail-title").textContent = venue.name;
-        document.getElementById("detail-district").textContent = venue.parked ? venue.district + " · 순위 제외" : venue.district;
-        document.getElementById("detail-times").textContent =
-          "신랑 " + venue.groomMin + "분, 신부 " + venue.brideMin + "분. " + (familyText(venue) ? familyText(venue) + ". " : "") + scoreName() + " 점수 " + Math.round(venue.fit) + ".";
+        document.getElementById("detail-district").textContent = venue.parked ? venue.district + " · 반경 밖" : venue.district;
+        document.getElementById("detail-times").textContent = timeSentence(venue);
         const href = safeUrl(venue.link);
         const link = href
           ? `<div><dt class="text-xs text-gray-500">소개</dt><dd><a class="text-roseGold-700 underline" href="${esc(href)}" target="_blank" rel="noreferrer">소개 페이지</a></dd></div>`
@@ -954,6 +1019,12 @@
         modal.classList.remove("flex");
       }
 
+      function timeSentence(venue) {
+        const family = familyText(venue);
+        const center = venue.centerKm != null ? "가운데 " + kmText(venue.centerKm) + ". " : "";
+        return "신랑 " + venue.groomMin + "분, 신부 " + venue.brideMin + "분. " + (family ? family + ". " : "") + center + scoreName() + " 점수 " + Math.round(venue.fit) + ".";
+      }
+
       function saveOverride(patch, options) {
         if (!openId) return;
         const next = Object.assign({}, state.overrides[openId] || {});
@@ -969,8 +1040,7 @@
         if (openId) {
           const venue = buildView().ranked.concat(buildView().parked).find((item) => item.id === openId);
           if (venue) {
-            document.getElementById("detail-times").textContent =
-              "신랑 " + venue.groomMin + "분, 신부 " + venue.brideMin + "분. " + (familyText(venue) ? familyText(venue) + ". " : "") + scoreName() + " 점수 " + Math.round(venue.fit) + ".";
+            document.getElementById("detail-times").textContent = timeSentence(venue);
           }
         }
       }
@@ -1010,7 +1080,9 @@
 
       function syncControls() {
         document.getElementById("sort-mode").value = state.sort;
-        document.getElementById("show-seongbuk").checked = state.showSeongbuk;
+        document.getElementById("radius-km").value = state.radiusKm;
+        document.getElementById("radius-val").textContent = formatRadius(state.radiusKm);
+        document.getElementById("show-parked").checked = state.showParked;
         ["groom", "bride", "family", "meal"].forEach((key) => {
           document.getElementById("w-" + key).value = state.weights[key];
         });
@@ -1022,6 +1094,7 @@
           maxZoom: 19,
           attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
         }).addTo(map);
+        radiusLayer = L.layerGroup().addTo(map);
         hallLayer = L.layerGroup().addTo(map);
         originLayer = L.layerGroup().addTo(map);
         map.on("click", (event) => {
@@ -1125,8 +1198,15 @@
         renderAll();
       });
 
-      document.getElementById("show-seongbuk").addEventListener("change", (event) => {
-        state.showSeongbuk = event.target.checked;
+      document.getElementById("radius-km").addEventListener("input", (event) => {
+        state.radiusKm = Number(event.target.value);
+        document.getElementById("radius-val").textContent = formatRadius(state.radiusKm);
+        persist();
+        renderAll();
+      });
+
+      document.getElementById("show-parked").addEventListener("change", (event) => {
+        state.showParked = event.target.checked;
         persist();
         renderAll();
         fitToAll();
@@ -1217,7 +1297,7 @@
       document.getElementById("reset-data").addEventListener("click", () => {
         const ok = confirm("추가한 홀, 가족 출발지, 식대 수정, 순서를 지울까요? 체크리스트와 투어 메모는 남습니다.");
         if (!ok) return;
-        ["hallmap.userVenues", "hallmap.overrides", "hallmap.origins", "hallmap.weights", "hallmap.sort", "hallmap.manualOrder", "hallmap.showSeongbuk"].forEach((key) => {
+        ["hallmap.userVenues", "hallmap.overrides", "hallmap.origins", "hallmap.weights", "hallmap.sort", "hallmap.manualOrder", "hallmap.showSeongbuk", "hallmap.showParked", "hallmap.radiusKm"].forEach((key) => {
           localStorage.removeItem(key);
         });
         state = loadState();
@@ -1251,9 +1331,9 @@
         const id = openId;
         const venue = allVenues().find((item) => item.id === id);
         closeDetail();
-        if (venue && venue.parked && !state.showSeongbuk) {
-          state.showSeongbuk = true;
-          document.getElementById("show-seongbuk").checked = true;
+        if (venue && venue.parked && !state.showParked) {
+          state.showParked = true;
+          document.getElementById("show-parked").checked = true;
           persist();
         }
         renderAll();
