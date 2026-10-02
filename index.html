@@ -150,7 +150,7 @@
           <div class="pt-2 border-t border-roseGold-100 space-y-3">
             <div>
               <h2 class="font-bold text-gray-900">정렬 기준</h2>
-              <p class="text-xs text-gray-500 mt-1">가격과 뷔페 후기를 우선 반영합니다. 밝기·층고·규모·주차·동선은 출처에서 확인되는 값만 미리 넣었습니다.</p>
+              <p class="text-xs text-gray-500 mt-1">가격·최근 뷔페 후기부터 봅니다.</p>
             </div>
             <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-3">
               <label class="text-xs text-gray-600">신랑 이동 <span id="w-groom-val" class="font-bold text-gray-900">40</span>
@@ -169,11 +169,14 @@
               </label>
             </div>
             <div id="criteria-list" class="grid sm:grid-cols-2 gap-3"></div>
-            <form id="criterion-form" class="flex gap-2">
-              <label class="sr-only" for="criterion-name">추가할 기준</label>
-              <input id="criterion-name" maxlength="20" class="flex-1 border border-roseGold-200 rounded-xl px-3 py-2 text-sm" placeholder="추가할 기준. 예: 분위기, 주차, 밥" />
-              <button type="submit" class="border border-roseGold-300 rounded-xl px-4 min-h-11 text-sm">기준 추가</button>
-            </form>
+            <details class="rounded-xl border border-roseGold-100 p-3">
+              <summary class="cursor-pointer text-sm font-medium">내 기준 추가</summary>
+              <form id="criterion-form" class="mt-3 flex gap-2">
+                <label class="sr-only" for="criterion-name">추가할 기준</label>
+                <input id="criterion-name" maxlength="20" class="flex-1 min-w-0 border border-roseGold-200 rounded-xl px-3 py-2 text-sm" placeholder="예: 분위기" />
+                <button type="submit" class="border border-roseGold-300 rounded-xl px-4 min-h-11 text-sm">추가</button>
+              </form>
+            </details>
           </div>
 
           <div class="flex flex-col sm:flex-row sm:items-center gap-3 justify-between">
@@ -183,13 +186,6 @@
                 <option value="total">소개 숫자 합계 낮은 순</option>
                 <option value="score">맞춤 점수</option>
                 <option value="balance">둘 중 더 먼 쪽</option>
-                <option value="groom">신랑에게 가까운 순</option>
-                <option value="bride">신부에게 가까운 순</option>
-                <option value="family">가장 먼 가족이 가까운 순</option>
-                <option value="meal">식대 낮은 순</option>
-                <option value="rental">대관료 낮은 순</option>
-                <option value="guests">최소보증 낮은 순</option>
-                <option value="center">가운데 거리 가까운 순</option>
                 <option value="manual">직접 순서</option>
               </select>
             </label>
@@ -268,7 +264,7 @@
           <button type="submit" class="bg-roseGold-500 text-white rounded-xl px-4 min-h-11 text-sm font-medium">이 홀 저장</button>
         </form>
 
-        <p class="text-[11px] text-gray-400 leading-relaxed">위치는 공개 주소로 찍었습니다. 금액은 다이렉트결혼준비 소개 페이지의 식대·대관료·꽃장식만 적었습니다(기존 홀 2026-10-02, 중간 후보 2곳 2026-10-03). 더뉴컨벤션은 공항대로36길 57, 보타닉파크는 마곡중앙5로 6입니다. 기본 8km 밖이거나 대관료 시작가가 800만 원 이상이면 보류로 내려갑니다.</p>
+        <details class="text-[11px] text-gray-400"><summary class="cursor-pointer">출처·계산 기준</summary><p class="mt-2 leading-relaxed">위치는 공개 주소, 금액은 다이렉트결혼준비 소개 페이지 기준입니다(2026-10-02~03). 기본 8km 밖이거나 대관료가 800만 원 이상이면 보류합니다.</p></details>
       </section>
 
       <section data-tab-content="cards" class="hidden space-y-4">
@@ -278,7 +274,7 @@
 
       <section data-tab-content="table" class="hidden space-y-4">
         <h2 class="text-xl font-bold">비교표</h2>
-        <p class="text-xs text-gray-500">소개 숫자 합계는 대관료·꽃장식·최소보증 식대만 더한 비교용 값이며 상담 견적이 아닙니다. 뷔페 점수는 공개 후기의 식사 언급만 보고 매긴 임시값입니다.</p>
+        <details class="text-xs text-gray-500"><summary class="cursor-pointer">점수·금액 기준</summary><p class="mt-2">총액은 소개 숫자 기준이며 상담 견적이 아닙니다. 뷔페는 직접 먹은 공개 후기 2건 이상만 점수화했습니다.</p></details>
         <div class="flex gap-2 md:hidden">
           <label class="flex-1 text-xs font-semibold">정렬 기준
             <select id="table-sort" class="mt-1 w-full min-h-11 border border-roseGold-200 rounded-xl px-3 bg-white font-normal">
@@ -443,13 +439,17 @@
           guests: "최소 150명",
           parking: "소개 페이지 기준 약 3000대, 웨딩 고객 종일 무료",
           foodScore: 5,
+          foodReviewCount: 3,
+          foodReviewLatest: "2024.08",
           presetScores: { p_light: 3, p_size: 4, p_park: 5, p_flow: 5 },
-          foodReview: "시식 후기에서 양념게장·파스타·회·과일의 맛과 종류를 구체적으로 높게 평가했습니다.",
+          foodReview: "3건 · 최신 2024.08 · 시식·하객 후기 모두 맛과 가짓수를 좋게 평가했습니다.",
           link: "https://www.directwedding.co.kr/weddinghall/hall0437",
           refs: [
             { title: "다이렉트결혼준비", url: "https://www.directwedding.co.kr/weddinghall/hall0437" },
             { title: "역세권 소개", url: "https://www.directwedding.co.kr/blog/subway-near-weddinghall" },
             { title: "웨딩북 식사 후기", url: "https://www.weddingbook.com/review/187205" },
+            { title: "웨딩북 시식 후기", url: "https://www.weddingbook.com/review/186357" },
+            { title: "웨딩북 하객 후기", url: "https://www.weddingbook.com/review/923fbb07-e4ec-11ee-bfa5-0a45d210660e" },
           ],
         },
         {
@@ -498,12 +498,15 @@
           guests: "최소 200명",
           parking: "문래역 도보권. 주차 대수는 소개 페이지에 없습니다.",
           foodScore: 4,
+          foodReviewCount: 2,
+          foodReviewLatest: "2023.12",
           presetScores: { p_light: 5, p_size: 4, p_flow: 5 },
-          foodReview: "공개 후기에서 음식 구성이 깔끔하고 대게와 주류 구성이 좋다는 평가가 있습니다.",
+          foodReview: "2건 · 최신 2023.12 · 하객·시식 후기에서 신선도, 빠른 보충과 음식 구성을 좋게 평가했습니다.",
           link: "https://www.directwedding.co.kr/weddinghall/hall0053",
           refs: [
             { title: "다이렉트결혼준비", url: "https://www.directwedding.co.kr/weddinghall/hall0053" },
             { title: "웨딩북 음식 후기", url: "https://www.weddingbook.com/review/af162162-8fa5-11eb-ab61-0aea5320e7f2" },
+            { title: "웨딩북 하객 후기", url: "https://www.weddingbook.com/review/182847" },
           ],
         },
         {
@@ -526,9 +529,18 @@
           drinks: "식대 포함",
           guests: "최소 200명",
           parking: "소개 페이지 기준 약 300대, 1시간 30분",
+          foodScore: 4,
+          foodReviewCount: 3,
+          foodReviewLatest: "2024.05",
           presetScores: { p_light: 5, p_size: 4, p_park: 3 },
+          foodReview: "3건 · 최신 2024.05 · 시식·하객 후기에서 가짓수와 맛을 좋게 평가했으며 갈비탕 언급이 반복됩니다.",
           link: "https://www.directwedding.co.kr/weddinghall/hall0496",
-          refs: [{ title: "다이렉트결혼준비", url: "https://www.directwedding.co.kr/weddinghall/hall0496" }],
+          refs: [
+            { title: "다이렉트결혼준비", url: "https://www.directwedding.co.kr/weddinghall/hall0496" },
+            { title: "웨딩북 하객 후기", url: "https://www.weddingbook.com/review/186100" },
+            { title: "웨딩북 시식 후기", url: "https://www.weddingbook.com/review/169454" },
+            { title: "웨딩북 시식 후기", url: "https://www.weddingbook.com/review/167274" },
+          ],
         },
         {
           id: "renos",
@@ -680,9 +692,7 @@
           drinks: "식대 포함",
           guests: "최소 200명",
           parking: "주차 대수와 무료 시간은 소개 페이지에 없습니다.",
-          foodScore: 4,
           presetScores: { p_light: 3, p_height: 4, p_size: 2 },
-          foodReview: "식당에서 시작한 홀이라는 투어 후기와 뷔페 품질을 좋게 본 행사 후기가 있습니다.",
           link: "https://www.directwedding.co.kr/weddinghall/hall0464",
           refs: [
             { title: "다이렉트결혼준비", url: "https://www.directwedding.co.kr/weddinghall/hall0464" },
@@ -694,7 +704,7 @@
       ];
 
       const PRESETS = [
-        { id: "p_food", name: "뷔페 후기", low: "아쉬움", high: "좋음" },
+        { id: "p_food", name: "최근 뷔페 후기", low: "아쉬움", high: "좋음" },
         { id: "p_light", name: "밝기", low: "어두움", high: "밝음" },
         { id: "p_height", name: "층고", low: "낮음", high: "높음" },
         { id: "p_size", name: "규모", low: "작음", high: "큼" },
@@ -784,7 +794,7 @@
           .slice(0, 16)
           .map((item) => ({
             id: item.id,
-            name: item.id === "p_food" ? "뷔페 후기" : item.name.trim().slice(0, 20),
+            name: item.id === "p_food" ? "최근 뷔페 후기" : item.name.trim().slice(0, 20),
             low: typeof item.low === "string" ? item.low.slice(0, 8) : "",
             high: typeof item.high === "string" ? item.high.slice(0, 8) : "",
           }));
@@ -836,6 +846,7 @@
         const priceFirst = localStorage.getItem("hallmap.priceFirstV1") === "1";
         const sort = priceFirst ? (localStorage.getItem("hallmap.sort") || "total") : "total";
         if (!priceFirst) localStorage.setItem("hallmap.priceFirstV1", "1");
+        if (!["total", "score", "balance", "manual"].includes(sort) && !sort.startsWith("c:")) return "total";
         const id = sort.startsWith("cl:") ? sort.slice(3) : sort.startsWith("c:") ? sort.slice(2) : "";
         if (id && !criteria.some((criterion) => criterion.id === id)) return "total";
         return sort;
@@ -1115,12 +1126,9 @@
       }
 
       function radiusNote(view) {
-        const km = formatRadius(state.radiusKm);
-        if (!view.parked.length) {
-          return "신랑과 신부 한가운데에서 직선 " + km + "km 안이며 대관료가 800만 원 미만인 홀만 순위에 넣습니다.";
-        }
-        const names = view.parked.map((venue) => venue.name + "(" + venue.parkReason + ")").join(", ");
-        return "직선 " + km + "km 밖이거나 대관료가 800만 원 이상이면 보류입니다. " + names + ".";
+        if (!view.parked.length) return "모든 홀이 현재 조건 안입니다.";
+        const radius = view.parked.filter((venue) => venue.parkReason === "반경 밖").length;
+        return `보류 ${view.parked.length}곳 · 반경 밖 ${radius} · 대관 800만 원 이상 ${view.parked.length - radius}`;
       }
 
       function scoreName() {
@@ -1130,6 +1138,7 @@
 
       function markText(venue) {
         return state.criteria
+          .filter((criterion) => state.weights[criterion.id] > 0)
           .map((criterion) => {
             const mark = markOf(venue.id, criterion.id);
             return mark == null ? "" : criterion.name + " " + mark;
@@ -1179,13 +1188,7 @@
             </li>`;
           })
           .join("");
-        const north = view.ranked.find((venue) => !isWest(venue));
-        const west = view.ranked.find((venue) => isWest(venue));
-        let aside = "";
-        if (north && west && north.id !== west.id) {
-          aside = `<p class="text-xs text-gray-500 mt-2">신부 기준, ${esc(west.district)} 1위 ${esc(west.name)} ${west.brideMin}분, ${esc(north.district)} 1위 ${esc(north.name)} ${north.brideMin}분.</p>`;
-        }
-        box.innerHTML = `<p class="text-xs font-semibold text-roseGold-700 mb-1">이 조건에서 먼저 볼 곳</p><ol>${items}</ol>${aside}`;
+        box.innerHTML = `<p class="text-xs font-semibold text-roseGold-700 mb-1">먼저 볼 곳</p><ol>${items}</ol>`;
       }
 
       function rowHtml(venue, rank, movable) {
@@ -1197,6 +1200,7 @@
           : "";
         const familyLine = venue.familyTimes.length ? " · " + familyText(venue) : "";
         const marks = markText(venue);
+        const total = quoteTotals(venue);
         return `<article data-id="${esc(venue.id)}" class="rounded-xl border border-roseGold-100 p-3 ${venue.parked ? "opacity-70" : ""}">
           <div class="flex items-center gap-2">
             <button type="button" data-open="${esc(venue.id)}" class="flex-1 text-left flex gap-2 items-center">
@@ -1209,7 +1213,7 @@
                   ${venue.user ? '<span class="text-[11px] text-gray-400">내가 추가</span>' : ""}
                 </span>
                 <span class="block text-xs text-gray-600 mt-1">신랑 ${venue.groomMin}분 · 신부 ${venue.brideMin}분${esc(familyLine)}</span>
-                <span class="block text-xs text-gray-500 mt-0.5">${esc([venue.station, venue.centerKm != null ? "가운데 " + kmText(venue.centerKm) : "", priceBits(venue), scoreName() + " " + Math.round(venue.fit) + "점"].filter(Boolean).join(" · "))}</span>
+                <span class="block text-xs text-gray-500 mt-0.5">${esc([total ? "총 " + won(total.low) : "금액 미입력", scoreName() + " " + Math.round(venue.fit) + "점"].join(" · "))}</span>
                 ${marks ? `<span class="block text-xs text-roseGold-700 mt-0.5">${esc(marks)}</span>` : ""}
               </span>
             </button>
@@ -1310,7 +1314,7 @@
                   <p class="font-bold text-roseGold-800">${esc(totalText)}</p>
                 </div>
               </div>
-              <p class="rounded-lg bg-gray-50 px-3 py-2 text-[11px] text-gray-600 break-words">${esc(quoteFormula(venue))}</p>
+              <details class="rounded-lg bg-gray-50 px-3 py-2 text-[11px] text-gray-600"><summary class="cursor-pointer">계산식</summary><p class="mt-1 break-words">${esc(quoteFormula(venue))}</p></details>
               <div class="grid grid-cols-3 gap-2 text-center">
                 <div class="rounded-xl bg-roseGold-50 p-2"><p class="text-[11px] text-gray-500">식대</p><p class="mt-1 text-xs font-semibold">${venue.meal ? esc(won(venue.meal) + (venue.mealTo ? "~" + won(venue.mealTo) : "")) : "미입력"}</p></div>
                 <div class="rounded-xl bg-roseGold-50 p-2"><p class="text-[11px] text-gray-500">대관·꽃</p><p class="mt-1 text-xs font-semibold">${venue.rental ? esc(won(venue.rental)) : "미입력"}<br><span class="font-normal text-gray-500">꽃 ${esc(flowerText)}</span></p></div>
@@ -1320,7 +1324,7 @@
                 <p><span class="text-gray-500">이동</span> 신랑 ${venue.groomMin}분 · 신부 ${venue.brideMin}분</p>
                 <p><span class="text-gray-500">교통</span> ${esc(venue.station || "미입력")} · 가운데 ${esc(kmText(venue.centerKm))}</p>
                 ${markText(venue) ? `<p class="text-roseGold-700">${esc(markText(venue))}</p>` : ""}
-                ${venue.foodReview ? `<p class="text-gray-600">뷔페 근거 · ${esc(venue.foodReview)}</p>` : ""}
+                ${venue.foodReview ? `<details class="text-gray-600"><summary class="cursor-pointer">후기 근거 ${venue.foodReviewCount}건 · ${esc(venue.foodReviewLatest)}</summary><p class="mt-1">${esc(venue.foodReview)}</p></details>` : ""}
                 ${venue.note ? `<p class="mt-1 text-gray-600">${esc(venue.note)}</p>` : ""}
               </div>
             </article>`;
@@ -1657,8 +1661,7 @@
         const signature = state.criteria.map((criterion) => criterion.id + "\n" + criterion.name).join("|");
         if (box.dataset.signature !== signature) {
           box.dataset.signature = signature;
-          box.innerHTML = state.criteria
-            .map((criterion) => {
+          const fields = (criteria) => criteria.map((criterion) => {
               const weight = state.weights[criterion.id] || 0;
               const hint = criterion.low ? `<span class="block text-[11px] text-gray-400">1 ${esc(criterion.low)} · 5 ${esc(criterion.high)}</span>` : "";
               return `<div>
@@ -1668,8 +1671,10 @@
                 </label>
                 <button type="button" data-remove-criterion="${esc(criterion.id)}" class="text-xs text-gray-500 underline min-h-11">이 기준 삭제</button>
               </div>`;
-            })
-            .join("");
+            }).join("");
+          const primary = state.criteria.filter((criterion) => criterion.id === "p_food");
+          const extra = state.criteria.filter((criterion) => criterion.id !== "p_food");
+          box.innerHTML = `${fields(primary)}<details class="sm:col-span-2 rounded-xl border border-roseGold-100 p-3"><summary class="cursor-pointer text-sm font-medium">홀 취향 기준 <span class="text-xs text-gray-500">${extra.length}개</span></summary><div class="mt-3 grid sm:grid-cols-2 gap-3">${fields(extra)}</div></details>`;
         } else {
           state.criteria.forEach((criterion) => {
             const input = box.querySelector('[data-weight="' + criterion.id + '"]');
@@ -1694,13 +1699,6 @@
             high.dataset.customSort = "1";
             high.textContent = criterion.high ? criterion.name + " " + criterion.high + " 우선" : criterion.name + " 높은 순";
             select.insertBefore(high, manual);
-            if (criterion.low) {
-              const low = document.createElement("option");
-              low.value = "cl:" + criterion.id;
-              low.dataset.customSort = "1";
-              low.textContent = criterion.name + " " + criterion.low + " 우선";
-              select.insertBefore(low, manual);
-            }
           });
         }
         if (document.activeElement !== select) select.value = state.sort;
@@ -1847,7 +1845,7 @@
           ["홀·식사 형태", venue.type || "미입력", venue.type ? "text-gray-900" : "text-gray-500"],
           ["지하철 접근", venue.station || "미입력", venue.station ? "text-gray-900" : "text-gray-500"],
           ["주차 대수·무료 시간", venue.parking || "미입력", venue.parking ? "text-gray-900" : "text-gray-500"],
-          ["뷔페 후기", food ? food + "/5 · 공개 후기 임시점수" : "근거 부족", food ? "text-roseGold-700" : "text-gray-500"],
+          ["최근 뷔페 후기", food ? food + "/5 · " + venue.foodReviewCount + "건 · 최신 " + venue.foodReviewLatest : "실제 식사 후기 2건 미만", food ? "text-roseGold-700" : "text-gray-500"],
         ];
         return items.map(([label, value, tone]) => `<div class="rounded-xl bg-roseGold-50 p-3"><p class="text-[11px] text-gray-500">${esc(label)}</p><p class="mt-1 text-xs font-semibold leading-relaxed ${tone}">${esc(value)}</p></div>`).join("");
       }
