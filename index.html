@@ -263,7 +263,7 @@
           <button type="submit" class="bg-roseGold-500 text-white rounded-xl px-4 min-h-11 text-sm font-medium">이 홀 저장</button>
         </form>
 
-        <p class="text-[11px] text-gray-400 leading-relaxed">위치는 공개 주소로 찍었습니다. 금액은 2026-10-02 다이렉트결혼준비 소개 페이지의 식대·대관료·꽃장식만 적었습니다. 더뉴컨벤션은 공항대로36길 57, 보타닉파크는 마곡중앙5로 6입니다. 기본 8km 밖이면 보류로 내려갑니다.</p>
+        <p class="text-[11px] text-gray-400 leading-relaxed">위치는 공개 주소로 찍었습니다. 금액은 다이렉트결혼준비 소개 페이지의 식대·대관료·꽃장식만 적었습니다(기존 홀 2026-10-02, 중간 후보 2곳 2026-10-03). 더뉴컨벤션은 공항대로36길 57, 보타닉파크는 마곡중앙5로 6입니다. 기본 8km 밖이면 보류로 내려갑니다.</p>
       </section>
 
       <section data-tab-content="cards" class="hidden space-y-4">
@@ -273,17 +273,18 @@
 
       <section data-tab-content="table" class="hidden space-y-4">
         <h2 class="text-xl font-bold">비교표</h2>
-        <p class="text-xs text-gray-500">분 수는 대략 이동 시간입니다. 식대를 고치려면 홀 이름을 누르세요. 화면이 좁으면 표를 옆으로 미세요.</p>
+        <p class="text-xs text-gray-500">합계는 소개 페이지의 대관료·꽃장식·최소보증 식대만 더한 값이며 상담 견적이 아닙니다. 홀 이름을 누르면 숫자와 링크를 고칠 수 있습니다.</p>
         <div class="bg-white rounded-2xl border border-roseGold-100 overflow-x-auto">
-          <table class="w-full min-w-[44rem] text-left text-sm whitespace-nowrap">
+          <table class="w-full min-w-[58rem] text-left text-sm whitespace-nowrap">
             <thead class="bg-roseGold-100/70 text-roseGold-900">
               <tr>
                 <th class="p-3 font-semibold">순위</th>
                 <th class="p-3 font-semibold">홀</th>
-                <th class="p-3 font-semibold">신랑</th>
-                <th class="p-3 font-semibold">신부</th>
-                <th class="p-3 font-semibold">가족</th>
-                <th class="p-3 font-semibold">금액대</th>
+                <th class="p-3 font-semibold">소개 숫자 합계</th>
+                <th class="p-3 font-semibold">식대</th>
+                <th class="p-3 font-semibold">대관·꽃</th>
+                <th class="p-3 font-semibold">최소보증</th>
+                <th class="p-3 font-semibold">이동</th>
                 <th class="p-3 font-semibold">역</th>
                 <th class="p-3 font-semibold">내 메모</th>
               </tr>
@@ -564,6 +565,53 @@
             { title: "역세권 소개", url: "https://www.directwedding.co.kr/blog/subway-near-weddinghall" },
           ],
         },
+        {
+          id: "irum",
+          name: "이룸웨딩컨벤션",
+          district: "마포구",
+          address: "서울 마포구 마포대로 78 경찰공제회 자람빌딩 5층",
+          station: "5·6호선 공덕역, 5호선 마포역 도보 2~5분",
+          lat: 37.5419034,
+          lng: 126.9498186,
+          type: "단독홀 · 뷔페",
+          meal: 80000,
+          rental: 9000000,
+          flower: "포함",
+          extra: "연출료는 대관료에 포함이라고 적혀 있습니다.",
+          minGuests: 250,
+          guests: "최소 250명",
+          parking: "소개 페이지 기본정보 기준 300대, 무료 2시간",
+          link: "https://www.directwedding.co.kr/weddinghall/hall0408",
+          refs: [
+            { title: "다이렉트결혼준비", url: "https://www.directwedding.co.kr/weddinghall/hall0408" },
+            { title: "웨딩북", url: "https://www.weddingbook.com/weddinghall/0401a8d2-0c30-11e6-93b9-0abe8d4f74d3" },
+            { title: "신부야", url: "https://www.incheon.sinbuya.com/product/details/555?estimate=117716" },
+          ],
+        },
+        {
+          id: "kturtle",
+          name: "케이터틀",
+          district: "마포구",
+          address: "서울 마포구 백범로 23",
+          station: "경의중앙선 서강대역 도보 5분 · 2호선 신촌역 도보 10분",
+          lat: 37.5522961,
+          lng: 126.9377151,
+          type: "라페네트레홀 밝음 · 컨벤션홀 어두움 · 뷔페",
+          meal: 79000,
+          rental: 7900000,
+          flower: "포함",
+          extra: "합계는 라페네트레홀 기준입니다. 컨벤션홀은 최소 250명, 대관료 990만 원입니다. 연출료는 필수인데 소개 페이지에 금액이 없습니다.",
+          minGuests: 200,
+          guests: "최소 200명",
+          parking: "주차 대수와 무료 시간은 소개 페이지에 없습니다.",
+          link: "https://www.directwedding.co.kr/weddinghall/hall0464",
+          refs: [
+            { title: "다이렉트결혼준비", url: "https://www.directwedding.co.kr/weddinghall/hall0464" },
+            { title: "공식 홈페이지", url: "https://k-turtle.co.kr/convention/" },
+            { title: "웨딩북", url: "https://www.wdgbook.com/page/kturtle/review/a2c09784-117d-11e8-93b9-0abe8d4f74d3" },
+            { title: "신부야", url: "https://www.fam.sinbuya.com/product/details/542?estimate=117835" },
+          ],
+        },
       ];
 
       const PRESETS = [
@@ -766,17 +814,25 @@
       }
 
       function quoteNote(venue) {
-        const flowerKnown = venue.flower === "포함" || Number(venue.flower) > 0;
+        const totals = quoteTotals(venue);
         const tail = venue.extra ? " " + venue.extra : "";
-        if (!venue.meal || !venue.rental || !venue.minGuests || !flowerKnown) {
+        if (!totals) {
           return "식대, 대관료, 꽃장식, 최소 인원 중 빈 항목이 있어 합계를 만들지 않습니다." + tail;
+        }
+        let text = "최소 " + venue.minGuests + "명, 소개 페이지 숫자만 더하면 " + won(totals.low);
+        if (totals.high !== totals.low) text += "~" + won(totals.high);
+        return text + ". 상담 견적이 아닙니다." + tail;
+      }
+
+      function quoteTotals(venue) {
+        const flowerKnown = venue.flower === "포함" || Number(venue.flower) > 0;
+        if (!venue.meal || !venue.rental || !venue.minGuests || !flowerKnown) {
+          return null;
         }
         const flower = venue.flower === "포함" ? 0 : Number(venue.flower);
         const low = venue.minGuests * Number(venue.meal) + Number(venue.rental) + flower;
         const high = venue.minGuests * Number(venue.mealTo || venue.meal) + Number(venue.rentalTo || venue.rental) + flower;
-        let text = "최소 " + venue.minGuests + "명, 소개 페이지 숫자만 더하면 " + won(low);
-        if (high !== low) text += "~" + won(high);
-        return text + ". 상담 견적이 아닙니다." + tail;
+        return { low, high };
       }
 
       function refList(venue) {
@@ -1091,13 +1147,17 @@
         const rows = shown(view);
         document.getElementById("comparison-body").innerHTML = rows
           .map((venue, index) => {
+            const totals = quoteTotals(venue);
+            const totalText = totals ? won(totals.low) + (totals.high !== totals.low ? "~" + won(totals.high) : "") : "계산 안 함";
+            const flowerText = venue.flower === "포함" ? "꽃 포함" : Number(venue.flower) > 0 ? "꽃 " + won(venue.flower) : "꽃 미입력";
             return `<tr class="${venue.parked ? "opacity-60" : ""}">
               <td class="p-3">${venue.parked ? "보류" : index + 1}</td>
               <td class="p-3 font-bold"><button type="button" data-open="${esc(venue.id)}" class="underline decoration-roseGold-300">${esc(venue.name)}</button><div class="text-xs font-normal text-gray-500">${esc(venue.district)} · 가운데 ${esc(kmText(venue.centerKm))}</div>${markText(venue) ? `<div class="text-xs font-normal text-roseGold-700">${esc(markText(venue))}</div>` : ""}</td>
-              <td class="p-3">${venue.groomMin}분</td>
-              <td class="p-3">${venue.brideMin}분</td>
-              <td class="p-3 text-xs">${esc(familyText(venue))}</td>
-              <td class="p-3 text-xs whitespace-normal min-w-[14rem]">${esc(priceBits(venue))}</td>
+              <td class="p-3 text-xs font-semibold">${esc(totalText)}</td>
+              <td class="p-3 text-xs">${venue.meal ? esc(won(venue.meal) + (venue.mealTo ? "~" + won(venue.mealTo) : "")) : "미입력"}</td>
+              <td class="p-3 text-xs whitespace-normal min-w-[10rem]">${venue.rental ? esc("대관 " + won(venue.rental) + (venue.rentalTo ? "~" + won(venue.rentalTo) : "") + " · " + flowerText) : "대관 미입력 · " + esc(flowerText)}</td>
+              <td class="p-3 text-xs">${venue.minGuests ? esc(venue.minGuests + "명") : "미입력"}</td>
+              <td class="p-3 text-xs whitespace-normal min-w-[9rem]">신랑 ${venue.groomMin}분 · 신부 ${venue.brideMin}분${venue.familyTimes.length ? " · " + esc(familyText(venue)) : ""}</td>
               <td class="p-3 text-xs">${esc(venue.station || "")}</td>
               <td class="p-3 text-xs max-w-xs">${esc(venue.note || "")}</td>
             </tr>`;
