@@ -402,6 +402,7 @@
             <input id="detail-extra" class="mt-1 w-full border border-roseGold-200 rounded-xl px-3 py-2 text-sm" />
           </label>
           <p id="detail-quote" class="text-xs text-gray-600 leading-relaxed"></p>
+          <div id="detail-options"></div>
           <details id="detail-reviews" class="border border-roseGold-100 rounded-xl p-3"></details>
           <div id="detail-routes" class="rounded-xl bg-gray-50 p-3"></div>
           <div class="space-y-1">
@@ -446,6 +447,15 @@
           extra: "사용자 제공 비교표의 할인가입니다. 최소보증 인원이 없어 할인 총액은 계산하지 않습니다.",
           discountQuotes: [
             { label: "사용자 제공 비교표", meal: 45000, rental: 500000, minGuests: null, required: 250000, note: "꽃장식 포함 · 필수 예식도우미 25만 원 별도" },
+            { label: "2026년 9~10월 현장 계약 혜택", meal: 49000, rental: 2100000, minGuests: 150, required: 250000, note: "보증 150명 이상 · 필수 예식도우미 25만 원 포함 비교 총액 970만 원" },
+          ],
+          options: [
+            { name: "예식도우미", price: 250000, required: true },
+            { name: "주례", price: 150000 }, { name: "전문사회자", price: 250000 }, { name: "축가", price: 200000 },
+            { name: "폐백음식", price: 220000, suffix: "부터" }, { name: "DVD 촬영", price: 350000 },
+            { name: "혼주 헤어·메이크업(여)", price: 165000 }, { name: "혼주 헤어·메이크업(남)", price: 55000 },
+            { name: "한복 대여 1벌", price: 220000 },
+            { name: "포토테이블", service: true }, { name: "플라워샤워", service: true },
           ],
           minGuests: 150,
           maxGuests: 850,
@@ -525,6 +535,13 @@
           discountQuotes: [
             { label: "사용자 제공 토요일 견적", meal: 64000, rental: 4500000, minGuests: 200, required: 0, note: "봉사료 3% 별도" },
             { label: "2026-07-01 계약 후기", meal: 62000, rental: 4200000, minGuests: 200, required: 0, note: "2027년 5월 · 포토부스 서비스" },
+          ],
+          options: [
+            { name: "본식 DVD 촬영", price: 300000 }, { name: "아이폰 스냅", price: 300000 },
+            { name: "사회자", price: 200000 }, { name: "축가", price: 200000 }, { name: "부케", price: 200000 },
+            { name: "컨시어즈(진행도우미)", price: 300000 }, { name: "플라워샤워", price: 150000, service: true },
+            { name: "포토부스", price: 450000 }, { name: "뮤지컬웨딩 4인", price: 500000 }, { name: "뮤지컬웨딩 2인", price: 300000 },
+            { name: "혼주미용(여)", price: 180000 }, { name: "혼주미용(남)", price: 60000 },
           ],
           minGuests: 200,
           maxGuests: 1000,
@@ -834,6 +851,38 @@
           presetScores: { p_height: 4, p_size: 4, p_park: 5, p_flow: 4 },
           link: "https://www.directwedding.co.kr/weddinghall/hall0402",
           refs: [{ title: "다이렉트결혼준비", url: "https://www.directwedding.co.kr/weddinghall/hall0402" }],
+        },
+        {
+          id: "thesbdongjak",
+          name: "더에스비웨딩컨벤션 동작",
+          district: "동작구",
+          address: "서울 동작구 보라매로5길 15 전문건설회관 3층",
+          station: "신림선 보라매병원역 연결",
+          lat: 37.4921379,
+          lng: 126.9243,
+          type: "단독 어두운 홀 · 높은 층고 · 뷔페",
+          meal: 68000,
+          rental: 7000000,
+          flower: "포함",
+          discountQuotes: [
+            { label: "사용자 제공 잔여타임 특가", meal: 55000, rental: 2500000, minGuests: null, required: 0, note: "당일 계약 · 화면 표시 기간 2026-07-31~2027-02-28 · 최소보증 조건 미표시" },
+          ],
+          extra: "정상가와 할인가는 사용자 제공 프로모션 화면 기준입니다. 공개 소개 페이지의 최소보증은 200명이지만 프로모션 화면에는 보증 조건이 없어 할인 총액을 계산하지 않습니다.",
+          minGuests: 200,
+          maxGuests: 650,
+          interval: 90,
+          drinks: "식대 포함",
+          guests: "공개 소개 최소 200명 · 프로모션 조건 확인 필요",
+          parking: "공개 소개 페이지 기준 800대, 무료 3시간",
+          presetScores: { p_interval: 5, p_guarantee: 4, p_height: 4, p_size: 4, p_park: 4, p_flow: 4 },
+          reviews: [
+            { date: "2026 하반기", type: "계약·투어", tone: "좋음", food: false, summary: "화이트 꽃장식과 물결 조명, 깔끔한 단독홀을 긍정적으로 평가했습니다. 실제 식사 후기는 아닙니다.", url: "https://www.directwedding.co.kr/weddinghall/hall0138" },
+          ],
+          link: "https://www.directwedding.co.kr/weddinghall/hall0138",
+          refs: [
+            { title: "다이렉트결혼준비", url: "https://www.directwedding.co.kr/weddinghall/hall0138" },
+            { title: "웨딩북", url: "https://www.wdgbook.com/page/thesb" },
+          ],
         },
         {
           id: "jkart",
@@ -1850,6 +1899,7 @@
           factRow("주차", venue.parking);
         document.getElementById("detail-note").value = venue.note || "";
         paintDetailMoney(venue);
+        paintDetailOptions(venue);
         paintDetailReviews(venue);
         paintDetailRoutes(venue);
         paintDetailRefs(venue);
@@ -2107,6 +2157,22 @@
         }
         const quote = document.getElementById("detail-quote");
         if (quote) quote.textContent = quoteNote(venue);
+      }
+
+      function paintDetailOptions(venue) {
+        const box = document.getElementById("detail-options");
+        const options = Array.isArray(venue && venue.options) ? venue.options : [];
+        if (!options.length) {
+          box.innerHTML = '<p class="rounded-xl bg-gray-50 p-3 text-xs text-gray-500">확인된 선택 옵션 가격이 없습니다.</p>';
+          return;
+        }
+        const value = (option) => {
+          if (option.service && option.price) return "서비스 · 정가 " + won(option.price);
+          if (option.service) return "서비스";
+          return won(option.price) + (option.suffix ? " " + option.suffix : "");
+        };
+        const rows = options.map((option) => `<div class="flex justify-between gap-3 border-t border-roseGold-100 py-2 first:border-0"><span>${option.required ? '<strong class="text-rose-700">필수</strong> · ' : ""}${esc(option.name)}</span><span class="shrink-0 font-semibold ${option.service ? "text-emerald-700" : ""}">${esc(value(option))}</span></div>`).join("");
+        box.innerHTML = `<details class="rounded-xl border border-roseGold-100 p-3"><summary class="cursor-pointer font-bold">필수·선택 옵션 <span class="font-normal text-xs text-gray-500">${options.length}개</span></summary><p class="mt-2 text-xs text-gray-500">필수 항목만 할인 비교 총액에 반영합니다. 선택 옵션은 고른 항목에 따라 별도로 더하세요.</p><div class="mt-2 text-xs">${rows}</div></details>`;
       }
 
       function paintDetailRefs(venue) {
