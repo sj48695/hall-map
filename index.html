@@ -506,13 +506,14 @@
           guests: "최소 150명",
           parking: "소개 페이지 기준 약 3000대, 웨딩 고객 종일 무료",
           foodScore: 5,
-          foodReviewCount: 4,
-          foodReviewLatest: "2025.06",
+          foodReviewCount: 5,
+          foodReviewLatest: "2025.10",
           presetScores: { p_light: 3, p_size: 4, p_park: 5, p_flow: 5 },
-          foodReview: "4건 · 최신 2025.06 · 메뉴 구성은 강점이고 일부 차가운 음식과 육회는 아쉽다는 평가도 있습니다.",
+          foodReview: "5건 · 최신 2025.10 · 최근 시식에서는 150여 가지 메뉴의 신선도와 적당한 간을 좋게 평가했고, 다른 후기에는 일부 차가운 음식과 육회가 아쉽다는 평가도 있습니다.",
           reviews: [
             { date: "2026-03-19", type: "계약·투어", tone: "혼합", food: false, summary: "가성비와 구로역 접근성은 좋지만 홀 규모와 위치는 아쉽다고 적었습니다.", url: "https://mminglog.tistory.com/entry/%EC%A0%9C%EC%9D%B4%EC%98%A4%EC%8A%A4%ED%8B%B0%EC%97%98-%EC%9B%A8%EB%94%A9%ED%99%80-%EA%B2%AC%EC%A0%81" },
             { date: "2026-03-01", type: "하객·암행", tone: "혼합", food: false, summary: "주차와 가성비는 좋고, 조화 장식과 좁게 느껴지는 대기실 복도는 아쉽다고 적었습니다.", url: "https://yomi.huzy.net/out/223807810369" },
+            { date: "2025-10-24", type: "시식", tone: "좋음", food: true, summary: "양가 부모님과 직접 시식했고, 계절 반찬과 신선한 재료를 쓴 150여 가지 메뉴가 깔끔하며 간도 부담 없었다고 평가했습니다.", url: "https://app.myweddingfriendz.com/weddinghall/weddinghall_view.asp?PartnerNo=388" },
             { date: "2025-06-11", type: "시식", tone: "혼합", food: true, summary: "메뉴 수와 한식·해산물·고기는 만족했지만 일부 음식이 차갑고 육회는 냉동 느낌이었다고 적었습니다.", url: "https://creamystar.tistory.com/1593" },
             { date: "2024-08-18", type: "하객", tone: "좋음", food: true, summary: "음식 맛과 종류를 좋게 평가했습니다.", url: "https://www.weddingbook.com/review/187205" },
             { date: "2024-06-16", type: "시식", tone: "좋음", food: true, summary: "시식 후 맛과 구성을 좋게 평가했습니다.", url: "https://www.weddingbook.com/review/186357" },
@@ -909,7 +910,10 @@
           meal: 75000,
           rental: 7500000,
           flower: "포함",
-          extra: "그레이스홀은 필수 연출료 금액을 소개 페이지에서 확인할 수 없어 합계에 넣지 않았습니다.",
+          discountQuotes: [
+            { label: "참가격 공시가 · 2026-06-12 공개", meal: 46000, rental: 1500000, minGuests: 200, required: 0, flowerKnown: false, note: "꽃장식 포함 여부가 불명확해 총액은 계산하지 않음 · 실제 적용 조건은 상담 확인" },
+          ],
+          extra: "그레이스홀은 필수 연출료 금액을 소개 페이지에서 확인할 수 없어 합계에 넣지 않았습니다. 참가격 공시가는 실제 계약 견적이 아니라 업체 공개 가격이며 적용 날짜·시간과 포함 항목을 상담에서 확인해야 합니다.",
           minGuests: 250,
           maxGuests: 700,
           interval: 70,
@@ -925,7 +929,10 @@
             { date: "2025-11-17", type: "투어·참고", tone: "좋음", food: false, summary: "신도림 접근성과 짧은 동선, 음식 온도와 즉석 코너 구성을 긍정적으로 정리했습니다. 실제 식사 여부가 명확하지 않아 점수에서는 제외합니다.", url: "https://weddingjunge.tistory.com/entry/%EC%9B%A8%EC%8A%A4%ED%84%B4%EB%B2%A0%EB%8B%88%EB%B9%84%EC%8A%A4-%EC%8B%A0%EB%8F%84%EB%A6%BC-%EC%9B%A8%EB%94%A9%ED%99%80-%ED%9B%84%EA%B8%B0%EF%BD%9C%EC%98%88%EC%8B%9D%ED%99%80%C2%B7%EC%8B%9D%EB%8C%80%C2%B7%EB%B7%94%ED%8E%98%C2%B7%EA%B2%AC%EC%A0%81-%EC%B4%9D%EC%A0%95%EB%A6%AC" },
           ],
           link: "https://www.directwedding.co.kr/weddinghall/hall0402",
-          refs: [{ title: "다이렉트결혼준비", url: "https://www.directwedding.co.kr/weddinghall/hall0402" }],
+          refs: [
+            { title: "다이렉트결혼준비", url: "https://www.directwedding.co.kr/weddinghall/hall0402" },
+            { title: "참가격 공시가 비교", url: "https://audi-design.co.kr/wedding/halls/b756cd47" },
+          ],
         },
         {
           id: "thesbdongjak",
@@ -977,7 +984,10 @@
           rental: 10000000,
           rentalTo: 12000000,
           flower: "포함",
-          extra: "합계는 아트리움홀 정가 기준입니다. 그랜드홀 대관료 1100만 원, 앰버루체홀 1200만 원입니다. 사용자 제공 카페 글은 본문을 확인하지 못해 할인 견적이나 후기에 반영하지 않았습니다.",
+          discountQuotes: [
+            { label: "참가격 공개 · 2027 상반기 아트리움 최저 조건", meal: 67980, rental: 1000000, minGuests: 200, required: 3000000, note: "장식비 300만 원 포함 · 식대 6.798만~8.24만 원·대관 100만~500만 원 범위의 최저 조합 · 실제 적용 조건 확인" },
+          ],
+          extra: "합계는 아트리움홀 정가 기준입니다. 그랜드홀 대관료 1100만 원, 앰버루체홀 1200만 원입니다. 참가격 공개 가격은 조건별 범위라 최저 조합이 실제 견적과 다를 수 있습니다. 사용자 제공 카페 글은 본문을 확인하지 못해 반영하지 않았습니다.",
           options: [{ name: "봉사료 3% 별도", price: 0, required: true }],
           minGuests: 200,
           maxGuests: 800,
@@ -988,6 +998,7 @@
           parking: "2026-09-28 공개 정보 기준 1500대, 2시간 무료 후 유료",
           presetScores: { p_height: 5, p_size: 5, p_park: 4, p_flow: 3 },
           reviews: [
+            { date: "2026-09-08", type: "계약·투어", tone: "좋음", food: false, summary: "높은 층고와 어두운 홀, 꽃향기와 예식 옵션을 좋게 평가해 다른 홀 계약 뒤 다시 계약했다고 적었습니다. 실제 시식 여부가 명시되지 않아 점수에서는 제외합니다.", url: "https://app.myweddingfriendz.com/weddinghall/weddinghall_view.asp?PartnerNo=483" },
             { date: "2026-01-20", type: "계약·후기", tone: "좋음", food: false, summary: "높은 층고와 큰 홀, 주차와 음식 품질을 만족스럽게 평가했습니다. 실제 시식 여부가 명시되지 않아 뷔페 점수에서는 제외합니다.", url: "https://mywedlog.com/review/1305" },
             { date: "2025-10-31", type: "투어", tone: "혼합", food: false, summary: "세 홀의 인테리어는 좋지만 역 거리, 로비 혼잡과 외부 주차 가능성을 아쉬움으로 적었습니다. 실제 식사 후기는 아닙니다.", url: "https://mywedlog.com/review/777" },
             { date: "2025-10-12", type: "투어", tone: "혼합", food: false, summary: "리모델링한 밝은 홀과 문래역 접근성은 좋지만 한 층의 세 홀 때문에 로비가 혼잡하다고 적었습니다. 실제 식사 여부는 확인되지 않았습니다.", url: "https://mywedlog.com/review/673" },
@@ -1328,7 +1339,7 @@
 
       function discountTotals(venue) {
         return (venue.discountQuotes || []).map((quote) => {
-          const complete = quote.meal && quote.rental != null && quote.minGuests;
+          const complete = quote.meal && quote.rental != null && quote.minGuests && quote.flowerKnown !== false;
           const total = complete ? Number(quote.rental) + Number(quote.required || 0) + Number(quote.meal) * Number(quote.minGuests) : null;
           return Object.assign({}, quote, { total });
         });
@@ -1345,7 +1356,7 @@
       function discountText(venue) {
         const quotes = discountTotals(venue);
         if (!quotes.length) return "확인된 할인가 없음";
-        return quotes.map((quote) => quote.label + " · " + (quote.total == null ? "식대 " + won(quote.meal) + " · 대관 " + won(quote.rental) + " (총액 계산 불가)" : won(quote.total))).join(" / ");
+        return quotes.map((quote) => quote.label + " · " + (quote.total == null ? "식대 " + won(quote.meal) + " · 대관 " + won(quote.rental) + " (총액 계산 불가)" : won(quote.total)) + (quote.note ? " · " + quote.note : "")).join(" / ");
       }
 
       function refList(venue) {
