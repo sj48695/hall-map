@@ -398,6 +398,7 @@
         </div>
         <div class="p-5 space-y-4 text-sm">
           <p id="detail-times" class="bg-roseGold-50 rounded-xl p-3 leading-relaxed"></p>
+          <div id="detail-score-breakdown"></div>
           <div class="space-y-2">
             <img id="detail-photo" alt="" class="hidden w-full max-h-64 object-cover rounded-2xl bg-roseGold-50" />
             <div class="flex flex-wrap gap-2 items-center">
@@ -1484,26 +1485,33 @@
       }
 
       function fitOf(metrics) {
+        const breakdown = fitBreakdown(metrics);
+        return breakdown.weight ? breakdown.weighted / breakdown.weight : 0;
+      }
+
+      function fitBreakdown(metrics) {
         const hasFamily = state.origins.some((origin) => origin.role === "family");
-        let acc = 0;
-        let weight = 0;
-        const add = (w, score) => {
-          if (!w || score == null) return;
-          acc += w * score;
-          weight += w;
+        const items = [];
+        const add = (key, label, raw, w, score) => {
+          const weight = Number(w) || 0;
+          items.push({ key, label, raw, weight, score, included: weight > 0 && score != null });
         };
-        add(state.weights.groom, timeScore(metrics.groomMin));
-        add(state.weights.bride, timeScore(metrics.brideMin));
-        if (hasFamily) add(state.weights.family, timeScore(metrics.familyMin));
+        add("groom", "신랑 이동", metrics.groomMin == null ? "시간 없음" : metrics.groomMin + "분", state.weights.groom, timeScore(metrics.groomMin));
+        add("bride", "신부 이동", metrics.brideMin == null ? "시간 없음" : metrics.brideMin + "분", state.weights.bride, timeScore(metrics.brideMin));
+        if (hasFamily) add("family", "가족 이동", metrics.familyMin == null ? "시간 없음" : metrics.familyMin + "분", state.weights.family, timeScore(metrics.familyMin));
         const total = comparisonTotal(metrics);
-        if (state.weights.meal && total != null) {
-          add(state.weights.meal, Math.max(0, Math.min(100, ((state.budgetWon - total) / state.budgetWon) * 100)));
-        }
+        const priceScore = total == null ? null : Math.max(0, Math.min(100, ((state.budgetWon - total) / state.budgetWon) * 100));
+        add("meal", "가격 여유", total == null ? "총액 없음" : won(total) + " / 예산 " + won(state.budgetWon), state.weights.meal, priceScore);
         state.criteria.forEach((criterion) => {
           const mark = markOf(metrics.id, criterion.id);
-          add(state.weights[criterion.id], mark == null ? null : ((mark - 1) / 4) * 100);
+          add(criterion.id, criterion.name, mark == null ? "점수 없음" : mark + "/5", state.weights[criterion.id], mark == null ? null : ((mark - 1) / 4) * 100);
         });
-        return weight ? acc / weight : 0;
+        const included = items.filter((item) => item.included);
+        return {
+          items,
+          weighted: included.reduce((sum, item) => sum + item.weight * item.score, 0),
+          weight: included.reduce((sum, item) => sum + item.weight, 0),
+        };
       }
 
       function markOf(venueId, criterionId) {
@@ -2124,6 +2132,7 @@
       function paintDetailScores() {
         const box = document.getElementById("detail-scores");
         if (!openId) return;
+        paintDetailScoreBreakdown(openVenue());
         if (!state.criteria.length) {
           box.innerHTML = `<p class="text-xs text-gray-500">분위기, 주차처럼 사람마다 다른 기준은 정렬 기준에서 추가한 뒤, 여기서 1점부터 5점까지 매깁니다.</p>`;
           return;
@@ -2144,6 +2153,22 @@
         const primary = state.criteria.filter((criterion) => primaryIds.has(criterion.id));
         const extra = state.criteria.filter((criterion) => !primaryIds.has(criterion.id));
         box.innerHTML = rows(primary) + (extra.length ? `<details class="border border-roseGold-100 rounded-xl p-3"><summary class="cursor-pointer font-medium">취향 점수 <span class="text-xs font-normal text-gray-500">${extra.length}개</span></summary><div class="mt-3 space-y-2">${rows(extra)}</div></details>` : "");
+      }
+
+      function paintDetailScoreBreakdown(venue) {
+        const box = document.getElementById("detail-score-breakdown");
+        if (!box || !venue) return;
+        const result = fitBreakdown(venue);
+        const rows = result.items.map((item) => {
+          const detail = item.included
+            ? `환산 ${item.score.toFixed(1)}점 × 중요도 ${item.weight} → 총점 +${(item.weight * item.score / result.weight).toFixed(1)}점`
+            : item.weight <= 0 ? "중요도 0 · 계산 제외" : "값 없음 · 계산 제외";
+          return `<div class="grid grid-cols-[minmax(0,1fr)_auto] gap-x-3 border-t border-roseGold-100 py-2 first:border-0"><div><strong class="text-xs">${esc(item.label)}</strong><p class="text-[11px] text-gray-500">${esc(item.raw)}</p></div><p class="text-right text-[11px] ${item.included ? "text-gray-700" : "text-gray-400"}">${esc(detail)}</p></div>`;
+        }).join("");
+        const formula = result.weight
+          ? `가중 합계 ${Math.round(result.weighted).toLocaleString("ko-KR")} ÷ 적용 중요도 ${result.weight} = ${Math.round(venue.fit)}점`
+          : "적용되는 중요도가 없어 0점입니다.";
+        box.innerHTML = `<details open class="rounded-xl border border-roseGold-200 bg-roseGold-50/50 p-3"><summary class="cursor-pointer font-bold">중요도 점수 ${Math.round(venue.fit)}점 · 계산 상세</summary><p class="mt-2 text-xs text-gray-600">각 항목을 0~100점으로 환산한 뒤 중요도로 가중 평균합니다. 값이 없거나 중요도가 0인 항목은 분모에서도 제외합니다.</p><div class="mt-2">${rows}</div><p class="border-t border-roseGold-200 pt-2 text-xs font-bold text-roseGold-800">${esc(formula)}</p></details>`;
       }
 
       function photoError(message) {
