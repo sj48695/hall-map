@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-    <meta name="research-update" content="cafe-quotes-20261005" />
+    <meta name="research-update" content="quote-comparison-20261005" />
     <meta name="theme-color" content="#fdf8f6" />
     <link rel="icon" href="data:," />
     <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -321,7 +321,7 @@
 
       <section data-tab-content="table" class="hidden space-y-4">
         <div><h2 class="text-xl font-bold">비교표</h2><p class="mt-1 text-xs text-gray-500">가격 → 옵션 → 평가 → 이동 순서로 비교합니다.</p></div>
-        <details class="text-xs text-gray-500"><summary class="cursor-pointer">점수·금액 기준</summary><p class="mt-2">총액은 소개 숫자 기준이며 상담 견적이 아닙니다. 뷔페는 직접 먹은 공개 후기 2건 이상만 점수화했습니다.</p></details>
+        <details class="text-xs text-gray-500"><summary class="cursor-pointer">점수·금액 기준</summary><p class="mt-2">비교 총액은 확인된 기본 합계와 선택 옵션 기준입니다. 옵션 가격이 미확인이면 총액·가격 점수에서 제외합니다. 뷔페는 직접 먹은 공개 후기 2건 이상만 점수화했습니다.</p></details>
         <div class="flex gap-2 md:hidden">
           <label class="flex-1 text-xs font-semibold">정렬 기준
             <select id="table-sort" class="mt-1 w-full min-h-11 border border-roseGold-200 rounded-xl px-3 bg-white font-normal">
@@ -330,7 +330,7 @@
           </label>
           <button type="button" id="table-direction" class="self-end min-h-11 border border-roseGold-200 rounded-xl px-3 text-sm">낮은 순</button>
         </div>
-        <div id="priority-option-picker"></div>
+        <div id="priority-option-picker"></div><div id="quote-tools"></div>
         <div id="comparison-mobile" class="space-y-3 md:hidden"></div>
         <div class="hidden md:flex flex-wrap gap-2 text-[11px] text-gray-600"><span class="rounded-full bg-amber-50 px-3 py-1">가격</span><span class="rounded-full bg-sky-50 px-3 py-1">옵션</span><span class="rounded-full bg-emerald-50 px-3 py-1">평가</span><span class="rounded-full bg-violet-50 px-3 py-1">이동</span></div>
         <div class="compare-scroll hidden md:block bg-white rounded-2xl border border-roseGold-100 overflow-auto max-h-[72vh]">
@@ -401,7 +401,7 @@
         </div>
         <div class="p-5 space-y-4 text-sm">
           <p id="detail-times" class="bg-roseGold-50 rounded-xl p-3 leading-relaxed"></p>
-          <div id="detail-price-summary"></div>
+          <div id="detail-price-summary"></div><div id="detail-quote-records"></div>
           <div id="detail-score-breakdown"></div>
           <div class="space-y-2">
             <img id="detail-photo" alt="" class="hidden w-full max-h-64 object-cover rounded-2xl bg-roseGold-50" />
@@ -501,7 +501,7 @@
           serviceIncludedRate: 0.05,
           extra: "사용자 제공 비교표의 할인가입니다. 최소보증 인원이 없어 할인 총액은 계산하지 않습니다. 공식 FAQ는 표시 가격에 부가세 10%와 봉사료 5%가 포함된다고 안내합니다.",
           discountQuotes: [
-            { label: "2026-08-27 운영진 공개 견적", meal: 46000, rental: 800000, minGuests: null, required: null, flowerKnown: false, note: "2027년 5월 오후 · 보증 120명대(정확한 인원 미공개) · 꽃·필수비용·봉사료·부가세 포함 여부 미표시 · 2026-10-05 확인" },
+            { label: "2026-08-27 운영진 공개 견적", meal: 46000, rental: 800000, minGuests: null, required: null, flowerKnown: false, note: "2027년 5월 오후 · 보증 120명대(정확한 인원 미공개) · 꽃·필수비용·봉사료·부가세 포함 여부 미표시 · 2026-10-05 확인", url: "https://cafe.naver.com/f-e/cafes/28757979/articles/669809", checkedAt: "2026-10-05" },
             { label: "사용자 제공 비교표", meal: 45000, rental: 500000, minGuests: null, required: 250000, note: "꽃장식 포함 · 필수 예식도우미 25만 원 별도" },
             { label: "2026년 9~10월 현장 계약 혜택", meal: 49000, rental: 2100000, minGuests: 150, required: 250000, note: "보증 150명 이상 · 필수 예식도우미 25만 원 포함 비교 총액 970만 원" },
           ],
@@ -568,7 +568,7 @@
           serviceRate: 0.03,
           extra: "연출료 0원에서 30만 원은 홀 옵션이라 합계에 넣지 않았습니다. 공개 소개의 봉사료 3% 별도 조건을 식대에 반영합니다.",
           discountQuotes: [
-            { label: "2026-08-10 운영진 공개 견적", meal: 51500, rental: 2650000, minGuests: null, required: null, flowerKnown: false, note: "2026년 8월 오후 · 보증 170명대(정확한 인원 미공개) · 지난 예식 조건 · 꽃·필수비용·봉사료·부가세 포함 여부 미표시 · 2026-10-05 확인" },
+            { label: "2026-08-10 운영진 공개 견적", meal: 51500, rental: 2650000, minGuests: null, required: null, flowerKnown: false, note: "2026년 8월 오후 · 보증 170명대(정확한 인원 미공개) · 지난 예식 조건 · 꽃·필수비용·봉사료·부가세 포함 여부 미표시 · 2026-10-05 확인", url: "https://cafe.naver.com/f-e/cafes/28757979/articles/667022", checkedAt: "2026-10-05" },
             { label: "사용자 제공 비교 메모 · 5/20 조건", meal: 49000, rental: 2430000, minGuests: null, required: 0, note: "보증인원과 적용 연도가 없어 할인 총액은 계산하지 않음" },
             { label: "사용자 제공 비교 메모 · 8/10 조건", meal: 52000, rental: 2650000, minGuests: null, required: 0, note: "보증인원과 적용 연도가 없어 할인 총액은 계산하지 않음" },
           ],
@@ -615,7 +615,7 @@
           serviceRate: 0.03,
           extra: "사용자 제공 견적과 계약 후기의 할인가는 조건과 시점이 다릅니다.",
           discountQuotes: [
-            { label: "2026-09-26 상담·계약 후 취소 후기", meal: 65000, rental: 4800000, minGuests: 200, required: null, flowerKnown: false, note: "2027년 8월 토요일 12시 · 보증 200명 · 후기 정가 식대 7만 원·대관 680만 원 · 꽃·필수비용·봉사료·부가세 포함 여부 미표시 · 2026-10-05 확인" },
+            { label: "2026-09-26 상담·계약 후 취소 후기", meal: 65000, rental: 4800000, minGuests: 200, required: null, flowerKnown: false, note: "2027년 8월 토요일 12시 · 보증 200명 · 후기 정가 식대 7만 원·대관 680만 원 · 꽃·필수비용·봉사료·부가세 포함 여부 미표시 · 2026-10-05 확인", url: "https://cafe.naver.com/f-e/cafes/28757979/articles/674141", checkedAt: "2026-10-05" },
             { label: "사용자 제공 토요일 견적", meal: 64000, rental: 4500000, minGuests: 200, required: 0 },
             { label: "2026-07-01 계약 후기", meal: 62000, rental: 4200000, minGuests: 200, required: 0, note: "2027년 5월 · 포토부스 서비스" },
             { label: "사용자 제공 비교 메모 · 블로그 공유 조건", meal: 65000, rental: 4800000, minGuests: null, required: 0, note: "보증인원과 적용일이 없어 할인 총액은 계산하지 않음" },
@@ -915,7 +915,7 @@
           flower: "포함",
           extra: "합계는 그랜드홀 기준입니다. 리젠시홀 대관료는 770만 원입니다.",
           discountQuotes: [
-            { label: "2026-09-29 리젠시홀 상담 후기 · 계약하지 않음", meal: 74000, rental: 7100000, minGuests: 250, required: null, flowerKnown: false, note: "2027년 9월 토요일 · 보증 250명 · 후기 정가 식대 9만 원·대관 950만 원 · 기존 소개 정가와 기준이 다름 · 꽃·필수비용·봉사료·부가세 포함 여부 미표시 · 2026-10-05 확인" },
+            { label: "2026-09-29 리젠시홀 상담 후기 · 계약하지 않음", meal: 74000, rental: 7100000, minGuests: 250, required: null, flowerKnown: false, note: "2027년 9월 토요일 · 보증 250명 · 후기 정가 식대 9만 원·대관 950만 원 · 기존 소개 정가와 기준이 다름 · 꽃·필수비용·봉사료·부가세 포함 여부 미표시 · 2026-10-05 확인", url: "https://cafe.naver.com/f-e/cafes/28757979/articles/674460", checkedAt: "2026-10-05" },
           ],
           minGuests: 250,
           maxGuests: 1200,
@@ -958,7 +958,7 @@
           flower: "포함",
           serviceRate: 0.03,
           discountQuotes: [
-            { label: "2026-06-18 운영진 공개 견적", meal: 51000, rental: 4440000, minGuests: null, required: null, flowerKnown: false, note: "2027년 5월 점심 · 보증 150명대(정확한 인원 미공개) · 홀 이름·꽃·필수비용·봉사료·부가세 포함 여부 미표시 · 2026-10-05 확인" },
+            { label: "2026-06-18 운영진 공개 견적", meal: 51000, rental: 4440000, minGuests: null, required: null, flowerKnown: false, note: "2027년 5월 점심 · 보증 150명대(정확한 인원 미공개) · 홀 이름·꽃·필수비용·봉사료·부가세 포함 여부 미표시 · 2026-10-05 확인", url: "https://cafe.naver.com/f-e/cafes/28757979/articles/658442", checkedAt: "2026-10-05" },
             { label: "참가격 공시가 · 2026-06-12 공개", meal: 46000, rental: 1500000, minGuests: 200, required: 0, flowerKnown: false, note: "꽃장식 포함 여부가 불명확해 총액은 계산하지 않음 · 실제 적용 조건은 상담 확인" },
           ],
           platformBenefits: ["웨딩북 최초 방문예약 후 200명 이상 보증 계약 시 현금 10만 원 캐시백", "웨딩북 방문 시 추가 할인 안내 · 금액은 상담 확인"],
@@ -1401,7 +1401,7 @@
       }
 
       function won(value) {
-        if (!value) return "미입력";
+        if (value == null || value === "" || !Number.isFinite(Number(value))) return "미확인";
         const man = value / 10000;
         const text = Number.isInteger(man) ? String(man) : man.toFixed(1);
         return text + "만 원";
@@ -1439,6 +1439,76 @@
         return { low, high };
       }
 
+
+      let comparisonSelection = [];
+      let quoteCondition = "";
+      function personalQuotes(venue) {
+        const records = readJSON("hallmap.personalQuotes", {});
+        return Array.isArray(records[venue.id]) ? records[venue.id] : [];
+      }
+      function quoteRecordsHtml(venue) {
+        const quotes = discountTotals(venue).concat(personalQuotes(venue).map((q, index) => Object.assign(discountTotals({discountQuotes:[q]})[0], {personalIndex:index})));
+        const filtered = quotes.filter((q) => !quoteCondition || ((q.note || "") + (q.label || "")).includes(quoteCondition));
+        return `<details class="my-3 rounded-xl border border-amber-200 p-3" open><summary class="font-bold text-sm cursor-pointer">조건별 견적·확인 상태</summary><p class="mt-2 text-xs text-gray-500">날짜·요일·시간·홀·보증 인원을 함께 확인하세요.</p><div class="mt-2 space-y-3">${filtered.map((q) => {
+          const missing = [!q.meal && "식대", q.rental == null && "대관", !q.minGuests && "보증 인원", !Number.isFinite(q.required) && "필수비용"].filter(Boolean);
+          const historical = /2026年8月|2026년 8월/.test(q.note || "");
+          const status = historical ? "과거 조건" : q.total == null ? "일부 금액 확인" : "기본 합계 계산 가능";
+          return `<article class="border-t pt-2 text-xs leading-relaxed"><p class="font-bold">${esc(q.label)} · ${status}</p><p>식대 ${esc(won(q.meal))} × ${q.minGuests || "보증 미확인"}${q.minGuests ? "명" : ""} + 대관 ${esc(won(q.rental))} + 필수 ${Number.isFinite(q.required) ? esc(won(q.required)) : "미확인"}</p><p>${q.total == null ? "총액 미확인" : "기본 합계 " + esc(won(q.total))} · 확인된 선택 옵션 소계 ${esc(won(selectedOptionTotal(venue)))}${missingOptions(venue).length ? " · 선택 옵션 가격 미확인 " + missingOptions(venue).length + "개" : ""}${missing.length ? " · 미확인: " + esc(missing.join("·")) : ""}</p><p>${esc(q.note || "적용 날짜·시간·세금 조건을 확인하세요.")}</p><p>봉사료 ${q.serviceRate ? Math.round(q.serviceRate * 100) + "% 반영" : "포함 여부를 확인하세요."} · 부가세는 견적 조건을 확인하세요.</p>${safeUrl(q.url) ? `<a class="underline text-roseGold-700" href="${esc(safeUrl(q.url))}" target="_blank" rel="noreferrer">견적 원문</a>` : '<span class="text-gray-500">공개 원문 링크 없음 · 제공 자료/상담 기록</span>'} <span class="text-gray-500">${q.checkedAt ? "확인 " + esc(q.checkedAt) : "확인일 미기록"}</span>${q.personalIndex != null ? `<button type="button" data-delete-quote="${q.personalIndex}" data-quote-venue="${esc(venue.id)}" class="block min-h-11 underline text-gray-600">이 상담 기록 삭제</button>` : ""}</article>`;
+        }).join("") || '<p class="text-xs">해당 조건의 확인된 견적이 없습니다.</p>'}</div></details>`;
+      }
+      function personalQuoteForm(venue) {
+        return `<details class="rounded-xl border p-3"><summary class="font-bold text-sm cursor-pointer">내 상담 견적 저장</summary><form data-personal-quote="${esc(venue.id)}" class="mt-3 grid grid-cols-2 gap-2 text-xs">
+        ${[["label","상담일·홀 이름","text"],["meal","식대(원)","number"],["rental","대관료(원)","number"],["required","꽃·필수비용(포함 시 0원)","number"],["minGuests","정확한 보증 인원","number"],["servicePercent","별도 봉사료(%, 없으면 0)","number"]].map(([name,label,type]) => `<label>${label}<input name="${name}" type="${type}" ${type === "number" ? 'min="0" step="any"' : "required"} class="mt-1 border rounded-lg p-2 w-full min-w-0" /></label>`).join("")}
+        <label class="col-span-2">예식 날짜·요일·시간 / 부가세 / 혜택·서비스 조건<textarea name="note" required class="mt-1 border rounded-lg p-2 w-full" rows="3"></textarea></label><label class="col-span-2">근거 링크(선택)<input name="url" type="url" class="mt-1 border rounded-lg p-2 w-full" /></label><p class="col-span-2 text-gray-500">이 브라우저에만 저장합니다. 빈 금액은 미확인으로 남깁니다. 공개 견적과 별도로 보관하며 순위에는 자동 반영하지 않습니다.</p><button class="col-span-2 min-h-11 rounded-lg bg-roseGold-500 text-white">상담 견적 저장</button><p data-quote-status class="col-span-2" role="status"></p></form></details>`;
+      }
+      function renderQuoteTools(view) {
+        const venues = shown(view);
+        const selected = venues.filter((v) => comparisonSelection.includes(v.id));
+        const differences = [["meal", "식대"], ["rental", "대관료"], ["minGuests", "보증 인원"], ["interval", "예식 간격"]].filter(([key]) => new Set(selected.map((v) => v[key] ?? null)).size > 1).map(([, label]) => label);
+        document.getElementById("quote-tools").innerHTML = `<section class="rounded-2xl bg-white border p-4 space-y-3"><label class="block text-sm font-bold">견적 조건 찾기<input id="quote-condition" value="${esc(quoteCondition)}" placeholder="예: 2027년 5월, 토요일, 오후" class="block mt-2 w-full border rounded-lg p-2 font-normal" /></label><p class="text-xs text-gray-500">날짜·시간·홀·보증 인원이 같은지 원문으로 확인하세요. 조건이 공개되지 않은 기록은 직접 비교하기 어렵습니다.</p><p class="text-sm font-bold">나란히 비교할 후보 · 최대 3곳</p><div class="flex flex-wrap gap-2">${venues.map((v) => `<button type="button" data-compare-pick="${esc(v.id)}" aria-pressed="${comparisonSelection.includes(v.id)}" class="min-h-11 rounded-lg border p-2 text-xs ${comparisonSelection.includes(v.id) ? "bg-violet-100" : ""}">${esc(v.name)}</button>`).join("")}</div><p id="compare-status" role="status" class="text-xs"></p>${selected.length > 1 ? `<p class="rounded-lg bg-amber-50 p-2 text-xs font-semibold">차이가 있는 항목: ${esc(differences.join(" · ") || "공개 기본값은 같습니다.")} · 옵션·할인 적용 조건은 아래에서 확인하세요.</p>` : ""}${selected.length ? `<div class="overflow-x-auto"><div class="grid gap-3" style="grid-template-columns:repeat(${selected.length},minmax(240px,1fr))">${selected.map((v) => `<article class="min-w-0 rounded-xl border p-3"><button data-open="${esc(v.id)}" class="font-bold underline text-sm">${esc(v.name)}</button><p class="mt-2 text-xs">식대 ${esc(won(v.meal))} · 보증 ${v.minGuests || "미확인"}명</p>${optionComparisonHtml(v)}${quoteRecordsHtml(v)}</article>`).join("")}</div></div>` : ""}</section>`;
+      }
+      document.addEventListener("change", (event) => {
+        if (event.target.id !== "quote-condition") return;
+        quoteCondition = event.target.value.trim();
+        renderTable(buildView());
+      });
+      document.addEventListener("click", (event) => {
+        const remove = event.target.closest("[data-delete-quote]");
+        if (remove) {
+          const records = readJSON("hallmap.personalQuotes", {});
+          const id = remove.dataset.quoteVenue;
+          if (!Array.isArray(records[id])) return;
+          records[id].splice(Number(remove.dataset.deleteQuote), 1);
+          try { localStorage.setItem("hallmap.personalQuotes", JSON.stringify(records)); }
+          catch (error) { return; }
+          if (openId) paintDetailMoney(openVenue());
+          renderTable(buildView());
+          return;
+        }
+        const button = event.target.closest("[data-compare-pick]");
+        if (!button) return;
+        const id = button.dataset.comparePick;
+        if (comparisonSelection.includes(id)) comparisonSelection = comparisonSelection.filter((v) => v !== id);
+        else if (comparisonSelection.length < 3) comparisonSelection.push(id);
+        else { document.getElementById("compare-status").textContent = "최대 3곳입니다. 선택한 후보를 눌러 해제하세요."; return; }
+        renderTable(buildView());
+      });
+      document.addEventListener("submit", (event) => {
+        const form = event.target.closest("[data-personal-quote]");
+        if (!form) return;
+        event.preventDefault();
+        const data = new FormData(form);
+        const number = (key) => data.get(key) === "" ? null : Number(data.get(key));
+        const records = readJSON("hallmap.personalQuotes", {});
+        const id = form.dataset.personalQuote;
+        const quote = {label: String(data.get("label")), meal:number("meal"), rental:number("rental"), required:number("required"), minGuests:number("minGuests"), flowerKnown:Number.isFinite(number("required")), serviceRate:number("servicePercent") == null ? 0 : number("servicePercent") / 100, note:String(data.get("note")), url:safeUrl(data.get("url")), checkedAt:new Date().toLocaleDateString("sv-SE")};
+        records[id] = (Array.isArray(records[id]) ? records[id] : []).concat(quote);
+        try { localStorage.setItem("hallmap.personalQuotes", JSON.stringify(records)); }
+        catch (error) { form.querySelector("[data-quote-status]").textContent = "저장 공간이 부족해 저장하지 못했습니다."; return; }
+        paintDetailMoney(openVenue());
+        renderTable(buildView());
+      });
+
       function discountTotals(venue) {
         return (venue.discountQuotes || []).map((quote) => {
           const complete = quote.meal && quote.rental != null && quote.minGuests && Number.isFinite(quote.required) && quote.flowerKnown !== false;
@@ -1464,6 +1534,10 @@
         return (venue.options || []).filter((option) => !option.required && !option.service && category.match.test(option.name)).sort((a, b) => Number(a.price || 0) - Number(b.price || 0))[0] || null;
       }
 
+      function missingOptions(venue) {
+        return selectedOptionKeys().filter((key) => !Number.isFinite(optionForKey(venue, key)?.price));
+      }
+
       function selectedOptionTotal(venue) {
         return selectedOptionKeys().reduce((sum, key) => sum + Number(optionForKey(venue, key)?.price || 0), 0);
       }
@@ -1475,7 +1549,7 @@
       function comparisonTotal(venue) {
         const discount = bestDiscount(venue);
         const base = discount?.total ?? quoteTotals(venue)?.low ?? null;
-        return base == null ? null : base + selectedOptionTotal(venue) + (discount ? 0 : fixedRequiredTotal(venue));
+        return base == null || missingOptions(venue).length ? null : base + selectedOptionTotal(venue) + (discount ? 0 : fixedRequiredTotal(venue));
       }
 
       function discountText(venue) {
@@ -1872,9 +1946,10 @@
         const total = venue.comparisonTotal ?? comparisonTotal(venue);
         const chosen = selectedOptionTotal(venue);
         return `<div class="space-y-2">
-          <div class="rounded-lg bg-violet-50 p-2"><p class="text-[10px] text-violet-700">필수 우선 비교금액</p><p class="font-bold text-violet-900">${total == null ? "계산 안 함" : esc(won(total))}${chosen ? ` <span class="font-normal text-[10px]">· 내 필수 +${esc(won(chosen))}</span>` : ""}</p></div>
+          <div class="rounded-lg bg-violet-50 p-2"><p class="text-[10px] text-violet-700">필수 우선 비교금액</p><p class="font-bold text-violet-900">${total == null ? "총액 미확인" : esc(won(total))}${chosen ? ` <span class="font-normal text-[10px]">· 내 필수 +${esc(won(chosen))}</span>` : ""}</p></div>
+          ${missingOptions(venue).length ? `<p class="text-amber-800">선택 옵션 ${missingOptions(venue).length}개 가격 미확인 · 확인된 옵션 소계 ${esc(won(chosen))} · 가격 점수 제외</p>` : ""}
           ${fixed("홀 필수", groups.required, "bg-rose-100 text-rose-700", "bg-rose-50 text-rose-900")}
-          ${selected.length ? `<div><p class="mb-1 text-[10px] font-bold text-violet-700">내 필수</p><div class="grid gap-1">${selected.map((item) => `<div class="flex items-center justify-between gap-2 rounded-md ${item.option ? "bg-violet-100 text-violet-900" : "bg-amber-50 text-amber-800"} px-2 py-1"><span>${esc(item.label)}</span><span class="text-right font-semibold">${item.option ? esc(item.option.name + " · " + won(item.option.price)) : "가격 미확인"}</span></div>`).join("")}</div></div>` : '<p class="text-[10px] text-gray-500">위에서 우리 필수 옵션을 선택하세요.</p>'}
+          ${selected.length ? `<div><p class="mb-1 text-[10px] font-bold text-violet-700">내 필수</p><div class="grid gap-1">${selected.map((item) => `<div class="flex items-center justify-between gap-2 rounded-md ${item.option ? "bg-violet-100 text-violet-900" : "bg-amber-50 text-amber-800"} px-2 py-1"><span>${esc(item.label)}</span><span class="text-right font-semibold">${item.option && Number.isFinite(item.option.price) ? esc(item.option.name + " · " + won(item.option.price)) : "가격 미확인"}</span></div>`).join("")}</div></div>` : '<p class="text-[10px] text-gray-500">위에서 우리 필수 옵션을 선택하세요.</p>'}
           ${available.length ? `<details><summary class="cursor-pointer text-[10px] text-gray-500">이 홀의 다른 옵션 ${available.length}개</summary><div class="mt-1 flex flex-wrap gap-1">${available.map((item) => `<button type="button" data-option-key="${item.id}" class="rounded-md border border-gray-200 bg-white px-2 py-1 text-left text-gray-700">+ ${esc(item.label)}</button>`).join("")}</div></details>` : ""}
           ${fixed("서비스", groups.service, "bg-emerald-100 text-emerald-700", "bg-emerald-50 text-emerald-900")}
         </div>`;
@@ -1918,6 +1993,7 @@
 
       function renderTable(view) {
         renderPriorityOptionPicker();
+        renderQuoteTools(view);
         const ranked = shown(view);
         const rank = new Map(ranked.filter((venue) => !venue.parked).map((venue, index) => [venue.id, index + 1]));
         const rows = tableRows(view);
@@ -2465,6 +2541,7 @@
 
       function paintDetailMoney(venue) {
         if (!venue) return;
+        document.getElementById("detail-quote-records").innerHTML = quoteRecordsHtml(venue) + personalQuoteForm(venue);
         const put = (id, value) => {
           const el = document.getElementById(id);
           if (el && document.activeElement !== el) el.value = value || "";
@@ -2506,7 +2583,7 @@
       function researchNotesHtml(venue) {
         const notes = venue.researchNotes || [];
         if (!notes.length) return "";
-        return `<details class="col-span-full rounded-xl border border-amber-200 bg-amber-50 p-3"><summary class="cursor-pointer font-bold text-sm">공개 근거로 미리 확인할 질문 <span class="font-normal text-xs">2026-10-05 확인</span></summary><div class="mt-2 space-y-3">${notes.map((note) => `<div class="text-xs leading-relaxed"><a href="${esc(note.url)}" target="_blank" rel="noreferrer" class="text-roseGold-700 underline">${esc(note.title)}</a><p class="mt-1">${esc(note.text)}</p></div>`).join("")}</div></details>`;
+        return `<details class="col-span-full rounded-xl border border-amber-200 bg-amber-50 p-3" open><summary class="cursor-pointer font-bold text-sm">공개 근거로 미리 확인할 질문 <span class="font-normal text-xs">2026-10-05 확인</span></summary><div class="mt-2 space-y-3">${notes.map((note) => `<div class="text-xs leading-relaxed"><a href="${esc(note.url)}" target="_blank" rel="noreferrer" class="text-roseGold-700 underline">${esc(note.title)}</a><p class="mt-1">${esc(note.text)}</p></div>`).join("")}</div></details>`;
       }
 
       function paintDetailOptions(venue) {
