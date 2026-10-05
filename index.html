@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-    <meta name="research-update" content="quote-comparison-20261005" />
+    <meta name="research-update" content="planner-quotes-20261006" />
     <meta name="theme-color" content="#fdf8f6" />
     <link rel="icon" href="data:," />
     <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -386,7 +386,7 @@
           <h2 class="text-xl font-bold">투어 메모</h2>
           <span id="memo-save-status" class="hidden text-xs text-emerald-700 bg-emerald-50 px-2 py-1 rounded-full">저장됨</span>
         </div>
-        <textarea id="tour-memo-textarea" rows="12" class="w-full p-4 border border-roseGold-200 rounded-2xl text-sm leading-relaxed" placeholder="홀마다 상담에서 들은 식대, 예식 간격, 주차, 느낀 점을 적어두세요."></textarea>
+        <div id="planner-backup" class="rounded-xl border bg-white p-4 text-sm"><p class="font-bold">개인 데이터 백업·복원</p><button id="export-planner" type="button" class="min-h-11 underline mr-3">백업 파일 받기</button><label class="block text-xs">복원할 백업 파일<input id="import-planner" type="file" accept="application/json,.json" class="block mt-2 w-full" /></label><p id="backup-status" class="mt-2 text-xs" role="status"></p><button id="restore-planner" type="button" disabled class="min-h-11 border rounded-lg px-3 mt-2 disabled:opacity-40">선택한 백업 복원</button></div><div id="tour-schedule-list"></div><textarea id="tour-memo-textarea" rows="12" class="w-full p-4 border border-roseGold-200 rounded-2xl text-sm leading-relaxed" placeholder="홀마다 상담에서 들은 식대, 예식 간격, 주차, 느낀 점을 적어두세요."></textarea>
       </section>
     </main>
 
@@ -537,6 +537,7 @@
           ],
           link: "https://www.directwedding.co.kr/weddinghall/hall0437",
           researchNotes: [
+            {title:"2026-10-06 웨딩북 주차·캐시백 재확인",text:"웨딩북은 외부 주차 3000대·5시간 무료, 최초 방문예약 후 200명 이상 보증 계약 시 현금 10만 원을 안내합니다. 다른 소개 페이지의 종일 무료 안내와 달라 실제 하객 무료 시간·주차장·정산 방식을 확인하세요. 200명 미만 계약에도 혜택이 가능한지는 별도로 확인하세요.",url:"https://www.weddingbook.com/weddinghall/829d3162-9b46-11e6-93b9-0abe8d4f74d3"},
             {"title": "2026-08-23 계약 후기", "text": "2027년 5월 29일·보증 120명 계약 사례가 있습니다. 소개 최소 150명과 조건이 다르므로 희망 날짜의 최소보증과 초과 인원 식대를 확인하세요.", "url": "https://cafe.naver.com/f-e/cafes/28757979/articles/669054"},
             {"title": "2026-08-23 주차·동선 후기", "text": "주차 5시간 안내는 플랫폼의 종일 무료 안내와 다릅니다. 무료 주차권 적용 시간과 엘리베이터 1대의 혼잡, 2층 홀→3층 연회장 이동을 확인하세요. 실제 식사 후기는 아닙니다.", "url": "https://cafe.naver.com/f-e/cafes/28757979/articles/669054"},
             {"title": "2026-08-27 공개 견적", "text": "2027년 5월 오후 식대 4.6만 원·대관 80만 원입니다. 예식도우미 등 필수비용과 세금이 포함되는지 견적서로 확인하세요.", "url": "https://cafe.naver.com/f-e/cafes/28757979/articles/669809"},
@@ -1041,6 +1042,7 @@
           flower: "포함",
           serviceRate: 0.03,
           discountQuotes: [
+            {label:"2025-11-28 아트리움 상담 · 계약하지 않음", hall:"아트리움홀", month:"2026-04", time:"16:00", meal:66000, rental:3000000, flowerPrice:3000000, minGuests:200, required:null, flowerKnown:false, serviceUnknown:true, vatMode:"included", note:"2026년 4월 토요일 16시 · 보증 200명 · 지난 예식 조건 · 식대 VAT 포함 · 정가 식대 7.6만 원·대관 500만 원·생화 400만 원, 할인 생화 300만 원 · 기타 필수비용·봉사료 미확인", url:"https://cafe.naver.com/f-e/cafes/28757979/articles/619801", checkedAt:"2026-10-06"},
             { label: "참가격 공개 · 2027 상반기 아트리움 최저 조건", meal: 67980, rental: 1000000, minGuests: 200, required: 3000000, serviceRate: 0.03, note: "장식비 300만 원 포함 · 식대 6.798만~8.24만 원·대관 100만~500만 원 범위의 최저 조합 · 실제 적용 조건 확인" },
           ],
           platformBenefits: ["웨딩북 최초 방문예약 후 200명 이상 보증 계약 시 현금 10만 원 캐시백", "웨딩북 방문 시 추가 할인 안내 · 금액은 상담 확인"],
@@ -1068,6 +1070,8 @@
           ],
           link: "https://www.directwedding.co.kr/weddinghall/hall0013",
           researchNotes: [
+            {title:"2025-10-29 계약 후기 · 혜택과 사전 시식",text:"2026년 7월 토요일 저녁·보증 200명 계약 후기입니다. 당일계약 전문사회자·본식촬영 혜택과 사전 예약 시 최대 6인 시식을 안내받았다고 적었습니다. 현재 날짜에도 적용되는지, 제공 업체·범위·추가금·시식 예약 조건을 서면 확인하세요. 금액 표기 400/6.8은 단위·비용 구성이 불명확해 새 견적 총액으로 쓰지 않습니다.",url:"https://cafe.naver.com/f-e/cafes/28757979/articles/613451"},
+            {title:"2025-11-28 아트리움 식대·생화 견적",text:"2026년 4월 토요일 16시·200명 상담에 식대 6.6만 원(VAT 포함), 대관 300만 원, 생화 300만 원이 명시돼 있습니다. 지난 예식 조건이며 기타 필수비용과 봉사료가 확인되지 않습니다. 현재 생화 구성·교체 범위와 필수비용을 별도로 물어보세요. 직접 식사한 후기가 아니므로 뷔페 점수에는 반영하지 않습니다.",url:"https://cafe.naver.com/f-e/cafes/28757979/articles/619801"},
             {"title": "2026-08-02 상담 후기 · 계약하지 않음", "text": "2027년 7월 중순 이후 아트리움·그랜드홀 통합 공사를 안내받았다는 후기입니다. 예식일 공사 여부·확정 도면·연회장 단독 사용과 변경 시 계약 조건을 확인하세요. 견적 식대는 6.8만 원이나 대관 표기 “800”의 단위와 필수비용이 불명확해 비교금액에 넣지 않았습니다.", "url": "https://cafe.naver.com/f-e/cafes/28757979/articles/665850"},
           ],
           refs: [
@@ -1427,7 +1431,7 @@
 
       function quoteTotals(venue) {
         const flowerKnown = venue.flower === "포함" || Number(venue.flower) > 0;
-        if (!venue.meal || !venue.rental || !venue.minGuests || !flowerKnown) {
+        if (!(venue.meal > 0) || !Number.isFinite(venue.rental) || !(venue.minGuests > 0) || !flowerKnown) {
           return null;
         }
         const flower = venue.flower === "포함" ? 0 : Number(venue.flower);
@@ -1442,48 +1446,108 @@
 
       let comparisonSelection = [];
       let quoteCondition = "";
+      let editingQuote = null;
+      const TARGET_FIELDS = [["date", "예식 날짜", "date"], ["time", "예식 시간", "time"], ["hall", "홀 이름", "text"], ["guests", "희망 보증 인원", "number"]];
+      function plannerData(key, fallback) { return readJSON("hallmap." + key, fallback); }
+      function storePlanner(key, value) {
+        try { localStorage.setItem("hallmap." + key, JSON.stringify(value)); return true; }
+        catch (error) { return false; }
+      }
       function personalQuotes(venue) {
-        const records = readJSON("hallmap.personalQuotes", {});
-        return Array.isArray(records[venue.id]) ? records[venue.id] : [];
+        const records = plannerData("personalQuotes", {});
+        return (Array.isArray(records[venue.id]) ? records[venue.id] : []).map((q, index) => Object.assign({}, q, {id:q.id || "legacy-" + index}));
+      }
+      function activePersonalQuote(venue) {
+        const id = plannerData("activeQuotes", {})[venue.id];
+        return personalQuotes(venue).find((q) => q.id === id) || null;
+      }
+      function targetDifferences(q) {
+        const target = plannerData("targetConditions", {});
+        return TARGET_FIELDS.filter(([key]) => target[key]).map(([key, label]) => label + ": " + (!q[key] ? "견적 조건 미확인" : String(q[key]) === String(target[key]) ? "일치" : "다름 (" + q[key] + ")"));
+      }
+      function quoteMissing(q, venue) {
+        const missing = [!(q.meal > 0) && "식대", !Number.isFinite(q.rental) && "대관료", !(q.minGuests > 0) && "정확한 보증 인원", (!Number.isFinite(q.required) || q.flowerKnown === false) && "꽃·필수비용"];
+        if (q.personal) missing.push(!["included", "separate"].includes(q.serviceMode) && "봉사료 포함 여부", q.serviceMode === "separate" && !Number.isFinite(q.servicePercent) && "봉사료율", !["included", "separate"].includes(q.vatMode) && "부가세 포함 여부", q.vatMode === "separate" && !Number.isFinite(q.vatPercent) && "부가세율");
+        else { missing.push("봉사료 조건 원문 확인"); if (q.vatMode !== "included") missing.push("부가세 조건 원문 확인"); }
+        if (venue) selectedOptionKeys().forEach((key) => { if (!Number.isFinite(q.optionPrices?.[key] ?? optionForKey(venue, key)?.price)) missing.push((OPTION_CATALOG.find((o) => o.id === key)?.label || key) + " 가격"); });
+        return missing.filter(Boolean);
+      }
+      function personalCalculation(q, venue, withOptions = true) {
+        const basicMissing = quoteMissing(Object.assign({}, q, {personal:true}));
+        const meal = Number(q.meal) * Number(q.minGuests);
+        const options = withOptions ? selectedOptionKeys().reduce((sum, key) => sum + Number(q.optionPrices?.[key] ?? optionForKey(venue, key)?.price ?? 0), 0) : 0;
+        const subtotal = meal + Number(q.rental) + Number(q.required) + options;
+        const service = q.serviceMode === "separate" ? (q.serviceBase === "subtotal" ? subtotal : meal) * Number(q.servicePercent) / 100 : 0;
+        const vat = q.vatMode === "separate" ? (q.vatBase === "meal" ? meal : q.vatBase === "subtotal" ? subtotal : subtotal + service) * Number(q.vatPercent) / 100 : 0;
+        const optionMissing = withOptions && venue ? quoteMissing(q, venue).filter((label) => label.endsWith(" 가격")) : [];
+        return {meal, options, service, vat, total:basicMissing.length || optionMissing.length ? null : Math.round(subtotal + service + vat)};
+      }
+      function questionsHtml(venue) {
+        const q = activePersonalQuote(venue);
+        const questions = q ? quoteMissing(q, venue).map((label) => label + "을 확인하세요.") : ["희망 날짜·시간·홀·정확한 보증 인원으로 견적을 요청하세요.", "봉사료·부가세의 포함 여부와 적용 항목을 확인하세요."];
+        missingOptions(venue).forEach((key) => questions.push((OPTION_CATALOG.find((o) => o.id === key)?.label || key) + "의 비용·외부 업체 반입 조건을 확인하세요."));
+        if (!venue.parking) questions.push("무료 주차 시간과 초과 요금을 확인하세요.");
+        (venue.researchNotes || []).forEach((n) => questions.push(n.text));
+        return `<details class="col-span-full rounded-xl border border-amber-200 p-3 my-3" open><summary class="font-bold text-sm">이 홀에 물어볼 질문</summary><ul class="mt-2 list-disc pl-4 text-xs space-y-2">${[...new Set(questions)].map((text) => `<li>${esc(text)}</li>`).join("") || "<li>견적 변경·취소 조건과 당일 혜택의 적용 기한을 확인하세요.</li>"}</ul></details>`;
       }
       function quoteRecordsHtml(venue) {
-        const quotes = discountTotals(venue).concat(personalQuotes(venue).map((q, index) => Object.assign(discountTotals({discountQuotes:[q]})[0], {personalIndex:index})));
-        const filtered = quotes.filter((q) => !quoteCondition || ((q.note || "") + (q.label || "")).includes(quoteCondition));
-        return `<details class="my-3 rounded-xl border border-amber-200 p-3" open><summary class="font-bold text-sm cursor-pointer">조건별 견적·확인 상태</summary><p class="mt-2 text-xs text-gray-500">날짜·요일·시간·홀·보증 인원을 함께 확인하세요.</p><div class="mt-2 space-y-3">${filtered.map((q) => {
-          const missing = [!q.meal && "식대", q.rental == null && "대관", !q.minGuests && "보증 인원", !Number.isFinite(q.required) && "필수비용"].filter(Boolean);
-          const historical = /2026年8月|2026년 8월/.test(q.note || "");
-          const status = historical ? "과거 조건" : q.total == null ? "일부 금액 확인" : "기본 합계 계산 가능";
-          return `<article class="border-t pt-2 text-xs leading-relaxed"><p class="font-bold">${esc(q.label)} · ${status}</p><p>식대 ${esc(won(q.meal))} × ${q.minGuests || "보증 미확인"}${q.minGuests ? "명" : ""} + 대관 ${esc(won(q.rental))} + 필수 ${Number.isFinite(q.required) ? esc(won(q.required)) : "미확인"}</p><p>${q.total == null ? "총액 미확인" : "기본 합계 " + esc(won(q.total))} · 확인된 선택 옵션 소계 ${esc(won(selectedOptionTotal(venue)))}${missingOptions(venue).length ? " · 선택 옵션 가격 미확인 " + missingOptions(venue).length + "개" : ""}${missing.length ? " · 미확인: " + esc(missing.join("·")) : ""}</p><p>${esc(q.note || "적용 날짜·시간·세금 조건을 확인하세요.")}</p><p>봉사료 ${q.serviceRate ? Math.round(q.serviceRate * 100) + "% 반영" : "포함 여부를 확인하세요."} · 부가세는 견적 조건을 확인하세요.</p>${safeUrl(q.url) ? `<a class="underline text-roseGold-700" href="${esc(safeUrl(q.url))}" target="_blank" rel="noreferrer">견적 원문</a>` : '<span class="text-gray-500">공개 원문 링크 없음 · 제공 자료/상담 기록</span>'} <span class="text-gray-500">${q.checkedAt ? "확인 " + esc(q.checkedAt) : "확인일 미기록"}</span>${q.personalIndex != null ? `<button type="button" data-delete-quote="${q.personalIndex}" data-quote-venue="${esc(venue.id)}" class="block min-h-11 underline text-gray-600">이 상담 기록 삭제</button>` : ""}</article>`;
+        const quotes = discountTotals(venue).concat(personalQuotes(venue).map((q) => Object.assign({}, q, {personal:true, total:personalCalculation(Object.assign({}, q, {personal:true}), venue, false).total})));
+        const filtered = quotes.filter((q) => !quoteCondition || ((q.note || "") + (q.label || "") + (q.date || "") + (q.hall || "")).includes(quoteCondition));
+        return `<details class="my-3 rounded-xl border border-amber-200 p-3"><summary class="font-bold text-sm cursor-pointer">견적·완성도 ${filtered.length}건</summary><div class="mt-2 space-y-3">${filtered.map((q) => {
+          const missing = quoteMissing(q, venue);
+          const active = activePersonalQuote(venue)?.id === q.id;
+          const tax = q.personal ? personalCalculation(q, venue) : null;
+          return `<article class="border-t pt-2 text-xs leading-relaxed"><p class="font-bold">${esc(q.label)} · ${/지난 예식 조건/.test(q.note || "") ? "과거 조건" : q.total == null ? "총액 미확인" : "기본 합계 계산 가능"}${active ? " · 비교 적용 중" : ""}</p><p>${esc(q.date || (q.month ? q.month + " · 일자 미확인" : "날짜 미확인"))} ${esc(q.time || "시간 미확인")} · ${esc(q.hall || "홀 미확인")} · ${q.minGuests || "보증 미확인"}${q.minGuests ? "명" : ""}</p><p>식대 ${esc(won(q.meal))} × 보증 + 대관 ${esc(won(q.rental))} + 꽃·필수 ${esc(won(q.required))}</p>${q.flowerPrice != null ? `<p>확인된 생화 금액 ${esc(won(q.flowerPrice))} · 기타 필수비용 미확인</p>` : ""}<p>기본 합계 ${esc(won(q.total))}${tax ? " · 선택 포함 " + esc(won(tax.total)) : ""}</p>${q.personal ? `<p>봉사료 ${esc(q.serviceMode === "included" ? "포함" : q.serviceMode === "separate" ? q.servicePercent + "% 별도 · " + (q.serviceBase === "subtotal" ? "기본+옵션" : "식대") : "미확인")} · 부가세 ${esc(q.vatMode === "included" ? "포함" : q.vatMode === "separate" ? q.vatPercent + "% 별도 · " + ({meal:"식대", subtotal:"기본+옵션", total:"봉사료 포함 소계"}[q.vatBase] || "봉사료 포함 소계") : "미확인")}</p>${tax.total != null ? `<p>선택 옵션 ${esc(won(tax.options))} · 봉사료 ${esc(won(tax.service))} · 부가세 ${esc(won(tax.vat))}</p>` : ""}` : `<p>봉사료 ${q.serviceRate ? Math.round(q.serviceRate * 100) + "% 반영" : "포함 여부 원문 확인"} · 부가세 ${q.vatMode === "included" ? "식대 포함 확인" : "조건 원문 확인"}</p>`}<p class="text-amber-800">${missing.length ? "확인할 항목: " + esc(missing.join(" · ")) : "금액·세금·선택 옵션 확인 완료"}</p>${targetDifferences(Object.assign({}, q, {guests:q.minGuests})).map((text) => `<p>${esc(text)}</p>`).join("")}<p>${esc(q.note || "")}</p>${safeUrl(q.url) ? `<a class="underline text-roseGold-700" href="${esc(safeUrl(q.url))}" target="_blank" rel="noreferrer">견적 원문</a>` : "공개 원문 링크 없음"} · ${esc(q.checkedAt || "확인일 미기록")}${q.personal ? `<div class="flex flex-wrap gap-2 mt-2">${[["apply",active ? "비교 적용 해제" : "이 견적으로 비교"],["edit","수정"],["copy","복제"],["delete","삭제"]].map(([action,label]) => `<button type="button" data-quote-action="${action}" data-quote-id="${esc(q.id)}" data-quote-venue="${esc(venue.id)}" class="min-h-11 border rounded-lg px-2">${label}</button>`).join("")}</div>` : ""}</article>`;
         }).join("") || '<p class="text-xs">해당 조건의 확인된 견적이 없습니다.</p>'}</div></details>`;
       }
       function personalQuoteForm(venue) {
-        return `<details class="rounded-xl border p-3"><summary class="font-bold text-sm cursor-pointer">내 상담 견적 저장</summary><form data-personal-quote="${esc(venue.id)}" class="mt-3 grid grid-cols-2 gap-2 text-xs">
-        ${[["label","상담일·홀 이름","text"],["meal","식대(원)","number"],["rental","대관료(원)","number"],["required","꽃·필수비용(포함 시 0원)","number"],["minGuests","정확한 보증 인원","number"],["servicePercent","별도 봉사료(%, 없으면 0)","number"]].map(([name,label,type]) => `<label>${label}<input name="${name}" type="${type}" ${type === "number" ? 'min="0" step="any"' : "required"} class="mt-1 border rounded-lg p-2 w-full min-w-0" /></label>`).join("")}
-        <label class="col-span-2">예식 날짜·요일·시간 / 부가세 / 혜택·서비스 조건<textarea name="note" required class="mt-1 border rounded-lg p-2 w-full" rows="3"></textarea></label><label class="col-span-2">근거 링크(선택)<input name="url" type="url" class="mt-1 border rounded-lg p-2 w-full" /></label><p class="col-span-2 text-gray-500">이 브라우저에만 저장합니다. 빈 금액은 미확인으로 남깁니다. 공개 견적과 별도로 보관하며 순위에는 자동 반영하지 않습니다.</p><button class="col-span-2 min-h-11 rounded-lg bg-roseGold-500 text-white">상담 견적 저장</button><p data-quote-status class="col-span-2" role="status"></p></form></details>`;
+        const q = editingQuote?.venue === venue.id ? editingQuote.quote : {};
+        const input = (name, label, type="text") => `<label>${label}<input name="${name}" type="${type}" value="${esc(q[name] ?? "")}" ${type === "number" ? 'min="0" step="any"' : ""} ${name === "label" ? "required" : ""} class="mt-1 border rounded-lg p-2 w-full min-w-0" /></label>`;
+        const select = (name,label,choices) => `<label>${label}<select name="${name}" class="mt-1 w-full border rounded-lg p-2">${choices.map(([value,text]) => `<option value="${value}" ${q[name] === value ? "selected" : ""}>${text}</option>`).join("")}</select></label>`;
+        return `<details data-quote-editor class="rounded-xl border p-3" ${editingQuote?.venue === venue.id ? "open" : ""}><summary class="font-bold text-sm cursor-pointer">${q.id ? "상담 견적 수정" : "내 상담 견적 저장"}</summary><form data-personal-quote="${esc(venue.id)}" data-edit-id="${esc(q.id || "")}" class="mt-3 grid grid-cols-2 gap-2 text-xs">${input("label","상담일·기록 이름")}${input("hall","홀 이름")}${input("date","예식 날짜","date")}${input("time","예식 시간","time")}${input("meal","식대(원)","number")}${input("rental","대관료(원)","number")}${input("required","꽃·필수비용(포함 시 0)","number")}${input("minGuests","보증 인원","number")}${select("serviceMode","봉사료",[["unknown","미확인"],["included","포함"],["separate","별도"]])}${input("servicePercent","별도 봉사료율(%)","number")}${select("serviceBase","봉사료 적용",[["meal","식대"],["subtotal","식대+대관+필수+옵션"]])}${select("vatMode","부가세",[["unknown","미확인"],["included","포함"],["separate","별도"]])}${input("vatPercent","별도 부가세율(%)","number")}${select("vatBase","부가세 적용",[["total","기본+옵션+봉사료"],["subtotal","기본+옵션"],["meal","식대"]])}${selectedOptionKeys().map((key) => `<label>${esc(OPTION_CATALOG.find((o) => o.id === key)?.label || key)} 상담 금액(원)<input name="option:${key}" type="number" min="0" value="${esc(q.optionPrices?.[key] ?? "")}" placeholder="빈칸이면 공개 옵션 금액" class="mt-1 w-full min-w-0 border rounded-lg p-2" /></label>`).join("")}<label class="col-span-2">날짜·요일 / 혜택·서비스·세금 조건<textarea name="note" required class="mt-1 border rounded-lg p-2 w-full" rows="3">${esc(q.note || "")}</textarea></label>${input("url","근거 링크","url")}<p class="col-span-2 text-gray-500">빈 금액·미확인 세금은 총액을 계산하지 않습니다. 저장 후 ‘이 견적으로 비교’를 선택하면 순위와 예산 비교에 반영합니다.</p><button class="col-span-2 min-h-11 rounded-lg bg-roseGold-500 text-white">상담 견적 저장</button><p data-quote-status class="col-span-2" role="status"></p></form></details>`;
+      }
+      function targetFormHtml() {
+        const target = plannerData("targetConditions", {});
+        return `<details class="border rounded-xl p-3"><summary class="font-bold text-sm">희망 예식 조건</summary><form id="target-conditions" class="mt-3 grid grid-cols-2 gap-2 text-xs">${TARGET_FIELDS.map(([key,label,type]) => `<label>${label}<input name="${key}" type="${type}" value="${esc(target[key] || "")}" ${type === "number" ? 'min="1"' : ""} class="block border rounded-lg p-2 w-full min-w-0" /></label>`).join("")}<button class="col-span-2 min-h-11 border rounded-lg">희망 조건 저장</button></form><p class="mt-2 text-xs text-gray-500">기록된 조건만 일치 여부를 표시합니다. 공개 후기의 조건을 추정하지 않습니다.</p></details>`;
       }
       function renderQuoteTools(view) {
         const venues = shown(view);
         const selected = venues.filter((v) => comparisonSelection.includes(v.id));
-        const differences = [["meal", "식대"], ["rental", "대관료"], ["minGuests", "보증 인원"], ["interval", "예식 간격"]].filter(([key]) => new Set(selected.map((v) => v[key] ?? null)).size > 1).map(([, label]) => label);
-        document.getElementById("quote-tools").innerHTML = `<section class="rounded-2xl bg-white border p-4 space-y-3"><label class="block text-sm font-bold">견적 조건 찾기<input id="quote-condition" value="${esc(quoteCondition)}" placeholder="예: 2027년 5월, 토요일, 오후" class="block mt-2 w-full border rounded-lg p-2 font-normal" /></label><p class="text-xs text-gray-500">날짜·시간·홀·보증 인원이 같은지 원문으로 확인하세요. 조건이 공개되지 않은 기록은 직접 비교하기 어렵습니다.</p><p class="text-sm font-bold">나란히 비교할 후보 · 최대 3곳</p><div class="flex flex-wrap gap-2">${venues.map((v) => `<button type="button" data-compare-pick="${esc(v.id)}" aria-pressed="${comparisonSelection.includes(v.id)}" class="min-h-11 rounded-lg border p-2 text-xs ${comparisonSelection.includes(v.id) ? "bg-violet-100" : ""}">${esc(v.name)}</button>`).join("")}</div><p id="compare-status" role="status" class="text-xs"></p>${selected.length > 1 ? `<p class="rounded-lg bg-amber-50 p-2 text-xs font-semibold">차이가 있는 항목: ${esc(differences.join(" · ") || "공개 기본값은 같습니다.")} · 옵션·할인 적용 조건은 아래에서 확인하세요.</p>` : ""}${selected.length ? `<div class="overflow-x-auto"><div class="grid gap-3" style="grid-template-columns:repeat(${selected.length},minmax(240px,1fr))">${selected.map((v) => `<article class="min-w-0 rounded-xl border p-3"><button data-open="${esc(v.id)}" class="font-bold underline text-sm">${esc(v.name)}</button><p class="mt-2 text-xs">식대 ${esc(won(v.meal))} · 보증 ${v.minGuests || "미확인"}명</p>${optionComparisonHtml(v)}${quoteRecordsHtml(v)}</article>`).join("")}</div></div>` : ""}</section>`;
+        const fields = [["meal","식대"],["rental","대관료"],["minGuests","보증 인원"],["interval","예식 간격"]];
+        const differences = fields.filter(([key]) => new Set(selected.map((v) => activePersonalQuote(v)?.[key] ?? v[key] ?? null)).size > 1);
+        const common = fields.filter(([key]) => !differences.some(([k]) => k === key));
+        const values = (v, list) => list.map(([key,label]) => `<p>${label}: ${esc(key === "meal" || key === "rental" ? won(activePersonalQuote(v)?.[key] ?? v[key]) : (activePersonalQuote(v)?.[key] ?? v[key] ?? "미확인"))}</p>`).join("");
+        document.getElementById("quote-tools").innerHTML = `<section class="rounded-2xl bg-white border p-4 space-y-3">${targetFormHtml()}<label class="block text-sm font-bold">견적 조건 찾기<input id="quote-condition" value="${esc(quoteCondition)}" placeholder="예: 2027년 5월, 토요일, 오후" class="block mt-2 w-full border rounded-lg p-2 font-normal" /></label><p class="text-sm font-bold">나란히 비교할 후보 · 최대 3곳</p><div class="flex flex-wrap gap-2">${venues.map((v) => `<button type="button" data-compare-pick="${esc(v.id)}" aria-pressed="${comparisonSelection.includes(v.id)}" class="min-h-11 rounded-lg border p-2 text-xs ${comparisonSelection.includes(v.id) ? "bg-violet-100" : ""}">${esc(v.name)}</button>`).join("")}</div><p id="compare-status" role="status" class="text-xs"></p>${selected.length > 1 ? `<p class="rounded-lg bg-amber-50 p-2 text-xs font-semibold">차이가 있는 항목: ${esc(differences.map(([,label]) => label).join(" · ") || "공개 기본값은 같습니다.")}</p>` : ""}${selected.length ? `<div class="overflow-x-auto"><div class="grid gap-3" style="grid-template-columns:repeat(${selected.length},minmax(240px,1fr))">${selected.map((v) => `<article class="min-w-0 rounded-xl border p-3"><button data-open="${esc(v.id)}" class="font-bold underline text-sm">${esc(v.name)}</button><div class="my-2 text-xs font-semibold text-amber-900">${values(v, differences)}</div>${common.length ? `<details class="text-xs my-2"><summary>같은 항목 ${common.length}개</summary>${values(v, common)}</details>` : ""}${optionComparisonHtml(v)}${quoteRecordsHtml(v)}</article>`).join("")}</div></div>` : ""}</section>`;
+      }
+      function refreshPlanner() {
+        renderAll();
+        if (openId) { const v = openVenue(); paintDetailMoney(v); paintDetailOptions(v); paintDetailScores(); }
       }
       document.addEventListener("change", (event) => {
-        if (event.target.id !== "quote-condition") return;
-        quoteCondition = event.target.value.trim();
-        renderTable(buildView());
+        if (event.target.id === "quote-condition") { quoteCondition = event.target.value.trim(); renderTable(buildView()); }
       });
       document.addEventListener("click", (event) => {
-        const remove = event.target.closest("[data-delete-quote]");
-        if (remove) {
-          const records = readJSON("hallmap.personalQuotes", {});
-          const id = remove.dataset.quoteVenue;
-          if (!Array.isArray(records[id])) return;
-          records[id].splice(Number(remove.dataset.deleteQuote), 1);
-          try { localStorage.setItem("hallmap.personalQuotes", JSON.stringify(records)); }
-          catch (error) { return; }
-          if (openId) paintDetailMoney(openVenue());
-          renderTable(buildView());
-          return;
+        const action = event.target.closest("[data-quote-action]");
+        if (action) {
+          const id = action.dataset.quoteVenue;
+          const venue = allVenues().find((v) => v.id === id);
+          const records = plannerData("personalQuotes", {});
+          const quotes = personalQuotes(venue);
+          const index = quotes.findIndex((q) => q.id === action.dataset.quoteId);
+          if (index < 0) return;
+          const q = quotes[index];
+          if (action.dataset.quoteAction === "edit" || action.dataset.quoteAction === "copy") {
+            editingQuote = {venue:id, quote:Object.assign({}, q, {id:action.dataset.quoteAction === "copy" ? "" : q.id, label:q.label + (action.dataset.quoteAction === "copy" ? " (복사)" : "")})};
+            if (openId !== id) openDetail(id);
+            paintDetailMoney(openVenue());
+            document.querySelector("[data-quote-editor]").scrollIntoView({block:"center"});
+            return;
+          }
+          const active = plannerData("activeQuotes", {});
+          if (action.dataset.quoteAction === "apply") { if (active[id] === q.id) delete active[id]; else active[id] = q.id; }
+          if (action.dataset.quoteAction === "delete") { quotes.splice(index,1); records[id] = quotes; if (!storePlanner("personalQuotes",records)) return; if (active[id] === q.id) delete active[id]; }
+          if (!storePlanner("activeQuotes",active)) return;
+          refreshPlanner(); return;
         }
         const button = event.target.closest("[data-compare-pick]");
         if (!button) return;
@@ -1494,25 +1558,103 @@
         renderTable(buildView());
       });
       document.addEventListener("submit", (event) => {
+        const targetForm = event.target.closest("#target-conditions");
+        if (targetForm) { event.preventDefault(); if (storePlanner("targetConditions", Object.fromEntries(new FormData(targetForm)))) refreshPlanner(); return; }
         const form = event.target.closest("[data-personal-quote]");
         if (!form) return;
         event.preventDefault();
         const data = new FormData(form);
-        const number = (key) => data.get(key) === "" ? null : Number(data.get(key));
-        const records = readJSON("hallmap.personalQuotes", {});
+        const number = (key) => data.get(key) == null || data.get(key) === "" ? null : Number(data.get(key));
         const id = form.dataset.personalQuote;
-        const quote = {label: String(data.get("label")), meal:number("meal"), rental:number("rental"), required:number("required"), minGuests:number("minGuests"), flowerKnown:Number.isFinite(number("required")), serviceRate:number("servicePercent") == null ? 0 : number("servicePercent") / 100, note:String(data.get("note")), url:safeUrl(data.get("url")), checkedAt:new Date().toLocaleDateString("sv-SE")};
-        records[id] = (Array.isArray(records[id]) ? records[id] : []).concat(quote);
-        try { localStorage.setItem("hallmap.personalQuotes", JSON.stringify(records)); }
-        catch (error) { form.querySelector("[data-quote-status]").textContent = "저장 공간이 부족해 저장하지 못했습니다."; return; }
-        paintDetailMoney(openVenue());
-        renderTable(buildView());
+        const records = plannerData("personalQuotes", {});
+        const venue = allVenues().find((v) => v.id === id);
+        const quotes = personalQuotes(venue);
+        const optionPrices = {};
+        for (const [key] of data) if (key.startsWith("option:") && number(key) != null) optionPrices[key.slice(7)] = number(key);
+        const q = {id:form.dataset.editId || crypto.randomUUID(), personal:true, label:String(data.get("label")), meal:number("meal"), rental:number("rental"), required:number("required"), minGuests:number("minGuests"), flowerKnown:Number.isFinite(number("required")), servicePercent:number("servicePercent"), vatPercent:number("vatPercent"), optionPrices, note:String(data.get("note")), url:safeUrl(data.get("url")), checkedAt:new Date().toLocaleDateString("sv-SE")};
+        ["date","time","hall","serviceMode","serviceBase","vatMode","vatBase"].forEach((key) => q[key] = String(data.get(key) || ""));
+        if (q.minGuests != null && (!Number.isInteger(q.minGuests) || q.minGuests <= 0)) { form.querySelector("[data-quote-status]").textContent = "보증 인원은 1명 이상의 정수로 입력하세요."; return; }
+        const index = quotes.findIndex((item) => item.id === q.id);
+        if (index < 0) quotes.push(q); else quotes[index] = q;
+        records[id] = quotes;
+        if (!storePlanner("personalQuotes",records)) { form.querySelector("[data-quote-status]").textContent = "저장 공간이 부족해 저장하지 못했습니다."; return; }
+        editingQuote = null;
+        refreshPlanner();
+      });
+
+      function tourFormHtml(venue) {
+        const tour = plannerData("tours", {})[venue.id] || {};
+        const fields = [["appointment","방문 예약","datetime-local"],["contact","담당자","text"],["deadline","혜택·계약 기한","date"]];
+        return `<details class="my-3 rounded-xl border p-3"><summary class="font-bold text-sm">투어 일정·진행 상태</summary><form data-tour-form="${esc(venue.id)}" class="mt-3 grid gap-2 text-xs">${fields.map(([key,label,type]) => `<label>${label}<input name="${key}" type="${type}" value="${esc(tour[key] || "")}" class="block w-full min-w-0 border rounded-lg p-2" /></label>`).join("")}<label>진행 상태<select name="status" class="block w-full border rounded-lg p-2">${["미예약","예약 완료","방문 완료","견적 비교 중","계약 완료","보류"].map((status) => `<option ${tour.status === status ? "selected" : ""}>${status}</option>`).join("")}</select></label><button class="min-h-11 border rounded-lg">일정 저장</button><p data-tour-status role="status"></p></form></details>`;
+      }
+      function renderTourSchedules() {
+        const tours = plannerData("tours", {});
+        const venues = allVenues().filter((v) => tours[v.id]).sort((a,b) => (tours[a.id].appointment || "9999").localeCompare(tours[b.id].appointment || "9999"));
+        document.getElementById("tour-schedule-list").innerHTML = `<section class="rounded-xl border bg-white p-4"><h3 class="font-bold text-sm">투어 일정</h3>${venues.map((v) => `<p class="mt-2 text-xs"><button data-open="${esc(v.id)}" class="underline min-h-11">${esc(v.name)}</button> · ${esc(tours[v.id].status || "미예약")} · ${esc((tours[v.id].appointment || "날짜 미정").replace("T"," "))} · 담당 ${esc(tours[v.id].contact || "미기록")} · 기한 ${esc(tours[v.id].deadline || "미기록")}</p>`).join("") || '<p class="mt-2 text-xs text-gray-500">홀 상세에서 일정을 저장하세요.</p>'}</section>`;
+      }
+      document.addEventListener("submit", (event) => {
+        const form = event.target.closest("[data-tour-form]");
+        if (!form) return;
+        event.preventDefault();
+        const tours = plannerData("tours", {});
+        tours[form.dataset.tourForm] = Object.fromEntries(new FormData(form));
+        form.querySelector("[data-tour-status]").textContent = storePlanner("tours",tours) ? "저장했습니다." : "저장하지 못했습니다.";
+        renderTourSchedules();
+      });
+      const BACKUP_KEYS = ["hallmap.userVenues","hallmap.overrides","hallmap.origins","hallmap.weights","hallmap.criteria","hallmap.scores","hallmap.checks","hallmap.manualOrder","hallmap.manualParked","hallmap.priorityOptions","hallmap.sort","hallmap.radiusKm","hallmap.budgetWon","hallmap.showParked","hallmap.personalQuotes","hallmap.activeQuotes","hallmap.targetConditions","hallmap.tours","wedding_checklist","wedding_tour_memo"];
+      let pendingBackup = null;
+      function makeBackup() { return {app:"hall-map",version:1,createdAt:new Date().toISOString(),data:Object.fromEntries(BACKUP_KEYS.filter((key) => localStorage.getItem(key) != null).map((key) => [key,localStorage.getItem(key)]))}; }
+      function validateBackup(backup) {
+        if (!backup || backup.app !== "hall-map" || backup.version !== 1 || !backup.data || typeof backup.data !== "object" || Array.isArray(backup.data)) throw new Error("이 앱의 백업 파일을 선택하세요.");
+        const arrays = ["hallmap.userVenues","hallmap.origins","hallmap.criteria","hallmap.manualOrder","hallmap.manualParked","hallmap.priorityOptions"];
+        const raw = ["hallmap.sort","hallmap.radiusKm","hallmap.budgetWon","hallmap.showParked","wedding_tour_memo"];
+        for (const [key,value] of Object.entries(backup.data)) {
+          if (!BACKUP_KEYS.includes(key) || typeof value !== "string") throw new Error("허용되지 않은 백업 항목입니다.");
+          if (!raw.includes(key)) {
+            const parsed = JSON.parse(value);
+            if (!parsed || typeof parsed !== "object" || Array.isArray(parsed) !== arrays.includes(key)) throw new Error("백업 데이터 형식이 맞지 않습니다.");
+            const object = (v) => v && typeof v === "object" && !Array.isArray(v);
+            const fail = () => { throw new Error("백업 항목의 내용이 잘못되었습니다: " + key); };
+            if (["hallmap.manualOrder","hallmap.manualParked","hallmap.priorityOptions"].includes(key) && !parsed.every((v) => typeof v === "string")) fail();
+            if (["hallmap.userVenues","hallmap.origins"].includes(key) && !parsed.every((v) => object(v) && typeof v.id === "string" && Number.isFinite(v.lat) && Number.isFinite(v.lng))) fail();
+            if (key === "hallmap.criteria" && !parsed.every((v) => object(v) && typeof v.id === "string" && typeof v.name === "string")) fail();
+            if (key === "hallmap.personalQuotes" && !Object.values(parsed).every((records) => Array.isArray(records) && records.every((q) => object(q) && typeof q.label === "string" && ["meal","rental","required","minGuests","servicePercent","vatPercent"].every((field) => q[field] == null || (Number.isFinite(q[field]) && q[field] >= 0)) && (q.optionPrices == null || (object(q.optionPrices) && Object.values(q.optionPrices).every((v) => Number.isFinite(v) && v >= 0)))))) fail();
+            if (key === "hallmap.activeQuotes" && !Object.values(parsed).every((v) => typeof v === "string")) fail();
+            if (key === "hallmap.tours" && !Object.values(parsed).every((v) => object(v) && Object.values(v).every((text) => typeof text === "string"))) fail();
+            if (["hallmap.overrides","hallmap.scores","hallmap.checks"].includes(key) && !Object.values(parsed).every(object)) fail();
+            if (key === "hallmap.targetConditions" && !Object.values(parsed).every((v) => typeof v === "string")) fail();
+          }
+          if (["hallmap.radiusKm","hallmap.budgetWon"].includes(key) && !(Number.isFinite(Number(value)) && Number(value) > 0)) throw new Error("금액·거리 데이터가 잘못되었습니다.");
+        }
+        if (!Object.keys(backup.data).length) throw new Error("백업 항목이 없습니다.");
+        return backup;
+      }
+      document.getElementById("export-planner").addEventListener("click", () => {
+        const url = URL.createObjectURL(new Blob([JSON.stringify(makeBackup(), null, 2)], {type:"application/json"}));
+        const anchor = document.createElement("a"); anchor.href = url; anchor.download = "hall-map-backup-" + new Date().toLocaleDateString("sv-SE") + ".json"; anchor.click(); setTimeout(() => URL.revokeObjectURL(url),1000);
+        document.getElementById("backup-status").textContent = "백업 파일을 다운로드했습니다.";
+      });
+      document.getElementById("import-planner").addEventListener("change", async (event) => {
+        pendingBackup = null; document.getElementById("restore-planner").disabled = true;
+        const file = event.target.files[0]; if (!file) return;
+        try {
+          if (file.size > 10 * 1024 * 1024) throw new Error("10MB 이하 파일을 선택하세요.");
+          pendingBackup = validateBackup(JSON.parse(await file.text()));
+          document.getElementById("backup-status").textContent = Object.keys(pendingBackup.data).length + "개 항목 · " + (pendingBackup.createdAt || "날짜 미기록") + " · 같은 항목은 백업 값으로 바뀌며 나머지는 유지합니다.";
+          document.getElementById("restore-planner").disabled = false;
+        } catch (error) { document.getElementById("backup-status").textContent = "복원할 수 없습니다: " + error.message; }
+      });
+      document.getElementById("restore-planner").addEventListener("click", () => {
+        if (!pendingBackup || !confirm("선택한 백업으로 같은 항목을 바꾸고 새로고침할까요? 현재 데이터는 먼저 백업할 수 있습니다.")) return;
+        const old = Object.fromEntries(Object.keys(pendingBackup.data).map((key) => [key,localStorage.getItem(key)]));
+        try { Object.entries(pendingBackup.data).forEach(([key,value]) => localStorage.setItem(key,value)); location.reload(); }
+        catch (error) { Object.keys(old).forEach((key) => localStorage.removeItem(key)); Object.entries(old).forEach(([key,value]) => { if (value != null) localStorage.setItem(key,value); }); document.getElementById("backup-status").textContent = "저장 공간이 부족해 복원을 취소했습니다."; }
       });
 
       function discountTotals(venue) {
         return (venue.discountQuotes || []).map((quote) => {
           const complete = quote.meal && quote.rental != null && quote.minGuests && Number.isFinite(quote.required) && quote.flowerKnown !== false;
-          const serviceRate = Number(quote.serviceRate ?? venue.serviceRate ?? 0);
+          const serviceRate = quote.serviceUnknown ? 0 : Number(quote.serviceRate ?? venue.serviceRate ?? 0);
           const mealTotal = Number(quote.meal) * Number(quote.minGuests);
           const serviceCharge = complete ? mealTotal * serviceRate : null;
           const total = complete ? Number(quote.rental) + Number(quote.required || 0) + mealTotal + serviceCharge : null;
@@ -1535,11 +1677,13 @@
       }
 
       function missingOptions(venue) {
-        return selectedOptionKeys().filter((key) => !Number.isFinite(optionForKey(venue, key)?.price));
+        const personal = activePersonalQuote(venue);
+        return selectedOptionKeys().filter((key) => !Number.isFinite(personal?.optionPrices?.[key] ?? optionForKey(venue, key)?.price));
       }
 
       function selectedOptionTotal(venue) {
-        return selectedOptionKeys().reduce((sum, key) => sum + Number(optionForKey(venue, key)?.price || 0), 0);
+        const personal = activePersonalQuote(venue);
+        return selectedOptionKeys().reduce((sum, key) => sum + Number(personal?.optionPrices?.[key] ?? optionForKey(venue, key)?.price ?? 0), 0);
       }
 
       function fixedRequiredTotal(venue) {
@@ -1547,6 +1691,8 @@
       }
 
       function comparisonTotal(venue) {
+        const personal = activePersonalQuote(venue);
+        if (personal) return personalCalculation(Object.assign({}, personal, {personal:true}), venue).total;
         const discount = bestDiscount(venue);
         const base = discount?.total ?? quoteTotals(venue)?.low ?? null;
         return base == null || missingOptions(venue).length ? null : base + selectedOptionTotal(venue) + (discount ? 0 : fixedRequiredTotal(venue));
@@ -1864,6 +2010,7 @@
                 </span>
                 <span class="block text-xs text-gray-600 mt-1">중요도 ${Math.round(venue.fit)}점 · 직선 추정 · 신랑 ${venue.groomMin}분 · 신부 ${venue.brideMin}분${esc(familyLine)}</span>
                 <span class="block text-xs text-gray-500 mt-0.5">정가 ${esc(total ? won(total.low) : "계산 안 함")} · 할인가 ${esc(bestDiscount(venue) ? won(bestDiscount(venue).total) : venue.discountQuotes?.length ? "총액 미확인" : "근거 없음")}</span>
+                ${activePersonalQuote(venue) ? `<span class="block text-xs font-semibold text-violet-800 mt-1">내 견적 적용 · 선택·세금 포함 ${esc(won(comparisonTotal(venue)))}</span>` : ""}
                 ${marks ? `<span class="block text-xs text-roseGold-700 mt-0.5">${esc(marks)}</span>` : ""}
               </span>
             </button>
@@ -1939,15 +2086,18 @@
         const fixed = (title, values, badge, chip) => values.length ? `<div class="flex items-start gap-2"><strong class="${badge} shrink-0 rounded-full px-2 py-0.5 text-[10px]">${title}</strong><span class="flex flex-wrap gap-1">${values.map((item) => `<span class="${chip} rounded-md px-1.5 py-0.5">${esc(item.text)}</span>`).join("")}</span></div>` : "";
         const selected = selectedOptionKeys().map((key) => {
           const category = OPTION_CATALOG.find((item) => item.id === key);
-          const option = optionForKey(venue, key);
+          const published = optionForKey(venue, key);
+          const custom = activePersonalQuote(venue)?.optionPrices?.[key];
+          const option = Number.isFinite(custom) ? {name:category?.label + " (상담)", price:custom} : published;
           return { key, label: category?.label || key, option };
         });
         const available = OPTION_CATALOG.filter((category) => !selectedOptionKeys().includes(category.id) && optionForKey(venue, category.id));
         const total = venue.comparisonTotal ?? comparisonTotal(venue);
         const chosen = selectedOptionTotal(venue);
+        const personal = activePersonalQuote(venue);
         return `<div class="space-y-2">
-          <div class="rounded-lg bg-violet-50 p-2"><p class="text-[10px] text-violet-700">필수 우선 비교금액</p><p class="font-bold text-violet-900">${total == null ? "총액 미확인" : esc(won(total))}${chosen ? ` <span class="font-normal text-[10px]">· 내 필수 +${esc(won(chosen))}</span>` : ""}</p></div>
-          ${missingOptions(venue).length ? `<p class="text-amber-800">선택 옵션 ${missingOptions(venue).length}개 가격 미확인 · 확인된 옵션 소계 ${esc(won(chosen))} · 가격 점수 제외</p>` : ""}
+          ${personal ? `<p class="text-xs text-violet-800">내 상담 견적 적용: ${esc(personal.label)}</p>` : ""}<div class="rounded-lg bg-violet-50 p-2"><p class="text-[10px] text-violet-700">필수 우선 비교금액</p><p class="font-bold text-violet-900">${total == null ? "총액 미확인" : esc(won(total))}${chosen ? ` <span class="font-normal text-[10px]">· 내 필수 +${esc(won(chosen))}</span>` : ""}</p></div>
+          ${!personal && missingOptions(venue).length ? `<p class="text-amber-800">선택 옵션 ${missingOptions(venue).length}개 가격 미확인 · 확인된 옵션 소계 ${esc(won(chosen))} · 가격 점수 제외</p>` : ""}
           ${fixed("홀 필수", groups.required, "bg-rose-100 text-rose-700", "bg-rose-50 text-rose-900")}
           ${selected.length ? `<div><p class="mb-1 text-[10px] font-bold text-violet-700">내 필수</p><div class="grid gap-1">${selected.map((item) => `<div class="flex items-center justify-between gap-2 rounded-md ${item.option ? "bg-violet-100 text-violet-900" : "bg-amber-50 text-amber-800"} px-2 py-1"><span>${esc(item.label)}</span><span class="text-right font-semibold">${item.option && Number.isFinite(item.option.price) ? esc(item.option.name + " · " + won(item.option.price)) : "가격 미확인"}</span></div>`).join("")}</div></div>` : '<p class="text-[10px] text-gray-500">위에서 우리 필수 옵션을 선택하세요.</p>'}
           ${available.length ? `<details><summary class="cursor-pointer text-[10px] text-gray-500">이 홀의 다른 옵션 ${available.length}개</summary><div class="mt-1 flex flex-wrap gap-1">${available.map((item) => `<button type="button" data-option-key="${item.id}" class="rounded-md border border-gray-200 bg-white px-2 py-1 text-left text-gray-700">+ ${esc(item.label)}</button>`).join("")}</div></details>` : ""}
@@ -2165,6 +2315,7 @@
         renderMap(view);
         renderRadius();
         renderChecklist();
+        renderTourSchedules();
         if (openId) {
           paintDetailScores();
           paintDetailChecks();
@@ -2313,15 +2464,17 @@
         return "중요도 " + Math.round(venue.fit) + "점 · 직선거리 기반 추정 · 신랑 " + venue.groomMin + "분, 신부 " + venue.brideMin + "분. " + (family ? family + ". " : "") + center;
       }
 
+      function reviewYearCutoff() { const date = new Date(); date.setFullYear(date.getFullYear() - 1); return date.toLocaleDateString("sv-SE"); }
+
       function paintDetailReviews(venue) {
         const box = document.getElementById("detail-reviews");
         const reviews = Array.isArray(venue.reviews) ? venue.reviews.slice().sort((a, b) => String(b.date).localeCompare(String(a.date))).slice(0, 5) : [];
         const foodReviews = reviews.filter((review) => review.food);
-        const recent = reviews.filter((review) => /^\d{4}-\d{2}(?:-\d{2})?$/.test(review.date) && review.date.slice(0, 7) >= "2025-10").length;
+        const recent = reviews.filter((review) => /^\d{4}-\d{2}(?:-\d{2})?$/.test(review.date) && review.date >= reviewYearCutoff() && review.date <= new Date().toLocaleDateString("sv-SE")).length;
         const score = markOf(venue.id, "p_food");
         const rows = reviews.map((review) => `<li class="border-t border-roseGold-100 py-2 first:border-0">
           <a href="${esc(safeUrl(review.url))}" target="_blank" rel="noopener noreferrer" class="font-medium text-roseGold-700 underline">${esc(review.date)} · ${esc(review.type)} · ${esc(review.tone)}</a>
-          <p class="mt-0.5 text-xs text-gray-600">${esc(review.summary)}${review.food ? " · 뷔페 점수 반영" : " · 뷔페 점수 제외"}</p>
+          <p class="mt-0.5 text-xs text-gray-600">${esc(review.summary)}${review.food ? " · 실제 식사 확인 · 뷔페 점수 근거" : " · 식사 경험 미확인 · 상담·동선 참고"}</p>
         </li>`).join("");
         const search = "https://search.naver.com/search.naver?where=blog&query=" + encodeURIComponent(venue.name + " 웨딩홀 후기");
         const makeMyWedding = "https://search.naver.com/search.naver?where=article&query=" + encodeURIComponent("메이크마이웨딩 " + venue.name);
@@ -2541,7 +2694,7 @@
 
       function paintDetailMoney(venue) {
         if (!venue) return;
-        document.getElementById("detail-quote-records").innerHTML = quoteRecordsHtml(venue) + personalQuoteForm(venue);
+        document.getElementById("detail-quote-records").innerHTML = questionsHtml(venue) + quoteRecordsHtml(venue) + personalQuoteForm(venue) + tourFormHtml(venue);
         const put = (id, value) => {
           const el = document.getElementById(id);
           if (el && document.activeElement !== el) el.value = value || "";
@@ -2570,7 +2723,7 @@
           const regularText = regular ? won(regular.low) + (regular.high !== regular.low ? "~" + won(regular.high) : "") : "계산할 숫자 부족";
           const discountedText = !discounted ? "총액을 계산할 수 있는 기록 없음" : discounted.low === discounted.high ? won(discounted.low) : won(discounted.low) + "~" + won(discounted.high);
           summary.innerHTML = `<div class="rounded-2xl border border-amber-200 bg-amber-50 p-4">
-            <p class="text-[11px] font-semibold text-amber-900">금액 요약</p>
+            <p class="text-[11px] font-semibold text-amber-900">금액 요약</p>${activePersonalQuote(venue) ? `<p class="mt-2 rounded-lg bg-violet-100 p-2 text-xs font-bold text-violet-900">내 상담 견적 적용 · 선택·세금 포함 ${esc(won(comparisonTotal(venue)))}</p>` : ""}
             <div class="mt-2 grid grid-cols-2 gap-3">
               <div><p class="text-xs text-gray-500">정가</p><p class="mt-1 font-bold text-gray-900">${esc(regularText)}</p></div>
               <div><p class="text-xs text-gray-500">할인가 기록${discounted ? " " + discounted.count + "건" : ""}</p><p class="mt-1 font-bold text-emerald-700">${esc(discountedText)}</p></div>
@@ -2583,7 +2736,7 @@
       function researchNotesHtml(venue) {
         const notes = venue.researchNotes || [];
         if (!notes.length) return "";
-        return `<details class="col-span-full rounded-xl border border-amber-200 bg-amber-50 p-3" open><summary class="cursor-pointer font-bold text-sm">공개 근거로 미리 확인할 질문 <span class="font-normal text-xs">2026-10-05 확인</span></summary><div class="mt-2 space-y-3">${notes.map((note) => `<div class="text-xs leading-relaxed"><a href="${esc(note.url)}" target="_blank" rel="noreferrer" class="text-roseGold-700 underline">${esc(note.title)}</a><p class="mt-1">${esc(note.text)}</p></div>`).join("")}</div></details>`;
+        return `<details class="col-span-full rounded-xl border border-amber-200 bg-amber-50 p-3" open><summary class="cursor-pointer font-bold text-sm">공개 근거로 미리 확인할 질문 <span class="font-normal text-xs">2026-10-06 조사 업데이트</span></summary><div class="mt-2 space-y-3">${notes.map((note) => `<div class="text-xs leading-relaxed"><a href="${esc(note.url)}" target="_blank" rel="noreferrer" class="text-roseGold-700 underline">${esc(note.title)}</a><p class="mt-1">${esc(note.text)}</p></div>`).join("")}</div></details>`;
       }
 
       function paintDetailOptions(venue) {
@@ -2628,7 +2781,7 @@
         if (!venue) return "";
         const totals = quoteTotals(venue);
         const food = markOf(venue.id, "p_food");
-        const recentFoodReviews = (venue.reviews || []).filter((review) => review.food && /^\d{4}-\d{2}-\d{2}$/.test(review.date) && review.date >= "2025-10-03").length;
+        const recentFoodReviews = (venue.reviews || []).filter((review) => review.food && /^\d{4}-\d{2}-\d{2}$/.test(review.date) && review.date >= reviewYearCutoff() && review.date <= new Date().toLocaleDateString("sv-SE")).length;
         const items = [
           ["총예산", venue.comparisonTotal == null ? "계산할 숫자 부족" : venue.overBudget ? won(venue.comparisonTotal) + " · 보류" : won(venue.comparisonTotal) + " · 예산 안", venue.comparisonTotal == null ? "text-gray-500" : venue.overBudget ? "text-rose-700" : "text-emerald-700"],
           ["확인된 할인가", discountText(venue), bestDiscount(venue) ? "text-emerald-700" : "text-gray-500"],
@@ -2649,7 +2802,7 @@
           ["최근 뷔페 후기", food ? food + "/5 · " + venue.foodReviewCount + "건 · 최신 " + venue.foodReviewLatest : "실제 식사 후기 2건 미만", food ? "text-roseGold-700" : "text-gray-500"],
           ["최근 1년 실제 식사 후기", recentFoodReviews ? recentFoodReviews + "건" : "확인된 공개 후기 없음", recentFoodReviews ? "text-emerald-700" : "text-rose-700"],
         ];
-        return researchNotesHtml(venue) + items.map(([label, value, tone]) => `<div class="rounded-xl bg-roseGold-50 p-3"><p class="text-[11px] text-gray-500">${esc(label)}</p><p class="mt-1 text-xs font-semibold leading-relaxed ${tone}">${esc(value)}</p></div>`).join("");
+        return questionsHtml(venue) + researchNotesHtml(venue) + items.map(([label, value, tone]) => `<div class="rounded-xl bg-roseGold-50 p-3"><p class="text-[11px] text-gray-500">${esc(label)}</p><p class="mt-1 text-xs font-semibold leading-relaxed ${tone}">${esc(value)}</p></div>`).join("");
       }
 
       function renderChecklist() {
