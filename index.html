@@ -329,6 +329,7 @@
           </label>
           <button type="button" id="table-direction" class="self-end min-h-11 border border-roseGold-200 rounded-xl px-3 text-sm">낮은 순</button>
         </div>
+        <div id="priority-option-picker"></div>
         <div id="comparison-mobile" class="space-y-3 md:hidden"></div>
         <div class="hidden md:flex flex-wrap gap-2 text-[11px] text-gray-600"><span class="rounded-full bg-amber-50 px-3 py-1">가격</span><span class="rounded-full bg-sky-50 px-3 py-1">옵션</span><span class="rounded-full bg-emerald-50 px-3 py-1">평가</span><span class="rounded-full bg-violet-50 px-3 py-1">이동</span></div>
         <div class="compare-scroll hidden md:block bg-white rounded-2xl border border-roseGold-100 overflow-auto max-h-[72vh]">
@@ -1060,6 +1061,21 @@
         { id: "p_park", name: "주차", low: "불편", high: "편함" },
         { id: "p_flow", name: "동선", low: "복잡", high: "짧음" },
       ];
+
+      const OPTION_CATALOG = [
+        { id: "host", label: "사회자", match: /사회자/ },
+        { id: "song", label: "축가", match: /축가/ },
+        { id: "dvd", label: "DVD 촬영", match: /DVD/ },
+        { id: "iphone", label: "아이폰 스냅", match: /아이폰/ },
+        { id: "bouquet", label: "부케", match: /부케/ },
+        { id: "photobooth", label: "포토부스", match: /포토부스/ },
+        { id: "flowershower", label: "플라워샤워", match: /플라워샤워/ },
+        { id: "paebaek", label: "폐백음식", match: /폐백음식/ },
+        { id: "parents", label: "혼주 미용", match: /혼주.*(미용|헤어|메이크업)/ },
+        { id: "hanbok", label: "한복 대여", match: /한복/ },
+        { id: "musical", label: "뮤지컬 웨딩", match: /뮤지컬/ },
+        { id: "officiant", label: "주례", match: /주례/ },
+      ];
       const ZERO_SCORE_ORDER = ["kyusoodang", "weddingcity", "jostiel", "forestone"];
 
       const DEFAULT_ORIGINS = [
@@ -1146,6 +1162,13 @@
       let memoTimer = 0;
       let tableSort = { key: "total", direction: 1 };
 
+      function readPriorityOptions() {
+        const saved = readJSON("hallmap.priorityOptions", []);
+        if (Array.isArray(saved)) return saved.filter((id) => OPTION_CATALOG.some((item) => item.id === id));
+        const oldNames = Object.values(saved || {}).flat();
+        return OPTION_CATALOG.filter((item) => oldNames.some((name) => item.match.test(String(name)))).map((item) => item.id);
+      }
+
       function loadState() {
         return {
           userVenues: readJSON("hallmap.userVenues", []),
@@ -1158,7 +1181,7 @@
           sort: loadSort(readCriteria()),
           manualOrder: readJSON("hallmap.manualOrder", []),
           manualParked: readJSON("hallmap.manualParked", []),
-          priorityOptions: readJSON("hallmap.priorityOptions", {}),
+          priorityOptions: readPriorityOptions(),
           radiusKm: readRadius(),
           budgetWon: readBudget(),
           showParked: localStorage.getItem("hallmap.showParked") === "1",
@@ -1396,14 +1419,18 @@
         return discountTotals(venue).filter((quote) => quote.total != null).sort((a, b) => a.total - b.total)[0] || null;
       }
 
-      function selectedOptionNames(venue) {
-        const names = state && state.priorityOptions && state.priorityOptions[venue.id];
-        return Array.isArray(names) ? names : [];
+      function selectedOptionKeys() {
+        return Array.isArray(state.priorityOptions) ? state.priorityOptions : [];
+      }
+
+      function optionForKey(venue, key) {
+        const category = OPTION_CATALOG.find((item) => item.id === key);
+        if (!category) return null;
+        return (venue.options || []).filter((option) => !option.required && !option.service && category.match.test(option.name)).sort((a, b) => Number(a.price || 0) - Number(b.price || 0))[0] || null;
       }
 
       function selectedOptionTotal(venue) {
-        const selected = new Set(selectedOptionNames(venue));
-        return (venue.options || []).filter((option) => !option.required && !option.service && selected.has(option.name)).reduce((sum, option) => sum + Number(option.price || 0), 0);
+        return selectedOptionKeys().reduce((sum, key) => sum + Number(optionForKey(venue, key)?.price || 0), 0);
       }
 
       function fixedRequiredTotal(venue) {
@@ -1788,7 +1815,8 @@
         const options = Array.isArray(venue.options) ? venue.options : [];
         const label = (option, index) => {
           const price = Number(option.price) > 0 ? won(option.price) + (option.suffix ? " " + option.suffix : "") : "";
-          return { index, name: option.name, text: option.name + (option.service ? (price ? " 서비스(정가 " + price + ")" : " 서비스") : price ? " " + price : ""), selected: selectedOptionNames(venue).includes(option.name) };
+          const category = OPTION_CATALOG.find((item) => item.match.test(option.name));
+          return { index, key: category?.id || "", name: option.name, text: option.name + (option.service ? (price ? " 서비스(정가 " + price + ")" : " 서비스") : price ? " " + price : ""), selected: Boolean(category && selectedOptionKeys().includes(category.id) && optionForKey(venue, category.id) === option) };
         };
         return {
           required: options.map(label).filter((item) => options[item.index].required),
@@ -1799,20 +1827,32 @@
 
       function optionComparisonHtml(venue) {
         const groups = optionGroups(venue);
-        if (!groups.required.length && !groups.optional.length && !groups.service.length) return '<p class="text-gray-500">확인된 옵션 없음</p>';
-        const selected = groups.optional.filter((item) => item.selected);
-        const remaining = groups.optional.filter((item) => !item.selected);
         const fixed = (title, values, badge, chip) => values.length ? `<div class="flex items-start gap-2"><strong class="${badge} shrink-0 rounded-full px-2 py-0.5 text-[10px]">${title}</strong><span class="flex flex-wrap gap-1">${values.map((item) => `<span class="${chip} rounded-md px-1.5 py-0.5">${esc(item.text)}</span>`).join("")}</span></div>` : "";
-        const choices = (values, selectedStyle) => values.map((item) => `<button type="button" data-option-toggle="${esc(venue.id)}" data-option-index="${item.index}" class="rounded-md border px-2 py-1 text-left ${selectedStyle ? "border-violet-300 bg-violet-100 font-semibold text-violet-900" : "border-gray-200 bg-white text-gray-700"}" aria-pressed="${selectedStyle ? "true" : "false"}">${selectedStyle ? "✓ 내 필수 · " : "+ "}${esc(item.text)}</button>`).join("");
+        const selected = selectedOptionKeys().map((key) => {
+          const category = OPTION_CATALOG.find((item) => item.id === key);
+          const option = optionForKey(venue, key);
+          return { key, label: category?.label || key, option };
+        });
+        const available = OPTION_CATALOG.filter((category) => !selectedOptionKeys().includes(category.id) && optionForKey(venue, category.id));
         const total = venue.comparisonTotal ?? comparisonTotal(venue);
         const chosen = selectedOptionTotal(venue);
         return `<div class="space-y-2">
           <div class="rounded-lg bg-violet-50 p-2"><p class="text-[10px] text-violet-700">필수 우선 비교금액</p><p class="font-bold text-violet-900">${total == null ? "계산 안 함" : esc(won(total))}${chosen ? ` <span class="font-normal text-[10px]">· 내 필수 +${esc(won(chosen))}</span>` : ""}</p></div>
           ${fixed("홀 필수", groups.required, "bg-rose-100 text-rose-700", "bg-rose-50 text-rose-900")}
-          ${selected.length ? `<div><p class="mb-1 text-[10px] font-bold text-violet-700">내 필수</p><div class="flex flex-wrap gap-1">${choices(selected, true)}</div></div>` : ""}
-          ${remaining.length ? `<details><summary class="cursor-pointer text-[10px] text-gray-500">다른 선택 옵션 ${remaining.length}개</summary><div class="mt-1 flex flex-wrap gap-1">${choices(remaining, false)}</div></details>` : ""}
+          ${selected.length ? `<div><p class="mb-1 text-[10px] font-bold text-violet-700">내 필수</p><div class="grid gap-1">${selected.map((item) => `<div class="flex items-center justify-between gap-2 rounded-md ${item.option ? "bg-violet-100 text-violet-900" : "bg-amber-50 text-amber-800"} px-2 py-1"><span>${esc(item.label)}</span><span class="text-right font-semibold">${item.option ? esc(item.option.name + " · " + won(item.option.price)) : "가격 미확인"}</span></div>`).join("")}</div></div>` : '<p class="text-[10px] text-gray-500">위에서 우리 필수 옵션을 선택하세요.</p>'}
+          ${available.length ? `<details><summary class="cursor-pointer text-[10px] text-gray-500">이 홀의 다른 옵션 ${available.length}개</summary><div class="mt-1 flex flex-wrap gap-1">${available.map((item) => `<button type="button" data-option-key="${item.id}" class="rounded-md border border-gray-200 bg-white px-2 py-1 text-left text-gray-700">+ ${esc(item.label)}</button>`).join("")}</div></details>` : ""}
           ${fixed("서비스", groups.service, "bg-emerald-100 text-emerald-700", "bg-emerald-50 text-emerald-900")}
         </div>`;
+      }
+
+      function renderPriorityOptionPicker() {
+        const box = document.getElementById("priority-option-picker");
+        if (!box) return;
+        const selected = new Set(selectedOptionKeys());
+        box.innerHTML = `<section class="rounded-2xl border border-violet-200 bg-violet-50 p-4">
+          <div class="flex items-start justify-between gap-3"><div><h3 class="font-bold text-violet-950">우리 필수 옵션</h3><p class="mt-1 text-xs text-violet-700">한 번 선택하면 모든 홀에 같은 기준으로 추가합니다. 가격이 없으면 ‘가격 미확인’으로 표시합니다.</p></div><span class="shrink-0 rounded-full bg-white px-2 py-1 text-[11px] font-bold text-violet-700">${selected.size}개 선택</span></div>
+          <div class="mt-3 flex flex-wrap gap-2">${OPTION_CATALOG.map((item) => `<button type="button" data-option-key="${item.id}" aria-pressed="${selected.has(item.id)}" class="min-h-11 rounded-full border px-3 py-2 text-xs font-semibold ${selected.has(item.id) ? "border-violet-500 bg-violet-600 text-white" : "border-violet-200 bg-white text-violet-800"}">${selected.has(item.id) ? "✓ " : "+ "}${esc(item.label)}</button>`).join("")}</div>
+        </section>`;
       }
 
       function tableRows(view) {
@@ -1842,6 +1882,7 @@
       }
 
       function renderTable(view) {
+        renderPriorityOptionPicker();
         const ranked = shown(view);
         const rank = new Map(ranked.filter((venue) => !venue.parked).map((venue, index) => [venue.id, index + 1]));
         const rows = tableRows(view);
@@ -1869,14 +1910,12 @@
                 </div>
               </div>
               <div class="border-y border-amber-100 bg-amber-50/50 p-4 space-y-3">
-                <p class="text-[11px] leading-relaxed text-gray-600"><span class="font-semibold text-amber-900">할인 근거</span> ${esc(discountText(venue))}</p>
-                ${venue.platformBenefits ? `<p class="text-[11px] leading-relaxed text-emerald-800"><span class="font-semibold">예약 경로 혜택</span> ${esc(benefitText(venue))}</p>` : ""}
                 <div class="grid grid-cols-3 gap-2 text-center">
                   <div><p class="text-[10px] text-gray-500">식대</p><p class="mt-1 text-xs font-semibold">${venue.meal ? esc(won(venue.meal) + (venue.mealTo ? "~" + won(venue.mealTo) : "")) : "미입력"}</p></div>
                   <div class="border-x border-amber-100"><p class="text-[10px] text-gray-500">대관·꽃</p><p class="mt-1 text-xs font-semibold">${venue.rental ? esc(won(venue.rental)) : "미입력"}<br><span class="font-normal text-gray-500">꽃 ${esc(flowerText)}</span></p></div>
                   <div><p class="text-[10px] text-gray-500">최소보증</p><p class="mt-1 text-xs font-semibold">${venue.minGuests ? esc(venue.minGuests + "명") : "미입력"}</p></div>
                 </div>
-                <details class="text-[11px] text-gray-600"><summary class="cursor-pointer">계산식 보기</summary><p class="mt-1 break-words">${esc(quoteFormula(venue))}</p></details>
+                <details class="text-[11px] text-gray-600"><summary class="cursor-pointer font-semibold text-amber-900">가격 근거·계산식 보기</summary><div class="mt-2 space-y-2"><p><span class="font-semibold">할인 근거</span> ${esc(discountText(venue))}</p>${venue.platformBenefits ? `<p class="text-emerald-800"><span class="font-semibold">예약 경로 혜택</span> ${esc(benefitText(venue))}</p>` : ""}<p>${esc(quoteFormula(venue))}</p></div></details>
               </div>
               <div class="border-b border-sky-100 bg-sky-50/40 p-4 text-[11px] leading-relaxed"><p class="mb-2 font-semibold text-sky-900">필수·선택 옵션</p>${optionComparisonHtml(venue)}</div>
               <div class="p-4 text-xs leading-relaxed">
@@ -1898,7 +1937,7 @@
             return `<tr class="${venue.parked ? "opacity-60" : ""}">
               <td class="p-3 text-center font-bold text-roseGold-700">${venue.parked ? "보류" : rank.get(venue.id)}</td>
               <td class="p-3 font-bold"><button type="button" data-open="${esc(venue.id)}" class="text-left underline decoration-roseGold-300">${esc(venue.name)}</button><div class="mt-1 text-xs font-normal text-gray-500">${esc(venue.district)} · 가운데 ${esc(kmText(venue.centerKm))}</div>${markText(venue) ? `<div class="mt-1 text-xs font-normal text-roseGold-700">${esc(markText(venue))}</div>` : ""}</td>
-              <td class="p-3 text-xs font-semibold">정가 ${esc(totalText)}<div class="text-emerald-700">할인가 ${esc(bestDiscount(venue) ? won(bestDiscount(venue).total) : "근거 없음")}</div><div class="mt-1 max-w-[14rem] whitespace-normal font-normal text-[11px] text-gray-500">${esc(discountText(venue))}</div>${venue.platformBenefits ? `<div class="mt-1 max-w-[14rem] whitespace-normal font-normal text-[11px] text-emerald-700">예약 혜택 ${esc(benefitText(venue))}</div>` : ""}</td>
+              <td class="p-3 text-xs font-semibold">정가 ${esc(totalText)}<div class="text-emerald-700">할인가 ${esc(bestDiscount(venue) ? won(bestDiscount(venue).total) : "근거 없음")}</div><details class="mt-1 max-w-[14rem] whitespace-normal font-normal text-[11px] text-gray-500"><summary class="cursor-pointer">가격 근거 보기</summary><p class="mt-1">${esc(discountText(venue))}</p>${venue.platformBenefits ? `<p class="mt-1 text-emerald-700">예약 혜택 ${esc(benefitText(venue))}</p>` : ""}</details></td>
               <td class="p-3 text-xs">${venue.meal ? esc(won(venue.meal) + (venue.mealTo ? "~" + won(venue.mealTo) : "")) : "미입력"}</td>
               <td class="p-3 text-xs whitespace-normal min-w-[10rem]">${venue.rental ? esc("대관 " + won(venue.rental) + (venue.rentalTo ? "~" + won(venue.rentalTo) : "") + " · " + flowerText) : "대관 미입력 · " + esc(flowerText)}</td>
               <td class="p-3 text-xs">${venue.minGuests ? esc(venue.minGuests + "명") : "미입력"}</td>
@@ -2600,26 +2639,20 @@
           renderAll();
           fitToAll();
         }
-        const optionToggle = event.target.closest("[data-option-toggle]");
+        const optionToggle = event.target.closest("[data-option-key]");
         if (optionToggle) {
-          const id = optionToggle.dataset.optionToggle;
-          const venue = allVenues().find((item) => item.id === id);
-          const option = venue && Array.isArray(venue.options) ? venue.options[Number(optionToggle.dataset.optionIndex)] : null;
-          if (option && !option.required && !option.service) {
-            const selected = new Set(selectedOptionNames(venue));
-            if (selected.has(option.name)) selected.delete(option.name);
-            else selected.add(option.name);
-            if (!state.priorityOptions || Array.isArray(state.priorityOptions)) state.priorityOptions = {};
-            if (selected.size) state.priorityOptions[id] = Array.from(selected);
-            else delete state.priorityOptions[id];
-            persist();
-            renderAll();
-            if (openId === id) {
-              const fresh = openVenue();
-              paintDetailMoney(fresh);
-              paintDetailOptions(fresh);
-              paintDetailScores();
-            }
+          const key = optionToggle.dataset.optionKey;
+          const selected = new Set(selectedOptionKeys());
+          if (selected.has(key)) selected.delete(key);
+          else selected.add(key);
+          state.priorityOptions = Array.from(selected);
+          persist();
+          renderAll();
+          if (openId) {
+            const fresh = openVenue();
+            paintDetailMoney(fresh);
+            paintDetailOptions(fresh);
+            paintDetailScores();
           }
         }
         const edit = event.target.closest("[data-edit-origin]");
