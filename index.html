@@ -399,24 +399,30 @@
         </div>
         <div class="p-5 space-y-4 text-sm">
           <p id="detail-times" class="bg-roseGold-50 rounded-xl p-3 leading-relaxed"></p>
+          <div id="detail-price-summary"></div>
           <div id="detail-score-breakdown"></div>
           <div class="space-y-2">
             <img id="detail-photo" alt="" class="hidden w-full max-h-64 object-cover rounded-2xl bg-roseGold-50" />
-            <div class="flex flex-wrap gap-2 items-center">
-              <label class="bg-gray-900 text-white rounded-xl px-4 min-h-11 text-sm inline-flex items-center cursor-pointer">사진 넣기
-                <input id="detail-photo-file" type="file" accept="image/*" class="sr-only" />
+            <details class="rounded-xl border border-roseGold-100 p-3">
+              <summary class="cursor-pointer font-bold">사진 관리</summary>
+              <div class="mt-2 flex flex-wrap gap-2 items-center">
+                <label class="bg-gray-900 text-white rounded-xl px-4 min-h-11 text-sm inline-flex items-center cursor-pointer">사진 넣기
+                  <input id="detail-photo-file" type="file" accept="image/*" class="sr-only" />
+                </label>
+                <button type="button" id="detail-photo-clear" class="text-sm text-gray-500 underline min-h-11">사진 빼기</button>
+              </div>
+              <label class="mt-2 block text-xs text-gray-600">사진 주소
+                <input id="detail-photo-url" type="url" placeholder="https://" class="mt-1 w-full border border-roseGold-200 rounded-xl px-3 py-2 text-sm" />
               </label>
-              <button type="button" id="detail-photo-clear" class="text-sm text-gray-500 underline min-h-11">사진 빼기</button>
-            </div>
-            <label class="block text-xs text-gray-600">사진 주소
-              <input id="detail-photo-url" type="url" placeholder="https://" class="mt-1 w-full border border-roseGold-200 rounded-xl px-3 py-2 text-sm" />
-            </label>
-            <p id="detail-photo-error" class="text-xs text-rose-700 hidden" role="alert"></p>
-            <p class="text-xs text-gray-500">소개 페이지의 홀 사진은 가져오지 않습니다. 직접 고른 사진만 이 브라우저에 남습니다.</p>
+              <p id="detail-photo-error" class="text-xs text-rose-700 hidden" role="alert"></p>
+              <p class="mt-2 text-xs text-gray-500">소개 페이지의 홀 사진은 가져오지 않습니다. 직접 고른 사진만 이 브라우저에 남습니다.</p>
+            </details>
           </div>
-          <div id="detail-scores" class="space-y-2"></div>
+          <details class="rounded-xl border border-roseGold-100 p-3"><summary class="cursor-pointer font-bold">내 점수 입력</summary><div id="detail-scores" class="mt-3 space-y-2"></div></details>
           <dl id="detail-facts" class="grid grid-cols-1 gap-2 text-sm"></dl>
-          <div class="grid grid-cols-2 gap-2">
+          <details class="rounded-xl border border-roseGold-100 p-3">
+            <summary class="cursor-pointer font-bold">금액·조건 수정</summary>
+            <div class="mt-3 grid grid-cols-2 gap-2">
             <label class="text-xs text-gray-600">식대 (원)
               <input id="detail-meal" type="number" min="0" step="1000" class="mt-1 w-full border border-roseGold-200 rounded-xl px-3 py-2 text-sm" />
             </label>
@@ -439,24 +445,27 @@
                 <option value="금액">금액 따로</option>
               </select>
             </label>
-          </div>
-          <input id="detail-flower-won" type="number" min="0" step="100000" placeholder="꽃장식 원" class="hidden w-full border border-roseGold-200 rounded-xl px-3 py-2 text-sm" />
-          <label class="block text-xs text-gray-600">금액에서 빠진 말
-            <input id="detail-extra" class="mt-1 w-full border border-roseGold-200 rounded-xl px-3 py-2 text-sm" />
-          </label>
-          <p id="detail-quote" class="text-xs text-gray-600 leading-relaxed"></p>
+            </div>
+            <input id="detail-flower-won" type="number" min="0" step="100000" placeholder="꽃장식 원" class="hidden mt-2 w-full border border-roseGold-200 rounded-xl px-3 py-2 text-sm" />
+            <label class="mt-2 block text-xs text-gray-600">금액에서 빠진 말
+              <input id="detail-extra" class="mt-1 w-full border border-roseGold-200 rounded-xl px-3 py-2 text-sm" />
+            </label>
+            <p id="detail-quote" class="mt-2 text-xs text-gray-600 leading-relaxed"></p>
+          </details>
           <div id="detail-options"></div>
           <details id="detail-reviews" class="border border-roseGold-100 rounded-xl p-3"></details>
           <div id="detail-routes" class="rounded-xl bg-gray-50 p-3"></div>
-          <div class="space-y-1">
-            <p class="font-bold">참고 링크</p>
+          <details class="rounded-xl border border-roseGold-100 p-3">
+            <summary class="cursor-pointer font-bold">참고 링크</summary>
+            <div class="mt-2 space-y-1">
             <div id="detail-refs" class="space-y-1"></div>
             <form id="detail-ref-form" class="flex gap-2">
               <input id="detail-ref-url" type="url" placeholder="참고 링크 추가" class="flex-1 border border-roseGold-200 rounded-xl px-3 py-2 text-sm" />
               <button type="submit" class="border border-roseGold-300 rounded-xl px-3 min-h-11 text-sm">추가</button>
             </form>
             <p class="text-xs text-gray-500">다른 사이트 글과 사진은 가져오지 않습니다. 링크는 직접 붙인 것만 남습니다.</p>
-          </div>
+            </div>
+          </details>
           <details class="border border-roseGold-100 rounded-xl p-3">
             <summary class="cursor-pointer font-bold">이 홀 체크</summary>
             <div id="detail-checks" class="mt-3 grid gap-3"></div>
@@ -1395,6 +1404,11 @@
         return quotes.map((quote) => quote.label + " · " + (quote.total == null ? "식대 " + won(quote.meal) + " · 대관 " + won(quote.rental) + " (총액 계산 불가)" : won(quote.total)) + (quote.serviceRate ? " · 봉사료 " + Math.round(quote.serviceRate * 100) + "% " + (quote.total == null ? "별도" : "반영") : "") + (quote.note ? " · " + quote.note : "")).join(" / ");
       }
 
+      function discountRange(venue) {
+        const totals = discountTotals(venue).filter((quote) => quote.total != null).map((quote) => quote.total).sort((a, b) => a - b);
+        return totals.length ? { low: totals[0], high: totals[totals.length - 1], count: totals.length } : null;
+      }
+
       function benefitText(venue) {
         return Array.isArray(venue.platformBenefits) && venue.platformBenefits.length ? venue.platformBenefits.join(" / ") : "확인된 예약 경로 혜택 없음";
       }
@@ -2197,7 +2211,7 @@
         const formula = result.weight
           ? `가중 합계 ${Math.round(result.weighted).toLocaleString("ko-KR")} ÷ 적용 중요도 ${result.weight} = ${Math.round(venue.fit)}점`
           : "적용되는 중요도가 없어 0점입니다.";
-        box.innerHTML = `<details open class="rounded-xl border border-roseGold-200 bg-roseGold-50/50 p-3"><summary class="cursor-pointer font-bold">중요도 점수 ${Math.round(venue.fit)}점 · 계산 상세</summary><p class="mt-2 text-xs text-gray-600">각 항목을 0~100점으로 환산한 뒤 중요도로 가중 평균합니다. 값이 없거나 중요도가 0인 항목은 분모에서도 제외합니다.</p><div class="mt-2">${rows}</div><p class="border-t border-roseGold-200 pt-2 text-xs font-bold text-roseGold-800">${esc(formula)}</p></details>`;
+        box.innerHTML = `<details class="rounded-xl border border-roseGold-200 bg-roseGold-50/50 p-3"><summary class="cursor-pointer font-bold">중요도 점수 ${Math.round(venue.fit)}점 · 계산 상세</summary><p class="mt-2 text-xs text-gray-600">각 항목을 0~100점으로 환산한 뒤 중요도로 가중 평균합니다. 값이 없거나 중요도가 0인 항목은 분모에서도 제외합니다.</p><div class="mt-2">${rows}</div><p class="border-t border-roseGold-200 pt-2 text-xs font-bold text-roseGold-800">${esc(formula)}</p></details>`;
       }
 
       function photoError(message) {
@@ -2369,6 +2383,21 @@
         }
         const quote = document.getElementById("detail-quote");
         if (quote) quote.textContent = quoteNote(venue);
+        const summary = document.getElementById("detail-price-summary");
+        if (summary) {
+          const regular = quoteTotals(venue);
+          const discounted = discountRange(venue);
+          const regularText = regular ? won(regular.low) + (regular.high !== regular.low ? "~" + won(regular.high) : "") : "계산할 숫자 부족";
+          const discountedText = !discounted ? "총액을 계산할 수 있는 기록 없음" : discounted.low === discounted.high ? won(discounted.low) : won(discounted.low) + "~" + won(discounted.high);
+          summary.innerHTML = `<div class="rounded-2xl border border-amber-200 bg-amber-50 p-4">
+            <p class="text-[11px] font-semibold text-amber-900">금액 요약</p>
+            <div class="mt-2 grid grid-cols-2 gap-3">
+              <div><p class="text-xs text-gray-500">정가</p><p class="mt-1 font-bold text-gray-900">${esc(regularText)}</p></div>
+              <div><p class="text-xs text-gray-500">할인가 기록${discounted ? " " + discounted.count + "건" : ""}</p><p class="mt-1 font-bold text-emerald-700">${esc(discountedText)}</p></div>
+            </div>
+            <p class="mt-2 text-[11px] leading-relaxed text-gray-500">후기·제공 자료에서 총액 계산이 가능한 기록의 최저~최고입니다. 날짜·시간·보증 인원에 따라 달라지며 상담 확정가가 아닙니다.</p>
+          </div>`;
+        }
       }
 
       function paintDetailOptions(venue) {
