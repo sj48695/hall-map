@@ -1148,6 +1148,7 @@
           checks: readJSON("hallmap.checks", {}),
           sort: loadSort(readCriteria()),
           manualOrder: readJSON("hallmap.manualOrder", []),
+          manualParked: readJSON("hallmap.manualParked", []),
           radiusKm: readRadius(),
           budgetWon: readBudget(),
           showParked: localStorage.getItem("hallmap.showParked") === "1",
@@ -1294,6 +1295,7 @@
             "hallmap.scores": state.scores,
             "hallmap.checks": state.checks,
             "hallmap.manualOrder": state.manualOrder,
+            "hallmap.manualParked": state.manualParked,
           };
           Object.entries(pairs).forEach(([key, value]) => {
             localStorage.setItem(key, JSON.stringify(value));
@@ -1464,10 +1466,13 @@
           merged.centerKm = center ? kmBetween(center, merged) : null;
           merged.comparisonTotal = comparisonTotal(merged);
           merged.overBudget = merged.comparisonTotal != null && merged.comparisonTotal > state.budgetWon;
-          merged.parked = (merged.centerKm != null && merged.centerKm > state.radiusKm) || merged.overBudget;
+          merged.autoParked = (merged.centerKm != null && merged.centerKm > state.radiusKm) || merged.overBudget;
+          merged.manualParked = Array.isArray(state.manualParked) && state.manualParked.includes(merged.id);
+          merged.parked = merged.autoParked || merged.manualParked;
           const reasons = [];
           if (merged.centerKm != null && merged.centerKm > state.radiusKm) reasons.push("반경 밖");
           if (merged.overBudget) reasons.push("예산 초과");
+          if (merged.manualParked) reasons.push("직접 보류");
           merged.parkReason = reasons.join(" · ");
           merged.user = Boolean(venue.user);
           if (extra.meal === undefined) merged.meal = venue.meal || null;
@@ -1672,13 +1677,19 @@
         const familyLine = venue.familyTimes.length ? " · " + familyText(venue) : "";
         const marks = markText(venue);
         const total = quoteTotals(venue);
+        const holdControl = venue.autoParked && !venue.manualParked
+          ? `<span class="shrink-0 rounded-full bg-slate-100 px-2 py-1 text-[11px] text-slate-500">조건 보류</span>`
+          : `<button type="button" role="switch" aria-checked="${venue.manualParked ? "true" : "false"}" data-park-toggle="${esc(venue.id)}" class="flex min-h-11 shrink-0 items-center gap-1.5 rounded-full px-2 text-[11px] ${venue.manualParked ? "bg-slate-200 text-slate-700" : "bg-roseGold-50 text-roseGold-700"}" aria-label="${esc(venue.name)} ${venue.manualParked ? "순위로 복귀" : "보류로 이동"}">
+              <span class="relative h-5 w-9 rounded-full ${venue.manualParked ? "bg-slate-500" : "bg-roseGold-200"}"><span class="absolute top-0.5 h-4 w-4 rounded-full bg-white shadow transition-transform ${venue.manualParked ? "left-4" : "left-0.5"}"></span></span>
+              보류
+            </button>`;
         return `<article data-id="${esc(venue.id)}" class="rounded-xl border border-roseGold-100 p-3 ${venue.parked ? "opacity-70" : ""}">
           <div class="flex items-center gap-2">
             <button type="button" data-open="${esc(venue.id)}" class="flex-1 text-left flex gap-2 items-center">
               ${photoTag(venue, "w-16 h-16 rounded-lg object-cover shrink-0")}
               <span class="min-w-0">
                 <span class="flex flex-wrap items-center gap-2">
-                  <span class="text-xs font-bold text-gray-400">${venue.parked ? "보류" : rank}</span>
+                  <span class="text-xs font-bold text-gray-400">${venue.parked ? "보류 · " + esc(venue.parkReason) : rank}</span>
                   <span class="text-xs px-2 py-0.5 rounded-full font-semibold ${toneClass(venue)}">${esc(venue.district)}</span>
                   <span class="font-bold">${esc(venue.name)}</span>
                   ${venue.user ? '<span class="text-[11px] text-gray-400">내가 추가</span>' : ""}
@@ -1688,6 +1699,7 @@
                 ${marks ? `<span class="block text-xs text-roseGold-700 mt-0.5">${esc(marks)}</span>` : ""}
               </span>
             </button>
+            ${holdControl}
             ${moves}
           </div>
         </article>`;
@@ -2521,6 +2533,21 @@
         if (open) openDetail(open.dataset.open);
         const move = event.target.closest("[data-move]");
         if (move) moveVenue(move.dataset.id, Number(move.dataset.move));
+        const parkToggle = event.target.closest("[data-park-toggle]");
+        if (parkToggle) {
+          const id = parkToggle.dataset.parkToggle;
+          const parked = new Set(Array.isArray(state.manualParked) ? state.manualParked : []);
+          if (parked.has(id)) parked.delete(id);
+          else {
+            parked.add(id);
+            state.showParked = true;
+          }
+          state.manualParked = Array.from(parked);
+          persist();
+          syncControls();
+          renderAll();
+          fitToAll();
+        }
         const edit = event.target.closest("[data-edit-origin]");
         if (edit) {
           const origin = state.origins.find((item) => item.id === edit.dataset.editOrigin);
@@ -2765,7 +2792,7 @@
       document.getElementById("reset-data").addEventListener("click", () => {
         const ok = confirm("추가한 홀, 가족 출발지, 금액 수정, 홀별 체크, 순서를 지울까요? 공통 체크리스트와 투어 메모는 남습니다.");
         if (!ok) return;
-        ["hallmap.userVenues", "hallmap.overrides", "hallmap.origins", "hallmap.weights", "hallmap.criteria", "hallmap.scores", "hallmap.checks", "hallmap.sort", "hallmap.manualOrder", "hallmap.showSeongbuk", "hallmap.showParked", "hallmap.radiusKm", "hallmap.budgetWon", "hallmap.presetsSeeded"].forEach((key) => {
+        ["hallmap.userVenues", "hallmap.overrides", "hallmap.origins", "hallmap.weights", "hallmap.criteria", "hallmap.scores", "hallmap.checks", "hallmap.sort", "hallmap.manualOrder", "hallmap.manualParked", "hallmap.showSeongbuk", "hallmap.showParked", "hallmap.radiusKm", "hallmap.budgetWon", "hallmap.presetsSeeded"].forEach((key) => {
           localStorage.removeItem(key);
         });
         state = loadState();
