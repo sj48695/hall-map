@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-    <meta name="research-update" content="individual-rooms-20261006" />
+    <meta name="research-update" content="photo-zoom-20261006" />
     <meta name="theme-color" content="#fdf8f6" />
     <link rel="icon" href="data:," />
     <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -402,7 +402,7 @@
         <div class="p-5 space-y-4 text-sm">
           <div id="detail-room"></div><p id="detail-times" class="bg-roseGold-50 rounded-xl p-3 leading-relaxed"></p>
           <div class="space-y-2">
-            <img id="detail-photo" alt="" class="hidden w-full max-h-64 object-cover rounded-2xl bg-roseGold-50" />
+            <button type="button" id="detail-photo-open" class="hidden w-full text-left" aria-label="홀 사진 확대"><img id="detail-photo" alt="" class="w-full max-h-64 object-cover rounded-2xl bg-roseGold-50" /><span class="block text-xs underline mt-1">사진을 눌러 확대하세요</span></button>
             <p id="detail-photo-caption" class="text-xs text-gray-500"></p><details class="rounded-xl border border-roseGold-100 p-3">
               <summary class="cursor-pointer font-bold">사진 관리</summary>
               <div class="mt-2 flex flex-wrap gap-2 items-center">
@@ -484,6 +484,12 @@
       </div>
     </div>
 
+    <dialog id="photo-viewer" aria-labelledby="photo-viewer-title" style="width:calc(100% - 24px);max-width:1100px;max-height:94dvh;padding:16px;border:0;border-radius:16px" >
+      <div class="flex items-center justify-between gap-2"><h2 id="photo-viewer-title" class="font-bold text-sm"></h2><button type="button" id="photo-viewer-close" class="min-h-11 min-w-11">닫기</button></div>
+      <div class="flex gap-2 my-2"><button type="button" id="photo-viewer-zoom" class="border rounded-lg px-3 min-h-11">2배 확대</button><button type="button" id="photo-viewer-fit" class="border rounded-lg px-3 min-h-11">전체 보기</button></div>
+      <div style="overflow:auto;max-height:65dvh"><img id="photo-viewer-image" alt="" style="width:100%;max-width:none;height:auto" /></div>
+      <p id="photo-viewer-caption" class="text-xs text-gray-500 mt-2"></p>
+    </dialog>
     <script>
       const SEED = [
         {
@@ -2598,13 +2604,13 @@
       function paintDetailPhoto(venue) {
         const img = document.getElementById("detail-photo");
         const src = safeImage(venue && venue.image);
-        img.classList.toggle("hidden", !src);
+        document.getElementById("detail-photo-open").classList.toggle("hidden", !src);
         img.src = src || "";
         img.alt = venue ? venue.name + " " + (venue.roomName || "홀 미확인") + " 전경" : "";
         const url = document.getElementById("detail-photo-url");
         if (document.activeElement !== url) url.value = src.startsWith("http") ? src : "";
         document.getElementById("detail-photo-error").classList.add("hidden");
-        document.getElementById("detail-photo-caption").innerHTML = venue?.roomScoped ? (venue.roomId ? esc(venue.roomName) + " · " + (state.overrides[roomKey(venue.id)]?.image ? "내 사진" : `공개 사진 미리보기 · <a href="${esc(ROOM_SOURCES[venue.id])}?tabId=3" class="underline" target="_blank" rel="noreferrer">원문에서 전체 사진</a> · 촬영·리뉴얼 적용일 미확인`) : "개별 홀을 선택하면 사진이 표시됩니다.") : "단독홀 사진 · 촬영·리뉴얼 적용일은 확인하세요.";
+        document.getElementById("detail-photo-caption").innerHTML = venue?.roomScoped ? (venue.roomId ? esc(venue.roomName) + " · " + (state.overrides[roomKey(venue.id)]?.image ? "내 사진" : `공개 사진 미리보기 · <a href="${esc(ROOM_SOURCES[venue.id] + (venue.id === "weddingcity" ? "" : "?tabId=3"))}" class="underline" target="_blank" rel="noreferrer">원문에서 전체 사진</a> · 촬영·리뉴얼 적용일 미확인`) : "개별 홀을 선택하면 사진이 표시됩니다.") : "단독홀 사진 · 촬영·리뉴얼 적용일은 확인하세요.";
       }
 
       function paintDetailScores() {
@@ -3450,10 +3456,25 @@
 
       document.addEventListener("keydown", (event) => {
         if (event.key === "Escape") {
+          if (document.getElementById("photo-viewer").open) return;
           setPinMode(null);
           if (openId) closeDetailAndRefresh();
         }
       });
+
+      const photoViewer = document.getElementById("photo-viewer");
+      const zoomPhoto = document.getElementById("photo-viewer-image");
+      document.getElementById("detail-photo-open").addEventListener("click", () => {
+        const image = document.getElementById("detail-photo");
+        if (!safeImage(image.getAttribute("src"))) return;
+        zoomPhoto.src = image.src; zoomPhoto.alt = image.alt; zoomPhoto.style.width = "100%";
+        document.getElementById("photo-viewer-title").textContent = image.alt;
+        document.getElementById("photo-viewer-caption").innerHTML = document.getElementById("detail-photo-caption").innerHTML;
+        photoViewer.showModal();
+      });
+      document.getElementById("photo-viewer-close").addEventListener("click", () => photoViewer.close());
+      document.getElementById("photo-viewer-zoom").addEventListener("click", () => zoomPhoto.style.width = "200%");
+      document.getElementById("photo-viewer-fit").addEventListener("click", () => zoomPhoto.style.width = "100%");
 
       initMap();
       syncControls();
