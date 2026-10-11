@@ -14,6 +14,25 @@ const state = {overrides:{},scores:{},checks:{}};
 const context = {state,plannerData:(key,fallback)=>stored[key] || fallback,selectedOptionKeys:()=>[],optionForKey:()=>null,selectedOptionTotal:()=>0,fixedRequiredTotal:()=>0,OPTION_CATALOG:[],persist:()=>true,renderAll:()=>{},renderChecklist:()=>{},paintDetailChecks:()=>{},openId:'jkart'};
 const catalogs = html.slice(html.indexOf('      const ROOM_SOURCES ='),html.indexOf('      function normalizeRoom('));
 runInNewContext(catalogs + ['normalizeRoom','findRoom','roomKey','roomMatches','roomView','personalQuotes','activePersonalQuote','quoteMissing','personalCalculation','discountTotals','bestDiscount','quoteTotals','missingOptions','comparisonTotal','setHallCheck','setMark','markOf'].map(extract).join('\n'),context);
+test('workbook ranges stay scoped by room and period without becoming calculated quotes',()=>{
+  context.esc=String;
+  const records=runInNewContext('WORKBOOK_REFERENCES',context);
+  assert.equal(Object.values(records).flat().length,9);
+  const atrium=records.jkart.filter(r=>r.rooms.includes('atrium'));
+  assert.equal(atrium[0].guests[0],200);
+  assert.equal(atrium[1].guests[0],300);
+  assert.equal(atrium[1].flower,6000000);
+  const output=context.workbookReferenceHtml({id:'jkart',roomId:'atrium'});
+  assert.ok(output.includes('67,980원') || output.includes('67,980~82,400원'));
+  assert.ok(output.includes('원본 44행') && output.includes('원본 47행'));
+  assert.ok(!output.includes('원본 45행') && !output.includes('원본 48행'));
+  assert.equal(context.workbookReferenceHtml({id:'newcon',roomId:'renov'}),'');
+  const view=context.roomView({id:'jkart',discountQuotes:[]},'atrium');
+  assert.equal(view.meal,96000,'newer public introduction remains separate');
+  assert.equal(view.minGuests,null,'reference guarantee is not a current guarantee');
+  assert.equal(view.discountQuotes.length,0);
+  assert.equal(context.comparisonTotal(view),null);
+});
 const venue = {id:'jkart',name:'JK',meal:86000,rental:10000000,minGuests:200,image:'legacy.jpg',options:[{name:'legacy',price:50000}],discountQuotes:[{hall:'아트리움홀',meal:50000,rental:1000000,required:0,minGuests:200},{meal:45000,rental:500000,required:0,minGuests:200}],reviews:[{hall:'아트리움홀',food:true},{food:true}]};
 test('unselected company prices, photos and unknown-hall quotes never enter comparison',()=>{
   stored.selectedRooms={};

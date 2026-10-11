@@ -1595,6 +1595,35 @@
           {id:"amour",name:"아모르홀",aliases:["아모르"],floor:"8층",meal:63000,rental:6000000,flower:"포함",interval:70,minGuests:250,seats:200,image:"assets/venues/rooms/city-amour.jpg"}
         ]
       };
+      // Reference ranges lack exact dates and tax/mandatory-cost terms; keep them out of quote totals.
+      const WORKBOOK_REFERENCES = {
+        westernsindorim: [
+          {row:9,rooms:["asta","grace"],hall:"아스타홀·그레이스홀",period:"적용 예식일 미기재",guests:[200,200],meal:[46000,69000],rental:[1500000,5600000]},
+          {row:10,rooms:["dynasty"],hall:"다이너스티홀",period:"적용 예식일 미기재",guests:[200,200],meal:[46000,69000],rental:[1700000,5800000]}
+        ],
+        jkart: [
+          {row:44,rooms:["atrium"],hall:"아트리움홀",period:"2027년 상반기",guests:[200,200],meal:[67980,82400],rental:[1000000,5000000],flower:3000000},
+          {row:45,rooms:["grand"],hall:"그랜드홀",period:"2027년 상반기",guests:[250,250],meal:[67980,82400],rental:[2000000,6000000],flower:3000000},
+          {row:46,rooms:["amber"],hall:"엠버루체홀",period:"2027년 상반기",guests:[200,200],meal:[67980,82400],rental:[3000000,7000000],flower:3000000},
+          {row:47,rooms:["atrium"],hall:"아트리움홀",period:"2027년 하반기 · 리모델링 적용 표기",guests:[300,300],meal:[67980,88580],rental:[500000,5000000],flower:6000000},
+          {row:48,rooms:["amber"],hall:"엠버루체홀",period:"2027년 하반기",guests:[200,200],meal:[67980,88580],rental:[500000,5000000],flower:6000000}
+        ],
+        botanic: [
+          {row:51,rooms:["calla","orchid"],hall:"카라홀·오키드홀",period:"2026년 7~12월",guests:[200,250],meal:[72000,86000],rental:[5500000,7900000]},
+          {row:62,rooms:["calla","orchid"],hall:"카라홀·오키드홀",period:"2027년 1~6월",guests:[200,250],meal:[79000,86000],rental:[6050000,7900000]}
+        ]
+      };
+      const WORKBOOK_OPTIONS = {
+        westernsindorim: [["연주",400000],["사회자",165000,250000],["컨시어지",300000],["DVD",550000],["사진",1000000],["부케",220000],["포토테이블",330000],["축가",165000],["플라워샤워",165000]],
+        jkart: [["사회자",300000],["축가",300000],["3중주",500000],["컨시어지",350000],["DVD",385000],["사진",800000],["플라워샤워",250000],["포토테이블 생화",300000],["혼주 여성 미용",170000],["혼주 남성 미용",55000]],
+        botanic: [["3중주",330000],["4중주",440000],["DVD",440000],["사진",770000],["사진 원본 추가",220000],["혼주 남성 미용",77000],["축가",220000],["포토부스",440000]]
+      };
+      function workbookReferenceHtml(venue) {
+        const records = (WORKBOOK_REFERENCES[venue.id] || []).filter((r) => !venue.roomId || r.rooms.includes(venue.roomId));
+        if (!records.length) return "";
+        const range = (values, unit="원") => [...new Set(values)].map((v) => v.toLocaleString("ko-KR")).join("~") + unit;
+        return `<details class="my-3 rounded-xl border border-sky-200 p-3"><summary class="font-bold text-sm cursor-pointer">제공 엑셀 참고 범위 ${records.length}건 · 2026년 5월 취합</summary><p class="mt-2 text-xs text-gray-600">낭만이네 웨딩홀견적총정리 2026 · 시트 ‘웨딩홀 견적 총정리’. 2026-10-11 파일 확인. 업체 공시가격을 취합한 참고 자료이며 오류·가격 변경 가능성이 있습니다. 정확한 날짜·타임·세금·필수비용이 확정되지 않아 최신 소개 가격을 덮어쓰거나 총액·순위에 적용하지 않습니다.</p><div class="mt-2 space-y-3">${records.map((r) => `<article class="border-t pt-2 text-xs leading-relaxed"><p class="font-bold">${esc(r.hall)} · ${esc(r.period)} · 원본 ${r.row}행</p><p>보증 ${range(r.guests,"명")} · 식대 ${range(r.meal)} · 대관 ${range(r.rental)}</p><p>생화 별도 ${r.flower ? range([r.flower]) : "포함·금액 미확인"} · 봉사료·부가세 미확인</p>${venue.id === "botanic" ? `<p>비수기 보증 200명·성수기 250명 표기입니다. 폐백 ${r.row === 51 ? "300,000" : "500,000"}원(수모 별도), 혼주 여성 미용 ${r.row === 51 ? "176,000" : "198,000"}원이며 헤어피스 50,000원은 별도입니다.</p>` : ""}${r.row === 47 ? '<p class="text-amber-900">상반기 200명에서 하반기 300명으로 바뀝니다. 통합 공사 일정·홀 이름·확정 도면을 상담에서 재확인하세요.</p>' : ""}</article>`).join("")}</div><p class="mt-3 text-xs font-bold">추가 옵션 참고 가격 · 필수 여부·구성·세금 재확인</p><p class="mt-1 text-xs leading-relaxed">${(WORKBOOK_OPTIONS[venue.id] || []).map(([name,...values]) => esc(name) + " " + range(values)).join(" · ")}</p><p class="mt-2 text-xs text-amber-900">최저 식대·최저 대관료·최저 보증을 임의로 조합한 금액은 계약 가능한 견적이 아닙니다. 원본의 식비+대관료 합계에도 생화·추가 옵션 등은 빠질 수 있습니다.</p></details>`;
+      }
       function normalizeRoom(name) { return String(name || "").replace(/\s/g,""); }
       function findRoom(venueId, name) {
         return (ROOM_CATALOG[venueId] || []).find((r) => [r.name,r.id,...(r.aliases || [])].some((alias) => normalizeRoom(alias) === normalizeRoom(name))) || null;
@@ -1700,7 +1729,7 @@
       function quoteRecordsHtml(venue) {
         const quotes = discountTotals(venue).concat(personalQuotes(venue).filter((q) => roomMatches(venue,q)).map((q) => Object.assign({}, q, {personal:true, total:personalCalculation(Object.assign({}, q, {personal:true}), venue, false).total})));
         const filtered = quotes.filter((q) => !quoteCondition || ((q.note || "") + (q.label || "") + (q.date || "") + (q.hall || "")).includes(quoteCondition));
-        return `<details class="my-3 rounded-xl border border-amber-200 p-3"><summary class="font-bold text-sm cursor-pointer">견적·완성도 ${filtered.length}건</summary><div class="mt-2 space-y-3">${filtered.map((q) => {
+        return workbookReferenceHtml(venue) + `<details class="my-3 rounded-xl border border-amber-200 p-3"><summary class="font-bold text-sm cursor-pointer">견적·완성도 ${filtered.length}건</summary><div class="mt-2 space-y-3">${filtered.map((q) => {
           const missing = quoteMissing(q, venue);
           const active = activePersonalQuote(venue)?.id === q.id;
           const tax = q.personal ? personalCalculation(q, venue) : null;
