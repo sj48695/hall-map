@@ -18,3 +18,16 @@ test('budget visuals distinguish unknown totals and cap over-budget bars without
   assert.ok(over.includes('width:100%'));
   assert.ok(!over.includes('width:150%'));
 });
+test('photo index labels unselected rooms and routes each photo to its own room',()=>{
+  const begin=html.indexOf('      function photoIndexHtml(');
+  const finish=html.indexOf('\n      }',begin)+'\n      }'.length;
+  Object.assign(context,{ROOM_CATALOG:{example:[{id:'a',name:'A홀',image:'a.avif'},{id:'b',name:'B홀',image:'b.avif'}]},safeImage:v=>v || ''});
+  runInNewContext(html.slice(begin,finish),context);
+  const output=context.photoIndexHtml({id:'example',name:'예시'});
+  assert.ok(output.includes('data-open-room="a"') && output.includes('data-open-room="b"'));
+  assert.ok(output.includes('눌러서 이 홀 선택'));
+  assert.ok(!output.includes('undefined'));
+  const selected=context.photoIndexHtml({id:'example',name:'예시',roomId:'b',roomName:'B홀',image:'b.avif',extraImages:['b2.avif']});
+  assert.ok(selected.includes('b2.avif'));
+  assert.ok(!selected.includes('a.avif'));
+});

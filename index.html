@@ -111,6 +111,23 @@
         header h1 { font-size: 16px !important; }
         nav[aria-label="화면"] button { font-size: 13px; }
       }
+      /* The landing view is a photo index; explanations live in the detail view. */
+      .candidate-layout { grid-template-columns: minmax(0,1fr); }
+      .candidate-map { position: static; }
+      #venue-list { grid-template-columns: repeat(3,minmax(0,1fr)); align-items: start; }
+      .candidate-card { padding: 10px !important; }
+      .photo-strip { display: flex; gap: 6px; overflow-x: auto; scroll-snap-type: x mandatory; border-radius: 12px; }
+      .photo-strip > button { flex: 0 0 100%; scroll-snap-align: start; }
+      .photo-strip img { height: 230px; }
+      .photo-index { display:flex; justify-content:space-between; gap:8px; padding:8px 2px; font-size:11px; color:#64748b; }
+      .candidate-card .candidate-heading { padding: 0 4px; }
+      .candidate-card .candidate-actions { margin-top:8px; padding: 0 4px; }
+      .snapshot { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:4px; margin-top:10px; padding:0 4px; }
+      .snapshot > div { background:#f8fafc; border-radius:10px; padding:8px 3px; text-align:center; }
+      .snapshot small { display:block; font-size:11px; color:#64748b; }
+      .snapshot strong { display:block; font-size:12px; }
+      @media (max-width: 1099px) { #venue-list { grid-template-columns: repeat(2,minmax(0,1fr)); } }
+      @media (max-width: 639px) { #venue-list { grid-template-columns:minmax(0,1fr); } .photo-strip img { height:220px; } }
       body { overflow-wrap: anywhere; }
       input, select, textarea { min-width: 0; }
       #venue-modal > [role="dialog"] { max-height: 90dvh; overscroll-behavior: contain; }
@@ -207,7 +224,7 @@
 
     <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 pt-4 pb-24 md:py-6 space-y-4 md:space-y-6">
       <section data-tab-content="map" class="space-y-4">
-        <div id="recommendation" class="bg-white rounded-2xl border border-roseGold-100 shadow-sm p-4 sm:p-5" aria-live="polite"></div>
+        <details class="bg-white rounded-2xl border border-roseGold-100 px-4 py-2"><summary class="font-bold cursor-pointer">추천 순위 보기</summary><div id="recommendation" class="pb-3" aria-live="polite"></div></details>
 
         <details class="bg-white rounded-2xl border border-roseGold-100 shadow-sm px-4 py-3 space-y-2">
           <summary class="cursor-pointer font-bold">후보 필터 <span class="text-xs font-normal text-gray-500">반경 · 예산 · 보류 후보</span></summary>
@@ -2282,6 +2299,14 @@
         return `<div class="visual-facts"><div><span aria-hidden="true">🍽</span><small>식대 · 소개 기준</small><strong>${venue.meal ? esc(won(venue.meal)) : "미확인"}</strong></div><div><span aria-hidden="true">👥</span><small>최소보증</small><strong>${venue.minGuests ? venue.minGuests + "명" : "미확인"}</strong></div><div><span aria-hidden="true">◷</span><small>예식 간격</small><strong>${venue.interval ? venue.interval + "분" : "미확인"}</strong></div></div><div class="visual-summary"><div class="flex flex-wrap justify-between gap-1 text-xs"><span>예산 ${esc(won(budget))} 대비</span><strong>${total != null ? esc(won(total)) : "총액 확인 필요"}</strong></div>${ratio != null ? `<div class="visual-track" aria-hidden="true"><i style="width:${percent(ratio)}%;background:${ratio > 100 ? '#b45309' : '#b84834'}"></i></div><p class="text-xs text-gray-500 mt-1">예산의 ${Math.round(ratio)}% · ${esc(won(Math.abs(budget-total)))} ${total > budget ? "초과" : "여유"}</p>` : '<p class="text-xs text-gray-500 mt-1">미확인 금액은 예산 그래프에서 제외합니다.</p>'}<div class="mt-3 text-xs text-gray-500">이동 비교 · 직선 추정 / 눈금 90분</div>${travel}</div>`;
       }
 
+      function photoIndexHtml(venue) {
+        const rooms = ROOM_CATALOG[venue.id] || [];
+        const photos = safeImage(venue.image)
+          ? [venue.image,...(venue.extraImages || [])].map((src) => ({src,room:venue.roomId,name:venue.roomName || "단독홀"}))
+          : rooms.filter((r) => safeImage(r.image)).map((r) => ({src:r.image,room:r.id,name:r.name}));
+        return photos.length ? `<div class="photo-strip" aria-label="${esc(venue.name)} 사진 모음">${photos.map((p) => `<button type="button" class="venue-hero" data-open="${esc(venue.id)}" ${p.room ? `data-open-room="${esc(p.room)}"` : ""} data-gallery-photo="${esc(safeImage(p.src))}"><img src="${esc(safeImage(p.src))}" alt="${esc(venue.name + ' · ' + p.name)}" loading="lazy" /><span class="venue-hero-label">${esc(p.name)}${!venue.roomId && rooms.length ? " · 눌러서 이 홀 선택" : ""}</span></button>`).join("")}</div><div class="photo-index"><span>공개 사진 · 촬영·리뉴얼 적용일 미확인</span><span>${photos.length > 1 ? photos.length + "장 · 옆으로 넘기기 →" : "눌러서 확대 ↗"}</span></div>` : '<div class="rounded-xl bg-slate-100 h-40 flex items-center justify-center text-sm text-gray-500">사진 확인 중</div>';
+      }
+
       function familyText(venue) {
         if (!venue.familyTimes.length) return "";
         return venue.familyTimes.map((item) => item.label + " " + item.min + "분").join(" · ");
@@ -2327,12 +2352,11 @@
               보류
             </button>`;
         return `<article data-id="${esc(venue.id)}" class="candidate-card rounded-2xl border border-roseGold-100 p-4 ${venue.parked ? "opacity-70" : ""}">
-          ${safeImage(venue.image) ? `<button type="button" data-open="${esc(venue.id)}" class="venue-hero mb-3">${photoTag(venue, "")}<span class="venue-hero-label">${esc(venue.roomName || "단독홀")} · 사진·견적 보기 ↗</span></button>` : roomGalleryHtml(venue)}
+          ${photoIndexHtml(venue)}
           <button type="button" data-open="${esc(venue.id)}" class="candidate-heading">
-            <span><span class="block text-xs text-gray-500">${venue.parked ? "보류" : rank + "순위"} · ${esc(venue.district)}</span><span class="block text-base font-bold mt-1">${esc(venue.name)}</span><span class="block text-xs text-gray-500 mt-1">${esc(venue.station || "역 정보 확인 필요")}</span></span>
+            <span><span class="block text-xs text-gray-500">${venue.parked ? "보류" : rank + "순위"} · ${esc(venue.district)}</span><span class="block text-base font-bold mt-1">${esc(venue.name)}</span></span>
           </button>
-          <div class="mt-3">${roomPickerHtml(venue)}</div>
-          ${visualSummaryHtml(venue)}
+          <div class="snapshot"><div><small>₩ 비교 총액</small><strong>${comparisonTotal(venue) != null ? esc(won(comparisonTotal(venue))) : "홀·조건 확인"}</strong></div><div><small>신랑 · 직선 추정</small><strong>${venue.groomMin}분</strong></div><div><small>신부 · 직선 추정</small><strong>${venue.brideMin}분</strong></div></div>
           <div class="candidate-actions"><button type="button" data-open="${esc(venue.id)}" class="text-sm font-semibold text-roseGold-700 min-h-11">사진·견적 상세 →</button><details><summary class="text-xs text-gray-500 cursor-pointer">후보 관리</summary><div class="flex flex-wrap items-center">${holdControl}${moves}</div></details></div>
         </article>`;
       }
@@ -3701,7 +3725,7 @@
 
       initMap();
       const mapPanel = document.getElementById("candidate-map");
-      mapPanel.open = window.matchMedia("(min-width: 1100px)").matches;
+      mapPanel.open = false;
       mapPanel.addEventListener("toggle", () => { if (mapPanel.open && map) { map.invalidateSize(); fitToAll(); } });
       document.getElementById("show-candidate-map").addEventListener("click", () => { mapPanel.open = true; mapPanel.scrollIntoView({block:"start",behavior:"smooth"}); });
       syncControls();
