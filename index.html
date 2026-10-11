@@ -62,6 +62,25 @@
       #venue-list { display: grid; gap: 12px; }
       #venue-list > h3 { grid-column: 1 / -1; }
       .candidate-card { min-width: 0; background: white; }
+      .venue-hero { display: block; width: 100%; position: relative; text-align: left; overflow: hidden; border-radius: 12px; background: #f1eeeb; }
+      .venue-hero img { width: 100%; height: 190px; object-fit: cover; transition: transform .2s; }
+      .venue-hero:hover img { transform: scale(1.03); }
+      .venue-hero-label { position: absolute; bottom: 10px; left: 10px; right: 10px; color: white; font-size: 12px; text-shadow: 0 1px 5px #000; background: #0009; border-radius: 8px; padding: 6px 10px; }
+      .room-gallery { display: flex; gap: 8px; overflow-x: auto; padding: 4px 0 10px; scroll-snap-type: x mandatory; }
+      .room-gallery button { flex: 0 0 112px; text-align: left; scroll-snap-align: start; border: 2px solid transparent; border-radius: 10px; padding: 3px; }
+      .room-gallery button[aria-pressed="true"] { border-color: #b84834; background: #fdf8f6; }
+      .room-gallery img { width: 100%; height: 76px; object-fit: cover; border-radius: 7px; }
+      .room-gallery span { display: block; font-size: 12px; padding-top: 4px; }
+      .visual-facts { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 8px; margin: 12px 0; }
+      .visual-facts div { background: #f8fafc; border-radius: 12px; text-align: center; padding: 10px 4px; }
+      .visual-facts small { display: block; font-size: 11px; color: #64748b; margin: 3px 0; }
+      .visual-facts strong { display: block; font-size: 13px; }
+      .visual-summary { border-radius: 12px; background: #fdf8f6; padding: 12px; margin-top: 12px; }
+      .visual-track { height: 8px; border-radius: 8px; background: #e2e8f0; overflow: hidden; margin-top: 6px; }
+      .visual-track i { display: block; height: 100%; border-radius: inherit; background: #b84834; }
+      .travel-line { display: grid; grid-template-columns: 34px minmax(0,1fr) 45px; align-items: center; gap: 8px; font-size: 12px; margin-top: 8px; }
+      .travel-line .visual-track { margin-top: 0; }
+      .travel-line:last-child i { background: #6475b5; }
       .candidate-heading { display: flex; gap: 12px; width: 100%; text-align: left; align-items: center; }
       .candidate-heading > span { min-width: 0; flex: 1; }
       .candidate-actions { display: flex; align-items: center; justify-content: space-between; border-top: 1px solid #fbeeeb; margin-top: 12px; padding-top: 4px; }
@@ -468,7 +487,7 @@
           <button type="button" id="detail-close" class="text-gray-500 min-h-11 min-w-11" aria-label="닫기">닫기</button>
         </div>
         <div class="p-5 space-y-4 text-sm">
-          <div id="detail-room"></div><p id="detail-times" class="bg-roseGold-50 rounded-xl p-3 leading-relaxed"></p>
+          <div id="detail-gallery"></div>
           <div class="space-y-2">
             <button type="button" id="detail-photo-open" class="hidden w-full text-left" aria-label="홀 사진 확대"><img id="detail-photo" alt="" class="w-full max-h-64 object-cover rounded-2xl bg-roseGold-50" /><span class="block text-xs underline mt-1">사진을 눌러 확대하세요</span></button>
             <p id="detail-photo-caption" class="text-xs text-gray-500"></p><details class="rounded-xl border border-roseGold-100 p-3">
@@ -486,6 +505,8 @@
               <p class="mt-2 text-xs text-gray-500">확인된 공개 사진은 출처와 함께 표시합니다. 직접 넣은 사진은 선택한 개별 홀에만 저장합니다.</p>
             </details>
           </div>
+          <div id="detail-visual-summary"></div>
+          <details class="rounded-xl border border-roseGold-100 p-3"><summary class="font-bold cursor-pointer">홀 조건·이동 상세</summary><div id="detail-room" class="mt-2"></div><p id="detail-times" class="mt-2 text-xs text-gray-500"></p></details>
           <div id="detail-price-summary"></div><div id="detail-quote-records"></div>
           <div id="detail-score-breakdown"></div>
 
@@ -1621,18 +1642,18 @@
           {id:"lafene",name:"라페네트레홀",aliases:["라페네홀"],floor:"별관 1층",meal:79000,rental:7900000,flower:"포함",interval:90,minGuests:200,seats:150,image:"assets/venues/rooms/kturtle-lafene.png",note:"밝은 하우스 웨딩·차광 가능 안내입니다. 필수 연출료 금액·신관 연회장까지 이동·차광 상태·주차 조건을 확인하세요."}
         ],
         jkart:[
-          {id:"grand",name:"그랜드홀",meal:86000,rental:11000000,flower:"포함",interval:120,recommendedGuests:250,image:"assets/venues/rooms/jk-grand.png"},
-          {id:"atrium",name:"아트리움홀",aliases:["아트리움"],meal:96000,rental:16000000,flower:"포함",interval:60,recommendedGuests:250,image:"assets/venues/rooms/jk-atrium.png"},
-          {id:"amber",name:"엠버루체홀",aliases:["엠버루체","앰버루체","앰버루체홀"],meal:96000,rental:17000000,flower:"포함",interval:90,recommendedGuests:250,image:"assets/venues/rooms/jk-amber.png"}
+          {id:"grand",name:"그랜드홀",meal:86000,rental:11000000,flower:"포함",interval:120,recommendedGuests:250,image:"assets/venues/rooms/jk-grand.avif",extraImages:["assets/venues/rooms/jk-grand-2.avif"],photoSource:"https://www.directwedding.co.kr/weddinghall/hall0013"},
+          {id:"atrium",name:"아트리움홀",aliases:["아트리움"],meal:96000,rental:16000000,flower:"포함",interval:60,recommendedGuests:250,image:"assets/venues/rooms/jk-atrium.avif",extraImages:["assets/venues/rooms/jk-atrium-2.avif"],photoSource:"https://www.directwedding.co.kr/weddinghall/hall0013"},
+          {id:"amber",name:"엠버루체홀",aliases:["엠버루체","앰버루체","앰버루체홀"],meal:96000,rental:17000000,flower:"포함",interval:90,recommendedGuests:250,image:"assets/venues/rooms/jk-amber.avif",extraImages:["assets/venues/rooms/jk-amber-2.avif"],photoSource:"https://www.directwedding.co.kr/weddinghall/hall0013"}
         ],
         grandconvention:[
-          {id:"grand",name:"그랜드홀",meal:90000,rental:9500000,flower:"포함",interval:90,recommendedGuests:250,image:"assets/venues/rooms/grand-grand.png"},
-          {id:"regency",name:"리젠시홀",meal:90000,rental:9500000,flower:"포함",interval:90,recommendedGuests:250,image:"assets/venues/rooms/grand-regency.png"}
+          {id:"grand",name:"그랜드홀",meal:90000,rental:9500000,flower:"포함",interval:90,recommendedGuests:250,image:"assets/venues/rooms/grand-grand.avif",extraImages:[],photoSource:"https://www.directwedding.co.kr/weddinghall/hall0062"},
+          {id:"regency",name:"리젠시홀",meal:90000,rental:9500000,flower:"포함",interval:90,recommendedGuests:250,image:"assets/venues/rooms/grand-regency.avif",extraImages:[],photoSource:"https://www.directwedding.co.kr/weddinghall/hall0062"}
         ],
         westernsindorim:[
-          {id:"grace",name:"그레이스홀",meal:75000,rental:7500000,flower:"포함",interval:70,recommendedGuests:220,serviceIncludedRate:0,serviceMode:"included",vatMode:"included",image:"assets/venues/rooms/western-grace.png",note:"그레이스홀 상세는 봉사료·부가세 포함으로 안내합니다. 기존 업체 소개의 봉사료 3% 별도 안내와 달라 해당 날짜의 견적서로 확인하세요. 추천 220명은 최소보증 확정값이 아닙니다. 필수 연출료 적용 여부도 확인하세요."},
-          {id:"dynasty",name:"다이너스티홀",aliases:["다이너스티"],meal:75000,rental:7500000,flower:"포함",interval:70,recommendedGuests:220,image:"assets/venues/rooms/western-dynasty.png"},
-          {id:"asta",name:"아스타홀",meal:75000,rental:7500000,flower:"포함",interval:70,recommendedGuests:220,image:"assets/venues/rooms/western-asta.png"}
+          {id:"grace",name:"그레이스홀",meal:75000,rental:7500000,flower:"포함",interval:70,recommendedGuests:220,serviceIncludedRate:0,serviceMode:"included",vatMode:"included",image:"assets/venues/rooms/western-grace.avif",extraImages:["assets/venues/rooms/western-grace-2.avif"],photoSource:"https://www.directwedding.co.kr/weddinghall/hall0402",note:"그레이스홀 상세는 봉사료·부가세 포함으로 안내합니다. 기존 업체 소개의 봉사료 3% 별도 안내와 달라 해당 날짜의 견적서로 확인하세요. 추천 220명은 최소보증 확정값이 아닙니다. 필수 연출료 적용 여부도 확인하세요."},
+          {id:"dynasty",name:"다이너스티홀",aliases:["다이너스티"],meal:75000,rental:7500000,flower:"포함",interval:70,recommendedGuests:220,image:"assets/venues/rooms/western-dynasty.avif",extraImages:["assets/venues/rooms/western-dynasty-2.avif"],photoSource:"https://www.directwedding.co.kr/weddinghall/hall0402"},
+          {id:"asta",name:"아스타홀",meal:75000,rental:7500000,flower:"포함",interval:70,recommendedGuests:220,image:"assets/venues/rooms/western-asta.avif",extraImages:["assets/venues/rooms/western-asta-2.avif"],photoSource:"https://www.directwedding.co.kr/weddinghall/hall0402"}
         ],
         weddingcity:[
           {id:"grandballroom",name:"그랜드볼룸홀",aliases:["그랜드볼룸"],floor:"11층",meal:63000,rental:8000000,flower:"포함",interval:80,minGuests:300,seats:300,image:"assets/venues/rooms/city-grand.jpg"},
@@ -2246,6 +2267,21 @@
         return `<img src="${esc(src)}" alt="${esc(venue.name + " " + (venue.roomName || "홀 미확인"))} 전경" class="${className}" loading="lazy" onerror="this.style.display='none'" />`;
       }
 
+      function roomGalleryHtml(venue) {
+        const rooms = (ROOM_CATALOG[venue.id] || []).filter((r) => safeImage(r.image));
+        if (!rooms.length) return "";
+        return `<div class="mt-3"><p class="text-xs text-gray-500">사진으로 홀 선택 · 리뉴얼 적용일 확인 필요</p><div class="room-gallery" aria-label="${esc(venue.name)} 개별 홀 사진">${rooms.flatMap((r) => [r.image,...(venue.roomId === r.id ? r.extraImages || [] : [])].map((src,i) => `<button type="button" data-open="${esc(venue.id)}" data-open-room="${esc(r.id)}" data-gallery-photo="${esc(safeImage(src))}" aria-pressed="${venue.roomId === r.id}"><img src="${esc(safeImage(src))}" alt="${esc(venue.name + ' ' + r.name + ' 사진 ' + (i+1))}" loading="lazy" /><span>${esc(r.name)}${i ? " · " + (i+1) : ""}</span></button>`)).join("")}</div><a href="${esc(rooms[0].photoSource || ROOM_SOURCES[venue.id])}" target="_blank" rel="noreferrer" class="text-xs underline text-gray-500">공개 사진 출처 ↗</a></div>`;
+      }
+
+      function visualSummaryHtml(venue) {
+        const total = comparisonTotal(venue);
+        const budget = Number(state.budgetWon);
+        const ratio = total != null && budget > 0 ? total / budget * 100 : null;
+        const percent = (value) => Number.isFinite(value) ? Math.max(0,Math.min(100,value)) : 0;
+        const travel = [["신랑",venue.groomMin],["신부",venue.brideMin]].map(([label,min]) => `<div class="travel-line"><span>${label}</span><div class="visual-track" aria-hidden="true"><i style="width:${percent(Number(min) / 90 * 100)}%"></i></div><strong>${Number.isFinite(min) ? min + "분" : "미확인"}</strong></div>`).join("");
+        return `<div class="visual-facts"><div><span aria-hidden="true">🍽</span><small>식대 · 소개 기준</small><strong>${venue.meal ? esc(won(venue.meal)) : "미확인"}</strong></div><div><span aria-hidden="true">👥</span><small>최소보증</small><strong>${venue.minGuests ? venue.minGuests + "명" : "미확인"}</strong></div><div><span aria-hidden="true">◷</span><small>예식 간격</small><strong>${venue.interval ? venue.interval + "분" : "미확인"}</strong></div></div><div class="visual-summary"><div class="flex flex-wrap justify-between gap-1 text-xs"><span>예산 ${esc(won(budget))} 대비</span><strong>${total != null ? esc(won(total)) : "총액 확인 필요"}</strong></div>${ratio != null ? `<div class="visual-track" aria-hidden="true"><i style="width:${percent(ratio)}%;background:${ratio > 100 ? '#b45309' : '#b84834'}"></i></div><p class="text-xs text-gray-500 mt-1">예산의 ${Math.round(ratio)}% · ${esc(won(Math.abs(budget-total)))} ${total > budget ? "초과" : "여유"}</p>` : '<p class="text-xs text-gray-500 mt-1">미확인 금액은 예산 그래프에서 제외합니다.</p>'}<div class="mt-3 text-xs text-gray-500">이동 비교 · 직선 추정 / 눈금 90분</div>${travel}</div>`;
+      }
+
       function familyText(venue) {
         if (!venue.familyTimes.length) return "";
         return venue.familyTimes.map((item) => item.label + " " + item.min + "분").join(" · ");
@@ -2291,12 +2327,12 @@
               보류
             </button>`;
         return `<article data-id="${esc(venue.id)}" class="candidate-card rounded-2xl border border-roseGold-100 p-4 ${venue.parked ? "opacity-70" : ""}">
+          ${safeImage(venue.image) ? `<button type="button" data-open="${esc(venue.id)}" class="venue-hero mb-3">${photoTag(venue, "")}<span class="venue-hero-label">${esc(venue.roomName || "단독홀")} · 사진·견적 보기 ↗</span></button>` : roomGalleryHtml(venue)}
           <button type="button" data-open="${esc(venue.id)}" class="candidate-heading">
-            ${photoTag(venue, "w-20 h-20 rounded-xl object-cover shrink-0")}
             <span><span class="block text-xs text-gray-500">${venue.parked ? "보류" : rank + "순위"} · ${esc(venue.district)}</span><span class="block text-base font-bold mt-1">${esc(venue.name)}</span><span class="block text-xs text-gray-500 mt-1">${esc(venue.station || "역 정보 확인 필요")}</span></span>
           </button>
           <div class="mt-3">${roomPickerHtml(venue)}</div>
-          <div class="candidate-metrics"><div><small>${activePersonalQuote(venue) ? "내 견적 총액" : "비교 총액"}</small><strong>${esc(comparisonTotal(venue) != null ? won(comparisonTotal(venue)) : "조건 확인 필요")}</strong></div><div><small>이동 · 직선 추정</small><strong>신랑 ${venue.groomMin}분 / 신부 ${venue.brideMin}분</strong></div></div>
+          ${visualSummaryHtml(venue)}
           <div class="candidate-actions"><button type="button" data-open="${esc(venue.id)}" class="text-sm font-semibold text-roseGold-700 min-h-11">사진·견적 상세 →</button><details><summary class="text-xs text-gray-500 cursor-pointer">후보 관리</summary><div class="flex flex-wrap items-center">${holdControl}${moves}</div></details></div>
         </article>`;
       }
@@ -2452,18 +2488,13 @@
                 </div>
               </div>
               <div class="border-y border-amber-100 bg-amber-50/50 p-4 space-y-3">
-                <div class="grid grid-cols-3 gap-2 text-center">
-                  <div><p class="text-[10px] text-gray-500">식대</p><p class="mt-1 text-xs font-semibold">${venue.meal ? esc(won(venue.meal) + (venue.mealTo ? "~" + won(venue.mealTo) : "")) : "미입력"}</p></div>
-                  <div class="border-x border-amber-100"><p class="text-[10px] text-gray-500">대관·꽃</p><p class="mt-1 text-xs font-semibold">${venue.rental ? esc(won(venue.rental)) : "미입력"}<br><span class="font-normal text-gray-500">꽃 ${esc(flowerText)}</span></p></div>
-                  <div><p class="text-[10px] text-gray-500">최소보증</p><p class="mt-1 text-xs font-semibold">${venue.minGuests ? esc(venue.minGuests + "명") : "미입력"}</p></div>
-                </div>
+                ${visualSummaryHtml(venue)}
                 <details class="text-[11px] text-gray-600"><summary class="cursor-pointer font-semibold text-amber-900">가격 근거·계산식 보기</summary><div class="mt-2 space-y-2"><p><span class="font-semibold">할인 근거</span> ${esc(discountText(venue))}</p>${venue.platformBenefits ? `<p class="text-emerald-800"><span class="font-semibold">예약 경로 혜택</span> ${esc(benefitText(venue))}</p>` : ""}<p>${esc(quoteFormula(venue))}</p></div></details>
               </div>
               <details class="border-b border-sky-100 bg-sky-50/40 p-4 text-xs leading-relaxed"><summary class="font-semibold text-sky-900 cursor-pointer">필수·선택 옵션 보기</summary>${optionComparisonHtml(venue)}</details>
               <div class="p-4 text-xs leading-relaxed">
-                <p><span class="text-gray-500">비교 기준</span> 뷔페 후기 ${markOf(venue.id, "p_food") ? markOf(venue.id, "p_food") + "/5" : "근거 부족"} · 예식 간격 ${venue.interval ? venue.interval + "분" : "미입력"}</p>
-                <p><span class="text-gray-500">직선 추정</span> 신랑 ${venue.groomMin}분 · 신부 ${venue.brideMin}분</p>
-                <p><span class="text-gray-500">교통</span> ${esc(venue.station || "미입력")} · 가운데 ${esc(kmText(venue.centerKm))}</p>
+                ${roomGalleryHtml(venue)}
+                <p class="text-gray-500">${esc(venue.station || "역 정보 미확인")}</p>
                 ${markText(venue) ? `<p class="text-roseGold-700">${esc(markText(venue))}</p>` : ""}
                 ${venue.foodReview ? `<details class="text-gray-600"><summary class="cursor-pointer">후기 근거 ${venue.foodReviewCount}건 · ${esc(venue.foodReviewLatest)}</summary><p class="mt-1">${esc(venue.foodReview)}</p></details>` : ""}
                 ${venue.note ? `<p class="mt-1 text-gray-600">${esc(venue.note)}</p>` : ""}
@@ -2711,6 +2742,8 @@
         if (!openId) detailOpener = document.activeElement;
         openId = id;
         document.getElementById("detail-room").innerHTML = roomFactsHtml(venue);
+        document.getElementById("detail-gallery").innerHTML = roomGalleryHtml(venue);
+        document.getElementById("detail-visual-summary").innerHTML = visualSummaryHtml(venue);
         document.getElementById("detail-title").textContent = venue.name + (venue.roomName ? " · " + venue.roomName : "");
         document.getElementById("detail-district").textContent = venue.parked ? venue.district + " · " + venue.parkReason : venue.district;
         document.getElementById("detail-times").textContent = timeSentence(venue);
@@ -2793,7 +2826,7 @@
         const url = document.getElementById("detail-photo-url");
         if (document.activeElement !== url) url.value = src.startsWith("http") ? src : "";
         document.getElementById("detail-photo-error").classList.add("hidden");
-        document.getElementById("detail-photo-caption").innerHTML = !src ? (venue?.roomScoped && !venue.roomId ? "개별 홀을 선택하면 확인된 사진이 표시됩니다." : "확인된 개별 홀 사진이 없습니다. 예식일에 적용되는 실제 사진을 받아 추가하세요.") : venue?.roomScoped ? (venue.roomId ? esc(venue.roomName) + " · " + (state.overrides[roomKey(venue.id)]?.image ? "내 사진" : `공개 사진 미리보기 · <a href="${esc(ROOM_SOURCES[venue.id] + (ROOM_SOURCES[venue.id].includes("directwedding.co.kr") ? "" : "?tabId=3"))}" class="underline" target="_blank" rel="noreferrer">원문에서 전체 사진</a> · 촬영·리뉴얼 적용일 미확인`) : "개별 홀을 선택하면 사진이 표시됩니다.") : "단독홀 사진 · 촬영·리뉴얼 적용일은 확인하세요.";
+        document.getElementById("detail-photo-caption").innerHTML = !src ? (venue?.roomScoped && !venue.roomId ? "개별 홀을 선택하면 확인된 사진이 표시됩니다." : "확인된 개별 홀 사진이 없습니다. 예식일에 적용되는 실제 사진을 받아 추가하세요.") : venue?.roomScoped ? (venue.roomId ? esc(venue.roomName) + " · " + (state.overrides[roomKey(venue.id)]?.image ? "내 사진" : `공개 사진 미리보기 · <a href="${esc(venue.photoSource || (ROOM_SOURCES[venue.id] + (ROOM_SOURCES[venue.id].includes("directwedding.co.kr") ? "" : "?tabId=3")))}" class="underline" target="_blank" rel="noreferrer">원문에서 전체 사진</a> · 촬영·리뉴얼 적용일 미확인`) : "개별 홀을 선택하면 사진이 표시됩니다.") : "단독홀 사진 · 촬영·리뉴얼 적용일은 확인하세요.";
       }
 
       function paintDetailScores() {
@@ -3193,6 +3226,7 @@
         if (open) {
           if (open.dataset.openRoom) { const selected = plannerData("selectedRooms", {}); selected[open.dataset.open] = open.dataset.openRoom; if (!storePlanner("selectedRooms", selected)) return; renderAll(); }
           openDetail(open.dataset.open);
+          if (safeImage(open.dataset.galleryPhoto)) document.getElementById("detail-photo").src = safeImage(open.dataset.galleryPhoto);
         }
         const move = event.target.closest("[data-move]");
         if (move) moveVenue(move.dataset.id, Number(move.dataset.move));

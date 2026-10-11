@@ -32,3 +32,24 @@ PNG는 공식 갤러리에서 홀 이름이 붙은 컬렉션 미리보기이며,
 | kturtle-lafene.png | 케이터틀 · 라페네트레홀 별관 1층 | 위 소개의 라페네트레홀 사진 영역 |
 
 제니스홀과 더빅토리아의 개별 홀 사진은 확인하지 못해 연결하지 않았습니다. 카페 회원 사진은 복제하지 않고 원문 링크로 제공합니다.
+
+## 2026-10-11 원본 사진 추가
+
+작은 컬렉션 캡처를 대신해 개별 홀 상세의 사진 주소를 확인하고 원본 AVIF를 저장했습니다. 각 홀의 추가 사진도 같은 영역에서 확인했습니다. 촬영일·현재 리뉴얼 적용 여부는 미확인입니다. 기존 PNG는 이전 출처 기록용으로 남깁니다.
+
+| 파일 | 홀·사진 | 출처 |
+|---|---|---|
+| jk-grand.avif | 그랜드홀 · 1번 사진 | [홀별 갤러리](https://www.directwedding.co.kr/weddinghall/hall0013) |
+| jk-grand-2.avif | 그랜드홀 · 2번 사진 | [홀별 갤러리](https://www.directwedding.co.kr/weddinghall/hall0013) |
+| jk-atrium.avif | 아트리움홀 · 1번 사진 | [홀별 갤러리](https://www.directwedding.co.kr/weddinghall/hall0013) |
+| jk-atrium-2.avif | 아트리움홀 · 2번 사진 | [홀별 갤러리](https://www.directwedding.co.kr/weddinghall/hall0013) |
+| jk-amber.avif | 앰버루체홀 · 1번 사진 | [홀별 갤러리](https://www.directwedding.co.kr/weddinghall/hall0013) |
+| jk-amber-2.avif | 앰버루체홀 · 2번 사진 | [홀별 갤러리](https://www.directwedding.co.kr/weddinghall/hall0013) |
+| western-grace.avif | 그레이스홀 · 1번 사진 | [홀별 갤러리](https://www.directwedding.co.kr/weddinghall/hall0402) |
+| western-grace-2.avif | 그레이스홀 · 2번 사진 | [홀별 갤러리](https://www.directwedding.co.kr/weddinghall/hall0402) |
+| western-asta.avif | 아스타홀 · 1번 사진 | [홀별 갤러리](https://www.directwedding.co.kr/weddinghall/hall0402) |
+| western-asta-2.avif | 아스타홀 · 2번 사진 | [홀별 갤러리](https://www.directwedding.co.kr/weddinghall/hall0402) |
+| western-dynasty.avif | 다이너스티홀 · 1번 사진 | [홀별 갤러리](https://www.directwedding.co.kr/weddinghall/hall0402) |
+| western-dynasty-2.avif | 다이너스티홀 · 2번 사진 | [홀별 갤러리](https://www.directwedding.co.kr/weddinghall/hall0402) |
+| grand-grand.avif | 그랜드홀 · 1번 사진 | [홀별 갤러리](https://www.directwedding.co.kr/weddinghall/hall0062) |
+| grand-regency.avif | 리젠시홀 · 1번 사진 | [홀별 갤러리](https://www.directwedding.co.kr/weddinghall/hall0062) |

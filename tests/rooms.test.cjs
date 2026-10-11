@@ -77,7 +77,7 @@ test('quotes, amounts, photos, checks and scores stay with their selected room',
   stored.selectedRooms={jkart:'grand'};
   const g=context.roomView(venue);
   assert.equal(g.rental,11000000);
-  assert.ok(g.image.endsWith('jk-grand.png'));
+  assert.ok(g.image.endsWith('jk-grand.avif'));
   assert.equal(context.activePersonalQuote(g),null);
   assert.equal(context.markOf('jkart','p_height'),null);
   assert.equal(state.checks['jkart::grand'],undefined);

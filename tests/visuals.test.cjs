@@ -1,0 +1,20 @@
+const {readFileSync} = require('node:fs');
+const {runInNewContext} = require('node:vm');
+const {test} = require('node:test');
+const assert = require('node:assert/strict');
+const html = readFileSync(require('node:path').join(__dirname, '../index.html'), 'utf8');
+const start = html.indexOf('      function visualSummaryHtml(');
+const end = html.indexOf('\n      }', start) + '\n      }'.length;
+const context = {state:{budgetWon:30000000},comparisonTotal:v=>v.total,esc:String,won:v=>String(v)};
+runInNewContext(html.slice(start,end),context);
+test('budget visuals distinguish unknown totals and cap over-budget bars without hiding overspend',()=>{
+  const unknown=context.visualSummaryHtml({total:null,groomMin:null,brideMin:undefined});
+  assert.ok(unknown.includes('총액 확인 필요'));
+  assert.ok(!unknown.includes('예산의 0%'));
+  assert.ok(!unknown.includes('NaN'));
+  const over=context.visualSummaryHtml({total:45000000,groomMin:120,brideMin:30});
+  assert.ok(over.includes('예산의 150%'));
+  assert.ok(over.includes('15000000 초과'));
+  assert.ok(over.includes('width:100%'));
+  assert.ok(!over.includes('width:150%'));
+});
