@@ -17,3 +17,18 @@
 | city-amour.jpg | 웨딩시티 · 아모르 8F | 위 소개의 아모르 사진 영역 |
 
 PNG는 공식 갤러리에서 홀 이름이 붙은 컬렉션 미리보기이며, JPEG는 홀별 사진 영역을 직접 확인한 화면입니다. 기존 업체 단위 사진의 개별 홀 이름은 추정하지 않았습니다.
+
+## 2026-10-11 추가 확인
+
+아래 PNG는 playwright-cli로 개별 홀 이름과 바로 아래 사진 영역을 연결해 확인한 뒤 해당 영역을 캡처했습니다. 촬영일과 리뉴얼 적용일은 미확인입니다. 특히 더뉴컨벤션은 2026년 7~8월 카페 후기에 리뉴얼·컨셉 변경·제니스홀 추가 안내가 있어 현재 예식일의 완료 사진을 별도로 확인해야 합니다.
+
+| 파일 | 업체·홀 | 공개 출처 |
+|---|---|---|
+| new-renov.png | 더뉴컨벤션 · 르노브홀 1층 | https://www.directwedding.co.kr/weddinghall/hall0122 |
+| new-the-new.png | 더뉴컨벤션 · 더뉴홀 2층 | 위 소개의 더뉴홀 사진 영역 |
+| botanic-orchid.png | 보타닉파크 · 오키드홀 지하 2층 | https://www.directwedding.co.kr/weddinghall/hall0223 |
+| botanic-calla.png | 보타닉파크 · 카라홀 지하 2층 | 위 소개의 카라홀 사진 영역 |
+| kturtle-convention.png | 케이터틀 · 컨벤션홀 신관 2층 | https://www.directwedding.co.kr/weddinghall/hall0464 |
+| kturtle-lafene.png | 케이터틀 · 라페네트레홀 별관 1층 | 위 소개의 라페네트레홀 사진 영역 |
+
+제니스홀과 더빅토리아의 개별 홀 사진은 확인하지 못해 연결하지 않았습니다. 카페 회원 사진은 복제하지 않고 원문 링크로 제공합니다.

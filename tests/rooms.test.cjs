@@ -13,7 +13,7 @@ const stored = {};
 const state = {overrides:{},scores:{},checks:{}};
 const context = {state,plannerData:(key,fallback)=>stored[key] || fallback,selectedOptionKeys:()=>[],optionForKey:()=>null,selectedOptionTotal:()=>0,fixedRequiredTotal:()=>0,OPTION_CATALOG:[],persist:()=>true,renderAll:()=>{},renderChecklist:()=>{},paintDetailChecks:()=>{},openId:'jkart'};
 const catalogs = html.slice(html.indexOf('      const ROOM_SOURCES ='),html.indexOf('      function normalizeRoom('));
-runInNewContext(catalogs + ['normalizeRoom','findRoom','roomKey','roomMatches','roomView','personalQuotes','activePersonalQuote','quoteMissing','personalCalculation','discountTotals','bestDiscount','quoteTotals','comparisonTotal','setHallCheck','setMark','markOf'].map(extract).join('\n'),context);
+runInNewContext(catalogs + ['normalizeRoom','findRoom','roomKey','roomMatches','roomView','personalQuotes','activePersonalQuote','quoteMissing','personalCalculation','discountTotals','bestDiscount','quoteTotals','missingOptions','comparisonTotal','setHallCheck','setMark','markOf'].map(extract).join('\n'),context);
 const venue = {id:'jkart',name:'JK',meal:86000,rental:10000000,minGuests:200,image:'legacy.jpg',options:[{name:'legacy',price:50000}],discountQuotes:[{hall:'아트리움홀',meal:50000,rental:1000000,required:0,minGuests:200},{meal:45000,rental:500000,required:0,minGuests:200}],reviews:[{hall:'아트리움홀',food:true},{food:true}]};
 test('unselected company prices, photos and unknown-hall quotes never enter comparison',()=>{
   stored.selectedRooms={};
@@ -69,6 +69,18 @@ test('synthetic platform minimum combinations cannot become a contract quote',()
   const q={meal:50000,rental:1000000,required:0,minGuests:200,comparisonEligible:false};
   assert.equal(context.bestDiscount({discountQuotes:[q]}),null);
 });
+test('two-hall tour quote stays unassigned when the original does not name its quoted room',()=>{
+  const seed = runInNewContext(html.slice(html.indexOf('      const SEED ='), html.indexOf('      const PRESETS =')) + '\nSEED');
+  const venue = seed.find((v)=>v.id==='grandconvention');
+  const quote = venue.discountQuotes.find((q)=>q.url?.endsWith('/674460'));
+  assert.equal(quote.meal,74000);
+  assert.equal(quote.rental,7100000);
+  assert.equal(quote.hall,undefined);
+  assert.equal(quote.checkedAt,'2026-10-11');
+  for (const roomId of ['grand','regency']) {
+    assert.equal(context.roomView(venue,roomId).discountQuotes.length,0);
+  }
+});
 test('two rooms from one company compare independently of the active room picker',()=>{
   stored.selectedRooms={jkart:'grand'};
   const q=stored.personalQuotes.jkart[0];
@@ -79,4 +91,46 @@ test('two rooms from one company compare independently of the active room picker
   assert.equal(context.activePersonalQuote(g),null);
   assert.equal(context.comparisonTotal(g),null);
   assert.equal(stored.selectedRooms.jkart,'grand','comparison must not mutate the picker');
+});
+test('new multi-room venues keep required fees, intervals and photos with their room',()=>{
+  const base={id:'newcon',image:'old.jpg',options:[{name:'old',price:1}],discountQuotes:[]};
+  for (const [id,meal,rental,minGuests] of [['renov',82000,9000000,200],['thenew',95000,13000000,250]]) {
+    const view=context.roomView(base,id);
+    assert.equal(view.meal,meal);
+    assert.equal(view.rental,rental);
+    assert.equal(view.minGuests,minGuests);
+    assert.equal(view.options[0].price,3000000);
+    assert.equal(context.quoteTotals(view),null,'unknown tax and mandatory scope cannot produce a complete total');
+    assert.ok(require('node:fs').existsSync(require('node:path').join(__dirname,'..',view.image)));
+  }
+  const c=context.roomView({id:'kturtle'},'convention');
+  const l=context.roomView({id:'kturtle'},'lafene');
+  assert.equal(c.interval,120);
+  assert.equal(l.interval,90);
+  assert.notEqual(c.image,l.image);
+});
+test('unverified rooms do not inherit company prices or photos',()=>{
+  for(const [id,room] of [['newcon','zenith'],['victoria','victoria'],['victoria','garden']]) {
+    const view=context.roomView({id,meal:99000,rental:12300000,image:'legacy.jpg'},room);
+    assert.equal(view.meal,null);
+    assert.equal(view.rental,null);
+    assert.equal(view.image,null);
+    assert.equal(context.comparisonTotal(view),null);
+    assert.equal(view.guests,'최소보증 미확인');
+  }
+});
+test('out-of-area research remains accessible as parked venues',()=>{
+  context.SEED=runInNewContext(html.slice(html.indexOf('      const SEED ='), html.indexOf('      const PRESETS =')) + '\nSEED');
+  Object.assign(state,{userVenues:[],radiusKm:8,budgetWon:30000000,manualParked:[]});
+  context.coupleCenter=()=>null;
+  runInNewContext(extract('allVenues'),context);
+  const venues=context.allVenues();
+  assert.equal(venues.length,context.SEED.length);
+  for(const id of ['forestone','irum','kturtle']) {
+    assert.equal(venues.find(v=>v.id===id).parked,true);
+    assert.ok(venues.find(v=>v.id===id).parkReason.includes('제외 지역'));
+  }
+  context.coupleCenter=()=>({});
+  context.kmBetween=()=>9;
+  assert.ok(context.allVenues().every(v=>v.parked && v.parkReason.includes('반경 밖')));
 });
