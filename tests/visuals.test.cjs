@@ -47,3 +47,21 @@ test('recent quote previews distinguish basic amounts, taxes and room selection'
   const requiredUnknown=context.recentQuoteHtml({discountQuotes:[{...quotes[0],required:null,serviceMode:'included',vatMode:'included'}]});
   assert.ok(requiredUnknown.includes('미확인 세금·필수비용'));
 });
+test('overview keeps explicit room scope and shows cafe links without pretending to verify bodies', () => {
+  for (const name of ['overviewHtml','cafeSourcesHtml']) {
+    const begin=html.indexOf('      function '+name+'(');
+    const finish=html.indexOf('\n      }',begin)+'\n      }'.length;
+    runInNewContext(html.slice(begin,finish),context);
+  }
+  let selectedRoom;
+  context.shown=view=>view.ranked;
+  context.roomView=(venue,room)=>{selectedRoom=room;return {...venue,roomName:'다이너스티홀',roomId:room,discountQuotes:[{checkedAt:'2026-11-13',meal:59000,rental:4800000,minGuests:200,required:0}]};};
+  const output=context.overviewHtml({ranked:[{id:'westernsindorim',station:'신도림역',discountQuotes:[],interval:70}]});
+  assert.equal(selectedRoom,'dynasty');
+  assert.ok(output.includes('data-open-room="dynasty"'));
+  assert.ok(output.includes('16600000'));
+  assert.ok(output.includes('선택 전 다이너스티홀'));
+  const cafe=context.cafeSourcesHtml({cafeSources:[{date:'2026-11-12',title:'문래점 후기',url:'https://cafe.naver.com/directwedding/9566081',bodyVerified:false}]});
+  assert.ok(cafe.includes('본문 미확인') && cafe.includes('금액·평가·뷔페 점수에 반영하지 않았습니다'));
+  assert.ok(!cafe.includes('로그인한 회원'));
+});

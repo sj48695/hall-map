@@ -250,6 +250,72 @@
         #venue-modal > [role="dialog"] > .p-5 { padding:16px; }
       }
       @media (prefers-reduced-motion:reduce) { *, *::before, *::after { scroll-behavior:auto !important; transition:none !important; } }
+
+      header > div { max-width:1600px !important; }
+      .tour-intro { padding:18px 22px; border-radius:18px; }
+      .tour-intro h2 { font-size:24px; }
+      .tour-intro > div > p, .tour-eyebrow { display:none; }
+      #shortlist-status { margin-top:4px; }
+      main { max-width:1600px !important; }
+      #shortlist-overview { border:1px solid #e6ddd2; border-radius:18px; background:white; overflow:hidden; }
+      .overview-top { display:flex; align-items:center; justify-content:space-between; gap:8px; padding:14px 18px; border-bottom:1px solid #eee7df; }
+      .overview-top h3 { font-weight:700; font-size:15px; }
+      .overview-top > span { font-size:11px; color:#766c62; }
+      .overview-scroll { overflow-x:auto; }
+      .overview-table { width:100%; border-collapse:collapse; text-align:left; table-layout:fixed; }
+      .overview-table th, .overview-table td { padding:14px 16px; vertical-align:middle; border-bottom:1px solid #f0ebe4; }
+      .overview-table thead th { background:#faf7f2; font-size:11px; color:#75695d; font-weight:500; }
+      .overview-table th:first-child { width:16%; }
+      .overview-table th:nth-child(2) { width:24%; }
+      .overview-table th:nth-child(3) { width:7%; }
+      .overview-table th:nth-child(4) { width:7%; }
+      .overview-table th:nth-child(5) { width:24%; }
+      .overview-table th:nth-child(6) { width:22%; }
+      .overview-table tbody th button { text-align:left; min-height:44px; display:block; width:100%; }
+      .overview-table tbody th strong { font-size:15px; }
+      .overview-table tbody th strong span { color:#9a8170; font-size:12px; }
+      .overview-table small { display:block; color:#817466; font-size:11px; font-weight:400; margin-top:4px; }
+      .overview-table .quote-preview { padding:0; margin:0; border:0; background:transparent; }
+      .overview-table .quote-preview > small, .overview-table .quote-preview > p { display:none; }
+      .overview-table .quote-preview strong { font-size:18px; white-space:nowrap; }
+      .overview-guests, .overview-interval, .overview-caution { font-size:12px; }
+      .overview-travel strong { font-size:12px; font-weight:500; }
+      .overview-caution { color:#805534; }
+      .overview-footnote { font-size:11px; color:#7e7368; padding:10px 18px; background:#fcfaf7; }
+      .overview-held { opacity:.65; }
+      .gallery-disclosure > summary { padding:8px 0; cursor:pointer; font-size:16px; font-weight:700; }
+      .gallery-disclosure > summary span { font-size:11px; font-weight:400; color:#817466; margin-left:8px; }
+      .gallery-disclosure .candidate-layout { margin-top:12px; }
+      .candidate-layout > .min-w-0 > .flex { display:none; }
+      .candidate-card .photo-strip img, .candidate-card .photo-placeholder { height:auto; aspect-ratio:16/9; }
+      .candidate-card { display:flex; flex-direction:column; height:100%; }
+      .candidate-card .candidate-actions { margin-top:auto; }
+      .candidate-card .snapshot { margin-bottom:12px; }
+      #venue-list { align-items:stretch; }
+      #venue-list .quote-preview { flex:1; }
+      @media (min-width:1200px) { #venue-list { grid-template-columns:repeat(4,minmax(0,1fr)); gap:14px; } .candidate-card .quote-preview strong { font-size:18px; } .candidate-card .photo-placeholder strong { font-size:15px; } }
+      @media (max-width:1199px) { .overview-caution { display:none; } .overview-table th:first-child { width:20%; } .overview-table th:nth-child(2) { width:30%; } .overview-table th:nth-child(3) { width:10%; } .overview-table th:nth-child(4) { width:10%; } .overview-table th:nth-child(5) { width:30%; } }
+      @media (max-width:767px) {
+        .tour-intro { padding:14px 16px; display:flex; gap:10px; }
+        .tour-intro h2 { font-size:21px; }
+        .tour-actions { margin-top:0; }
+        .tour-actions button { padding:8px 10px; font-size:11px; }
+        .tour-actions button:last-child { display:none; }
+        .overview-top { display:block; padding:10px 12px; }
+        .overview-top > span { display:block; font-size:10px; margin-top:2px; }
+        .overview-table th, .overview-table td { padding:11px 10px; }
+        .overview-table .overview-guests, .overview-table .overview-travel { display:none; }
+        .overview-table th:first-child { width:35%; }
+        .overview-table th:nth-child(2) { width:48%; }
+        .overview-table th:nth-child(4) { width:17%; }
+        .overview-table .quote-preview strong { font-size:14px; letter-spacing:-.06em; white-space:normal; }
+        .overview-table tbody th strong { font-size:13px; }
+        .overview-table small { font-size:10px; }
+        .overview-condition { display:none !important; }
+        .overview-footnote { padding:10px 12px; font-size:10px; }
+        .gallery-disclosure > summary span { display:none; }
+        .candidate-tools summary { font-size:12px; }
+      }
     </style>
   </head>
   <body class="bg-roseGold-50 text-gray-800 min-h-full flex flex-col antialiased">
@@ -287,9 +353,10 @@
     <main id="main-content" tabindex="-1" class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 pt-4 pb-24 md:py-6 space-y-4 md:space-y-6">
       <section data-tab-content="map" class="space-y-4">
         <div class="tour-intro">
-          <div><span class="tour-eyebrow">OUR WEDDING VENUE</span><h2>우리에게 맞는 한 곳을 찾아요</h2><p>마음에 드는 공간부터, 견적과 하객 동선까지 차근차근.</p><div id="shortlist-status" role="status"></div></div>
+          <div><span class="tour-eyebrow">WEDDING SHORTLIST</span><h2>웨딩홀, 한눈에 비교</h2><p>제공 견적과 하객 동선을 함께 확인하세요.</p><div id="shortlist-status" role="status"></div></div>
           <div class="tour-actions"><button type="button" data-tab-btn="table">견적 비교하기 →</button><button type="button" data-tab-btn="memo">투어 기록</button></div>
         </div>
+        <section id="shortlist-overview" aria-label="웨딩홀 핵심 비교"></section>
         <div class="candidate-tools">
         <details class="bg-white rounded-2xl border border-roseGold-100 px-4 py-2"><summary class="font-bold cursor-pointer">추천 순위 보기</summary><div id="recommendation" class="pb-3" aria-live="polite"></div></details>
 
@@ -316,6 +383,7 @@
         </details>
 
         </div>
+        <details class="gallery-disclosure" open><summary>사진으로 둘러보기 <span>홀 전경 · 세부 홀 선택 · 견적 상세</span></summary>
         <div class="candidate-layout">
           <div class="min-w-0">
             <div class="flex flex-wrap justify-between items-center gap-2 mb-3"><h2 class="font-bold text-lg">웨딩홀 후보</h2><button id="show-candidate-map" type="button" class="text-sm text-roseGold-700 underline min-h-11">지도 보기</button></div>
@@ -328,6 +396,7 @@
         </div>
 
 
+        </details>
         <details class="bg-white rounded-2xl border border-roseGold-100 shadow-sm p-4 sm:p-5">
           <summary class="cursor-pointer font-bold text-gray-900">조건 설정 <span class="font-normal text-xs text-gray-500">출발지 · 중요도 · 홀 추가</span></summary>
           <div class="pt-4 space-y-4">
@@ -475,7 +544,8 @@
       </section>
 
       <section data-tab-content="table" class="hidden space-y-4">
-        <div><h2 class="text-xl font-bold">비교표</h2><p class="mt-1 text-xs text-gray-500">가격 → 옵션 → 평가 → 이동 순서로 비교합니다.</p></div>
+        <div><h2 class="text-xl font-bold">비교표</h2><p class="mt-1 text-xs text-gray-500">핵심 조건을 먼저 보고, 필요한 항목만 펼쳐 비교하세요.</p></div>
+        <div id="comparison-overview"></div>
         <details class="text-xs text-gray-500"><summary class="cursor-pointer">점수·금액 기준</summary><p class="mt-2">비교 총액은 확인된 기본 합계와 선택 옵션 기준입니다. 옵션 가격이 미확인이면 총액·가격 점수에서 제외합니다. 뷔페는 직접 먹은 공개 후기 2건 이상만 점수화했습니다.</p></details>
         <div class="flex gap-2">
           <label class="flex-1 text-xs font-semibold">정렬 기준
@@ -486,7 +556,7 @@
           <button type="button" id="table-direction" class="self-end min-h-11 border border-roseGold-200 rounded-xl px-3 text-sm">낮은 순</button>
         </div>
         <details class="bg-white border rounded-2xl p-4"><summary class="font-bold cursor-pointer">옵션과 희망 조건 설정 · 개별 홀 나란히 비교</summary><div id="priority-option-picker" class="mt-3"></div><div id="quote-tools" class="mt-3"></div></details>
-        <div id="comparison-mobile"></div>
+        <details class="rounded-2xl border border-roseGold-100 bg-white p-4"><summary class="font-bold cursor-pointer">개별 홀 상세 비교 <span class="text-xs font-normal text-gray-500">사진 · 옵션 · 후기</span></summary><div id="comparison-mobile" class="mt-4"></div></details>
         <details class="bg-white rounded-2xl border border-roseGold-100 p-4"><summary class="font-bold cursor-pointer">전체 항목 표로 보기 <span class="text-xs font-normal text-gray-500">가로로 스크롤하세요</span></summary>
         <div class="compare-scroll overflow-auto max-h-[72vh] mt-3">
           <table class="comparison-table w-full min-w-[96rem] text-left text-sm whitespace-nowrap">
@@ -840,6 +910,7 @@
             { date: "2021-03-28", type: "시식", tone: "좋음", food: true, summary: "음식 구성과 맛을 좋게 평가했습니다.", url: "https://www.weddingbook.com/review/af162162-8fa5-11eb-ab61-0aea5320e7f2" },
           ],
           link: "https://www.directwedding.co.kr/weddinghall/hall0053",
+          cafeSources: [{"date": "2026-11-12", "title": "규수당(문래점) 홀투어 후기", "url": "https://cafe.naver.com/directwedding/9566081", "checkedAt": "2026-11-14", "bodyVerified": false}, {"date": "2026-11-09", "title": "웨딩홀 투어후기-규수당 문래점(계약X)", "url": "https://cafe.naver.com/directwedding/9557306", "checkedAt": "2026-11-14", "bodyVerified": false}, {"date": "2026-11-06", "title": "예식 완료 후 총평가 (웨딩홀) - 규수당 문래점 결혼식식대", "url": "https://cafe.naver.com/directwedding/9547259", "checkedAt": "2026-11-14", "bodyVerified": false}, {"date": "2026-10-26", "title": "[견적공유] 규수당 문래점 27년 하반기 견적 공유", "url": "https://cafe.naver.com/directwedding/9510662", "checkedAt": "2026-11-14", "bodyVerified": false}],
           researchNotes: [
             {"title": "2026-10-11 단독홀·필수 연출료", "text": "문래 카이타스 단독홀 2층은 식대 7만 원·대관 680만 원·70분·최소 200명·착석 190석입니다. 생화와 음주류는 포함이지만 필수 연출료 금액은 공개하지 않아 견적서에서 따로 확인하세요.", "url": "https://www.directwedding.co.kr/weddinghall/hall0053", "checkedAt": "2026-10-11"},
             {"title": "2026-09-26 상담·계약 후 취소 후기", "text": "2027년 8월 토요일 12시·200명 견적은 식대 6.5만 원·대관 480만 원입니다. 현장계약 혜택은 언급되지만 항목·금액은 공개되지 않았습니다. 포토부스 등 서비스의 날짜별 적용 조건을 확인하세요.", "url": "https://cafe.naver.com/f-e/cafes/28757979/articles/674141"},
@@ -1128,6 +1199,7 @@
           reviews: [
             { date: "2026-07-22", type: "투어", tone: "혼합", food: false, summary: "단독홀과 넓은 신부대기실·복도, 분리된 연회장 입구는 좋지만 복도의 연식은 아쉽다고 적었습니다. 실제 식사 후기는 아닙니다.", url: "https://mywedlog.com/review/2246" },
           ],
+          cafeSources: [{"date": "2026-09-28", "title": "구로 더 에끌라프리베 27년 하반기 견적공유", "url": "https://cafe.naver.com/directwedding/9417546", "checkedAt": "2026-11-14", "bodyVerified": false}, {"date": "2026-10-14", "title": "웨딩홀 후기 공유 부탁드립니다.(더에끌라프리베 vs PJ호텔)", "url": "https://cafe.naver.com/directwedding/9471764", "checkedAt": "2026-11-14", "bodyVerified": false}],
           researchNotes: [
             {"title": "2026-10-11 소개 사이트 가격 비공개", "text": "thewedd 안내는 더드림 단독홀 1층·뷔페·지하주차장 2시간 무료로 표시하지만 가격·간격은 별도 문의입니다. 해당 사이트는 공식 홈페이지가 아니라고 명시합니다. 기존 제공 견적과 별도로 현재 식대·필수비용·최소보증·사진 리뉴얼 적용을 확인하세요.", "url": "https://weddingpropose.thewedd.com/", "checkedAt": "2026-10-11"},
           ],
@@ -1217,6 +1289,7 @@
             { date: "2025-11-17", type: "투어·참고", tone: "좋음", food: false, summary: "신도림 접근성과 짧은 동선, 음식 온도와 즉석 코너 구성을 긍정적으로 정리했습니다. 실제 식사 여부가 명확하지 않아 점수에서는 제외합니다.", url: "https://weddingjunge.tistory.com/entry/%EC%9B%A8%EC%8A%A4%ED%84%B4%EB%B2%A0%EB%8B%88%EB%B9%84%EC%8A%A4-%EC%8B%A0%EB%8F%84%EB%A6%BC-%EC%9B%A8%EB%94%A9%ED%99%80-%ED%9B%84%EA%B8%B0%EF%BD%9C%EC%98%88%EC%8B%9D%ED%99%80%C2%B7%EC%8B%9D%EB%8C%80%C2%B7%EB%B7%94%ED%8E%98%C2%B7%EA%B2%AC%EC%A0%81-%EC%B4%9D%EC%A0%95%EB%A6%AC" },
           ],
           link: "https://www.directwedding.co.kr/weddinghall/hall0402",
+          cafeSources: [{"date": "2026-11-13", "title": "신도림 웨스턴베니비스 상담 받고 왔습니다 ! (27년 6월/11월 견적 - 계약X)", "url": "https://cafe.naver.com/directwedding/9569153", "checkedAt": "2026-11-14", "bodyVerified": false}, {"date": "2026-11-12", "title": "웨스턴베니비스 신도림 그레이스홀 계약 후기 (27.9월)", "url": "https://cafe.naver.com/directwedding/9567785", "checkedAt": "2026-11-14", "bodyVerified": false}, {"date": "2026-11-09", "title": "신도림 웨스턴 베니비스 다이너스티홀 예식완료 후기 (웨딩홀 식대)", "url": "https://cafe.naver.com/directwedding/9554927", "checkedAt": "2026-11-14", "bodyVerified": false}],
           researchNotes: [
             {"title": "2026-10-11 웨딩북 세 홀·버스 주차 확인", "text": "그레이스·다이너스티·아스타 모두 식대 7.5만 원·대관 750만 원·70분 간격·꽃 포함·추천 220명으로 재확인했습니다. 내부 2500대, 하객 3시간 무료, 직계가족·웨딩카 포함 5대 무료이며 대절버스 주차 불가입니다. 버스 하차·대기 장소를 별도로 확보하세요. 2027년 11월까지 상담 가능, 최초 방문예약 후 200명 이상 보증 계약 시 10만 원 캐시백 안내입니다.", "url": "https://www.weddingbook.com/weddinghall/63a860f4-3782-11e6-93b9-0abe8d4f74d3", "checkedAt": "2026-10-11"},
             {"title": "2026-06-18 공개 견적", "text": "2027년 5월 점심·보증 150명대 견적입니다. 소개 최소 250명과 다르므로 홀 이름과 해당 시간의 보증 조건, 그레이스홀 필수 연출료, 봉사료·부가세를 확인하세요.", "url": "https://cafe.naver.com/f-e/cafes/28757979/articles/658442"},
@@ -1262,6 +1335,7 @@
             { date: "2025-12-08", type: "시식", tone: "좋음", food: true, summary: "리뉴얼 뒤 한식·중식 가짓수와 신메뉴를 직접 시식했고, 가오리찜·게장·도가니와 중식 메뉴의 맛을 좋게 평가했습니다.", url: "https://honeyyy123.tistory.com/24" },
             { date: "2026 하반기", type: "계약·투어", tone: "좋음", food: false, summary: "화이트 꽃장식과 물결 조명, 깔끔한 단독홀을 긍정적으로 평가했습니다. 실제 식사 후기는 아닙니다.", url: "https://www.directwedding.co.kr/weddinghall/hall0138" },
           ],
+          cafeSources: [{"date": "2026-11-11", "title": "더에스비 웨딩컨벤션 상담 후 계약까지 하고 왔습니다.", "url": "https://cafe.naver.com/directwedding/9563122", "checkedAt": "2026-11-14", "bodyVerified": false}, {"date": "2026-10-19", "title": "[빠른공유] 더에스비웨딩(동작) 27년 하반기 견적공유", "url": "https://cafe.naver.com/directwedding/9488671", "checkedAt": "2026-11-14", "bodyVerified": false}, {"date": "2026-09-09", "title": "서울 동작구) 더에스비웨딩 웨딩홀 투어 후기(계약O)", "url": "https://cafe.naver.com/directwedding/9358965", "checkedAt": "2026-11-14", "bodyVerified": false}],
           researchNotes: [
             {"title": "2026-10-11 공개 소개와 제공 프로모션 가격 차이", "text": "다이렉트 단독홀 3층은 식대 6.5만 원·대관 500만 원·최소 200명·착석 300석·90분·꽃과 음주류 포함·연출료 없음입니다. 사용자 제공 정가 6.8만 원·700만 원 및 잔여타임 특가와 달라 기준 연도·시간·보증·프로모션 종료일을 확인하세요. 기존 제공 견적을 새 공개 가격으로 덮어쓰지 않습니다.", "url": "https://www.directwedding.co.kr/weddinghall/hall0138", "checkedAt": "2026-10-11"},
           ],
@@ -2455,6 +2529,18 @@
         </article>`;
       }
 
+      function overviewHtml(view) {
+        const labels = {guropropose:"더에끌라", thesbdongjak:"더에스비", westernsindorim:"웨스턴 신도림", kyusoodang:"규수당"};
+        const rows = shown(view).map((venue) => {
+          const preview = venue.id === "westernsindorim" && !venue.roomId ? roomView(venue.legacyRoomData || venue, "dynasty") : venue;
+          const recent = (preview.discountQuotes || []).filter((q) => q.checkedAt === "2026-11-13");
+          const caution = venue.id === "guropropose" ? "세금 포함 여부 · 직접 계약 혜택" : venue.id === "thesbdongjak" ? "당일 계약 시 진행비 면제 여부" : venue.id === "westernsindorim" ? "동시 예식 혼잡 · 서비스 조건" : venue.id === "kyusoodang" ? "봉사료 3% 적용 · 진행비 필수 여부" : "날짜별 필수비용 확인";
+          const room = preview.roomName || "단독홀";
+          return `<tr class="${venue.parked ? "overview-held" : ""}"><th scope="row"><button type="button" data-open="${esc(venue.id)}" ${preview.roomId ? `data-open-room="${esc(preview.roomId)}"` : ""}><strong>${esc(labels[venue.id] || venue.name)} <span aria-hidden="true">↗</span></strong><small>${esc(room)}${venue.parked ? " · 보류" : ""}</small></button></th><td class="overview-price">${recentQuoteHtml(preview)}<small class="overview-condition">${esc(recent.map((q) => [q.date || q.month || "날짜 미확인", q.time].filter(Boolean).join(" ")).join(" / "))}</small></td><td class="overview-guests">${recent.length && recent.every((q) => q.minGuests === recent[0].minGuests) ? recent[0].minGuests + "명" : "날짜별 확인"}</td><td class="overview-interval"><strong>${preview.interval ? preview.interval + "분" : "미확인"}</strong></td><td class="overview-travel"><strong>${esc(venue.station || "역 확인 필요")}</strong><small>${esc(venue.parking || "주차 확인 필요")}</small></td><td class="overview-caution">${esc(caution)}<small>${(venue.cafeSources || []).length ? "카페 참고글 " + venue.cafeSources.length + "건 · 본문 미확인" : "상세에서 근거 확인"}</small></td></tr>`;
+        }).join("");
+        return `<div class="overview-top"><h3>핵심 비교</h3><span>금액은 서로 다른 날짜·시간의 견적입니다</span></div><div class="overview-scroll"><table class="overview-table"><caption class="sr-only">현재 후보별 제공 견적, 보증 인원, 예식 간격, 교통과 확인사항</caption><thead><tr><th scope="col">웨딩홀</th><th scope="col">제공 견적 · 기본 합계</th><th scope="col" class="overview-guests">보증</th><th scope="col">간격</th><th scope="col" class="overview-travel">교통 · 주차</th><th scope="col" class="overview-caution">투어에서 확인</th></tr></thead><tbody>${rows || '<tr><td colspan="6">현재 조건에 맞는 후보가 없어요. 아래 후보 필터를 조정해 주세요.</td></tr>'}</tbody></table></div><p class="overview-footnote">세금·필수비용이 미확인이면 기본 합계만 표시해요. 웨스턴은 선택 전 다이너스티홀 견적을 미리 보여줍니다.</p>`;
+      }
+
       function renderList(view) {
         const parked = state.showParked ? view.parked : [];
         const live = view.ranked.map((venue, index) => rowHtml(venue, index + 1, true)).join("");
@@ -2583,6 +2669,7 @@
         const ranked = shown(view);
         const rank = new Map(ranked.filter((venue) => !venue.parked).map((venue, index) => [venue.id, index + 1]));
         const rows = tableRows(view);
+        document.getElementById("comparison-overview").innerHTML = overviewHtml({ranked:rows.filter((v) => !v.parked),parked:rows.filter((v) => v.parked)});
         document.querySelectorAll("[data-table-sort]").forEach((button) => {
           const active = button.dataset.tableSort === tableSort.key;
           button.textContent = button.textContent.replace(/ [↑↓]$/, "") + (active ? (tableSort.direction === 1 ? " ↑" : " ↓") : "");
@@ -2739,6 +2826,7 @@
       function renderAll() {
         const view = buildView();
         renderRecommendation(view);
+        document.getElementById("shortlist-overview").innerHTML = overviewHtml(view);
         renderList(view);
         renderCards(view);
         renderTable(view);
@@ -3184,10 +3272,16 @@
         }
       }
 
+      function cafeSourcesHtml(venue) {
+        const sources = venue.cafeSources || [];
+        if (!sources.length) return "";
+        return `<details class="cafe-sources rounded-xl border p-3"><summary class="font-bold cursor-pointer text-sm">다이렉트 카페 참고글 ${sources.length}건 <span class="text-xs font-normal text-gray-500">본문 미확인</span></summary><p class="mt-2 text-xs text-gray-600">2026-11-14 카페 검색 목록에서 제목·게시일만 확인했습니다. 본문 열람은 로그인이 필요해 금액·평가·뷔페 점수에 반영하지 않았습니다.</p><ul class="mt-3 space-y-3">${sources.map((source) => `<li class="text-xs"><a href="${esc(source.url)}" target="_blank" rel="noopener noreferrer" class="underline text-roseGold-700">${esc(source.title)} ↗</a><p class="text-gray-500">${esc(source.date)} 게시 · 검색 목록 확인</p></li>`).join("")}</ul></details>`;
+      }
+
       function researchNotesHtml(venue) {
         const notes = venue.researchNotes || [];
-        if (!notes.length) return "";
-        return `<details class="col-span-full rounded-xl border border-amber-200 bg-amber-50 p-3" open><summary class="cursor-pointer font-bold text-sm">공개 근거로 미리 확인할 질문 <span class="font-normal text-xs">항목별 조사 날짜·원문 확인</span></summary><div class="mt-2 space-y-3">${notes.map((note) => `<div class="text-xs leading-relaxed"><a href="${esc(note.url)}" target="_blank" rel="noreferrer" class="text-roseGold-700 underline">${esc(note.title)}</a><p class="mt-1">${esc(note.text)}</p></div>`).join("")}</div></details>`;
+        if (!notes.length) return cafeSourcesHtml(venue);
+        return cafeSourcesHtml(venue) + `<details class="col-span-full rounded-xl border border-amber-200 bg-amber-50 p-3" open><summary class="cursor-pointer font-bold text-sm">공개 근거로 미리 확인할 질문 <span class="font-normal text-xs">항목별 조사 날짜·원문 확인</span></summary><div class="mt-2 space-y-3">${notes.map((note) => `<div class="text-xs leading-relaxed"><a href="${esc(note.url)}" target="_blank" rel="noreferrer" class="text-roseGold-700 underline">${esc(note.title)}</a><p class="mt-1">${esc(note.text)}</p></div>`).join("")}</div></details>`;
       }
 
       function paintDetailOptions(venue) {
