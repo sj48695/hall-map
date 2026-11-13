@@ -738,7 +738,7 @@
           extra: "사용자 제공 견적과 계약 후기의 할인가는 조건과 시점이 다릅니다.",
           discountQuotes: [
             { label: "2026-09-26 상담·계약 후 취소 후기", meal: 65000, rental: 4800000, minGuests: 200, required: null, flowerKnown: false, note: "2027년 8월 토요일 12시 · 보증 200명 · 후기 정가 식대 7만 원·대관 680만 원 · 꽃·필수비용·봉사료·부가세 포함 여부 미표시 · 2026-10-05 확인", url: "https://cafe.naver.com/f-e/cafes/28757979/articles/674141", checkedAt: "2026-10-05" },
-            { label: "사용자 제공 토요일 견적", meal: 64000, rental: 4500000, minGuests: 200, required: 0 },
+            { label:"사용자 제공 토요일 할인 정리본", hall:"카이타스홀", meal:64000, rental:4500000, minGuests:200, required:null, flowerKnown:true, comparisonEligible:false, serviceUnknown:true, vatMode:"included", checkedAt:"2026-11-13", note:"12:00/13:10/14:20 중 선택 · 식대+대관1730만 원 · 부가세·음주류 포함/봉사료3% 별도(적용 대상 확인) · 진행도우미30만 원 필수 여부 확인 · 원본 토요일 식대65000원·대관480만 원과 할인 조건 구분 · 예식 연도·날짜 미확인 · 예약금100만 원 중복 가산 안 함" },
             { label: "2026-07-01 계약 후기", meal: 62000, rental: 4200000, minGuests: 200, required: 0, note: "2027년 5월 · 포토부스 서비스" },
             { label: "사용자 제공 비교 메모 · 블로그 공유 조건", meal: 65000, rental: 4800000, minGuests: null, required: 0, note: "보증인원과 적용일이 없어 할인 총액은 계산하지 않음" },
           ],
@@ -1041,9 +1041,10 @@
           rental: 5500000,
           flower: "포함",
           discountQuotes: [
-            { label: "2027-02-13 12:10 당일 혜택", meal: 54000, rental: 2100000, minGuests: 200, required: 200000, note: "표시 합계 1290만 원 + 필수 컨시어지 20만 원" },
-            { label: "2027-02-20 16:50 당일 혜택", meal: 49000, rental: 1500000, minGuests: 200, required: 200000, note: "표시 합계 1130만 원 + 필수 컨시어지 20만 원" },
+            { label: "사용자 제공 · 2027-02-13 12:10 당일 혜택", date:"2027-02-13", time:"12:10", hall:"더드림홀", meal:54000, rental:2100000, minGuests:200, required:200000, comparisonEligible:false, serviceUnknown:true, checkedAt:"2026-11-13", note:"기본 합계1310만 원(컨시어지20만 원 포함) · 생화+조화 캔들 장식·대기실·혼구용품·폐백실 포함 · 부가세·봉사료 미확인 · 당일 계약 조건과 현재 적용 여부 확인" },
+            { label: "사용자 제공 · 2027-02-20 16:50 당일 혜택", date:"2027-02-20", time:"16:50", hall:"더드림홀", meal:49000, rental:1500000, minGuests:200, required:200000, comparisonEligible:false, serviceUnknown:true, checkedAt:"2026-11-13", note:"기본 합계1150만 원(컨시어지20만 원 포함) · 표의 총액은 할인가 기준으로 적혀 있으나 당일 혜택 산식과 일치 · 생화+조화 장식 포함 · 부가세·봉사료·현재 적용 여부 확인" },
           ],
+          platformBenefits: ["사용자 확인: 다이렉트 비제휴 · 직접 계약 혜택과 최종 총액 별도 확인"],
           options: [{ name: "예식진행 컨시어지", price: 200000, required: true }],
           extra: "구로명품웨딩프로포즈에서 이름을 바꾼 홀입니다. 사용자 제공 2027년 견적은 2월 13일 12:10에 식대 5.4만 원·대관 210만 원·200명으로 1290만 원, 2월 20일 16:50에 식대 4.9만 원·대관 150만 원·200명으로 1130만 원입니다. 필수 예식진행 컨시어지 20만 원은 두 합계와 별도입니다.",
           minGuests: 150,
@@ -1125,6 +1126,7 @@
           flower: "포함",
           serviceRate: 0.03,
           discountQuotes: [
+            {label:"사용자 제공 · 다이너스티 2027년 7월 토요일", hall:"다이너스티홀", month:"2027-07", time:"13:20", meal:59000, rental:4800000, minGuests:200, required:0, flowerKnown:true, serviceRate:0, serviceMode:"included", vatMode:"included", checkedAt:"2026-11-13", note:"70분 간격 · 봉사료·부가세10%·음주류 포함 · 당일 계약 시 포토테이블·플라워샤워·웨딩컨시어즈 서비스 · 계약후기2주 내 작성 시 2가지 서비스 적용 범위 확인 · 계약금 별도 가산 안 함 · 해당 날짜·계약 조건에 한함"},
             { label: "2026-06-18 운영진 공개 견적", meal: 51000, rental: 4440000, minGuests: null, required: null, flowerKnown: false, note: "2027년 5월 점심 · 보증 150명대(정확한 인원 미공개) · 홀 이름·꽃·필수비용·봉사료·부가세 포함 여부 미표시 · 2026-10-05 확인", url: "https://cafe.naver.com/f-e/cafes/28757979/articles/658442", checkedAt: "2026-10-05" },
             { label: "참가격 공시가 · 2026-06-12 공개", meal: 46000, rental: 1500000, minGuests: 200, required: 0, flowerKnown: false, note: "꽃장식 포함 여부가 불명확해 총액은 계산하지 않음 · 실제 적용 조건은 상담 확인" },
           ],
@@ -1168,6 +1170,8 @@
           rental: 7000000,
           flower: "포함",
           discountQuotes: [
+            {label:"사용자 제공 상담표 · 2027년 9~10월 토요일 당일 계약", month:"2027-09~10", time:"15:30", meal:58000, rental:3500000, minGuests:200, required:0, flowerKnown:true, comparisonEligible:false, serviceUnknown:true, checkedAt:"2026-11-13", note:"기본 합계1510만 원 · 생화+조화·음주류 포함 · 컨시어지30만 원은 당일 계약 서비스(일반 계약 시 합계1540만 원) · 포토테이블·플라워샤워 서비스 · 폐백실 없음 · 계약금50만 원은 총액에 중복 가산 안 함 · 세금·봉사료 확인"},
+            {label:"사용자 제공 공유 사례 · 2027년 8월 토요일", month:"2027-08", time:"14:00", meal:55000, rental:2900000, minGuests:200, required:null, flowerKnown:true, comparisonEligible:false, serviceUnknown:true, checkedAt:"2026-11-13", note:"식대+대관1390만 원 · 당일 프로모션 · 예식간격90분/홀사용60분 · 꽃·혼구용품 포함 · 소인8~13세 별도 · 필수 진행비·부가세·봉사료 미확인 · 계약금100만 원은 대관에 포함 · 타인 공유 사례로 현재 적용 보장 없음"},
             { label: "사용자 제공 잔여타임 특가", meal: 55000, rental: 2500000, minGuests: null, required: 0, note: "당일 계약 · 화면 표시 기간 2026-07-31~2027-02-28 · 최소보증 조건 미표시" },
           ],
           platformBenefits: ["웨딩북 최초 방문예약 후 200명 이상 보증 계약 시 현금 10만 원 캐시백", "웨딩북 방문 시 추가 할인 안내 · 금액은 상담 확인"],
@@ -1394,6 +1398,17 @@
       }
 
       function loadState() {
+        if (localStorage.getItem("hallmap.shortlist20261113") !== "1") {
+          const shortlist = ["guropropose", "thesbdongjak", "westernsindorim", "kyusoodang"];
+          const parked = new Set(readJSON("hallmap.manualParked", []));
+          SEED.concat(readJSON("hallmap.userVenues", [])).forEach((venue) => {
+            if (shortlist.includes(venue.id)) parked.delete(venue.id);
+            else parked.add(venue.id);
+          });
+          localStorage.setItem("hallmap.manualParked", JSON.stringify([...parked]));
+          localStorage.setItem("hallmap.showParked", "0");
+          localStorage.setItem("hallmap.shortlist20261113", "1");
+        }
         return {
           userVenues: readJSON("hallmap.userVenues", []),
           overrides: readJSON("hallmap.overrides", {}),
