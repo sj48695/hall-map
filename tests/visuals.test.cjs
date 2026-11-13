@@ -65,3 +65,45 @@ test('overview keeps explicit room scope and shows cafe links without pretending
   assert.ok(cafe.includes('본문 미확인') && cafe.includes('금액·평가·뷔페 점수에 반영하지 않았습니다'));
   assert.ok(!cafe.includes('로그인한 회원'));
 });
+test('comparison photos retain a fallback for missing and failed images', () => {
+  const begin=html.indexOf('      function comparisonPhotoHtml(');
+  const finish=html.indexOf('\n      }',begin)+'\n      }'.length;
+  runInNewContext(html.slice(begin,finish),context);
+  const missing=context.comparisonPhotoHtml({name:'더에스비'});
+  assert.ok(missing.includes('is-missing') && missing.includes('등록된 사진이 없어요'));
+  const undecided=context.comparisonPhotoHtml({name:'웨스턴',roomScoped:true});
+  assert.ok(undecided.includes('세부 홀을 선택'));
+  const image=context.comparisonPhotoHtml({name:'홀',image:'hall.jpg'});
+  assert.ok(image.includes('onerror=') && image.includes('compare-photo-fallback'));
+});
+test('cost checklist uses eight stable keys without replacing existing records', () => {
+  const begin=html.indexOf('      const COST_CHECKS =');
+  const finish=html.indexOf('      const AUTO_CHECK_KEYS',begin);
+  runInNewContext(html.slice(begin,finish),context);
+  const fnStart=html.indexOf('      function costChecksHtml(');
+  const fnEnd=html.indexOf('\n      }',fnStart)+'\n      }'.length;
+  runInNewContext(html.slice(fnStart,fnEnd),context);
+  const saved={'0-2':true,'cost-tax':true};
+  const output=context.costChecksHtml(saved,'data-hall-check');
+  assert.equal((output.match(/type="checkbox"/g)||[]).length,8);
+  assert.ok(output.includes('1 / 8 확인'));
+  assert.ok(output.includes('data-hall-check="cost-tax" checked'));
+  assert.deepEqual(saved,{'0-2':true,'cost-tax':true});
+  assert.ok(output.includes('외부업체 반입비') && output.includes('부가세·봉사료'));
+});
+test('saving concise common checks preserves keys outside the visible checklist', () => {
+  const begin=html.indexOf('      document.getElementById("checklist-container").addEventListener("change", () => {');
+  const finish=html.indexOf('\n      });',begin)+'\n      });'.length;
+  let change, stored;
+  const count={textContent:''};
+  const sandbox={
+    COST_CHECKS:[['cost-tax']],
+    readJSON:()=>({'legacy-custom':true,'0-2':true,'cost-tax':true}),
+    localStorage:{setItem:(key,value)=>{stored=JSON.parse(value);}},
+    document:{getElementById:()=>({addEventListener:(name,fn)=>{change=fn;}}),querySelectorAll:()=>[{dataset:{check:'cost-tax'},checked:false}],querySelector:()=>count},
+  };
+  runInNewContext(html.slice(begin,finish),sandbox);
+  change();
+  assert.deepEqual(stored,{'legacy-custom':true,'0-2':true,'cost-tax':false});
+  assert.equal(count.textContent,'0 / 1 확인');
+});

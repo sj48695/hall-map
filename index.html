@@ -316,6 +316,63 @@
         .gallery-disclosure > summary span { display:none; }
         .candidate-tools summary { font-size:12px; }
       }
+
+      #comparison-mobile, .detail-compare-grid { display:grid; grid-template-columns:minmax(0,1fr); gap:16px; align-items:stretch; }
+      .detail-compare-card { min-width:0; border:1px solid #e6ddd2; border-radius:16px; background:white; overflow:hidden; display:grid; grid-template-rows:auto auto auto auto auto auto auto; }
+      .compare-photo { height:180px; position:relative; background:#ece5db; overflow:hidden; }
+      .compare-photo img { width:100%; height:100%; object-fit:cover; display:block; }
+      .compare-photo img[hidden], .photo-strip img[hidden] { display:none; }
+      .photo-error-message { display:none; font-size:12px; color:#7c6c5d; }
+      .venue-hero.photo-failed { aspect-ratio:16/9; display:grid; place-items:center; background:#ece5db; }
+      .photo-failed .photo-error-message { display:block; }
+      .compare-photo-fallback { display:none; height:100%; padding:20px; text-align:center; align-items:center; justify-content:center; flex-direction:column; color:#796958; }
+      .compare-photo.is-missing .compare-photo-fallback { display:flex; }
+      .compare-photo-fallback strong { font-size:14px; font-weight:500; }
+      .compare-photo-fallback small { font-size:11px; margin-top:8px; }
+      .compare-heading, .compare-quote, .compare-access, .compare-disclosures, .compare-footer { padding:12px 16px; min-width:0; }
+      .compare-heading p { font-size:11px; color:#817466; }
+      .compare-heading h3 { font-size:16px; font-weight:700; margin:3px 0 8px; }
+      .compare-quote .quote-preview { margin:0; height:100%; }
+      .compare-quote .quote-preview strong { font-size:19px; }
+      .compare-facts { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:1px; padding:0 16px; }
+      .compare-facts > div { padding:10px; background:#faf8f4; }
+      .compare-facts dt { font-size:11px; color:#837567; }
+      .compare-facts dd { font-size:13px; font-weight:600; margin-top:3px; }
+      .compare-wide-fact, .compare-option-preview { display:none; }
+      .compare-access p { font-size:12px; font-weight:600; }
+      .compare-access > small { display:block; color:#7c7166; font-size:11px; margin-top:5px; }
+      .compare-disclosures { border-top:1px solid #f0e8df; font-size:12px; }
+      .compare-disclosures summary { cursor:pointer; }
+      .compare-footer { border-top:1px solid #f0e8df; }
+      .compare-footer button { min-height:44px; border-radius:10px; width:100%; background:#f5eee7; color:#875139; font-weight:600; font-size:13px; }
+      #individual-comparison > summary { margin-bottom:12px; }
+      #individual-comparison { padding:16px; }
+      .cost-check-section { grid-column:1 / -1; }
+      .cost-check-heading { display:flex; align-items:center; justify-content:space-between; gap:12px; }
+      .cost-check-heading h3 { font-size:16px; font-weight:700; }
+      .cost-check-heading span { font-size:12px; color:#88563a; background:#f8eee3; border-radius:20px; padding:4px 10px; white-space:nowrap; }
+      .cost-check-section > p { font-size:12px; color:#817466; margin:6px 0 14px; }
+      .cost-check-grid { display:grid; grid-template-columns:minmax(0,1fr); gap:10px; }
+      .cost-check-item { display:flex; gap:10px; padding:14px; border:1px solid #e9dfd3; border-radius:12px; background:#fffdfa; cursor:pointer; }
+      .cost-check-item:has(input:checked) { border-color:#c6d5bd; background:#f5f8f1; }
+      .cost-check-item input { width:18px; height:18px; margin-top:2px; flex-shrink:0; accent-color:#815139; }
+      .cost-check-item strong { display:block; font-size:13px; }
+      .cost-check-item small { display:block; margin-top:5px; font-size:12px; color:#786e62; line-height:1.7; }
+      .legacy-checks { grid-column:1 / -1; font-size:12px; color:#786e62; margin-top:16px; }
+      .legacy-checks summary { cursor:pointer; }
+      @media (min-width:768px) {
+        #comparison-mobile, .detail-compare-grid { grid-template-columns:repeat(2,minmax(0,1fr)); }
+        .cost-check-grid { grid-template-columns:repeat(2,minmax(0,1fr)); }
+        @supports (grid-template-rows:subgrid) { .detail-compare-card { grid-template-rows:subgrid; grid-row:span 7; gap:0; } }
+      }
+      @media (min-width:1100px) {
+        #comparison-mobile, .detail-compare-grid { grid-template-columns:repeat(3,minmax(0,1fr)); }
+        .compare-wide-fact { display:block; }
+        .compare-option-preview { display:flex; flex-wrap:wrap; gap:5px; margin-top:10px; }
+        .compare-option-preview span { background:#f5eee5; padding:4px 7px; border-radius:6px; font-size:10px; color:#79624b; }
+      }
+      @media (min-width:1440px) { #comparison-mobile, .detail-compare-grid { grid-template-columns:repeat(4,minmax(0,1fr)); } }
+      @media (max-width:639px) { #individual-comparison { padding:12px; } .compare-photo { height:170px; } .compare-heading h3 { font-size:17px; } }
     </style>
   </head>
   <body class="bg-roseGold-50 text-gray-800 min-h-full flex flex-col antialiased">
@@ -556,7 +613,7 @@
           <button type="button" id="table-direction" class="self-end min-h-11 border border-roseGold-200 rounded-xl px-3 text-sm">낮은 순</button>
         </div>
         <details class="bg-white border rounded-2xl p-4"><summary class="font-bold cursor-pointer">옵션과 희망 조건 설정 · 개별 홀 나란히 비교</summary><div id="priority-option-picker" class="mt-3"></div><div id="quote-tools" class="mt-3"></div></details>
-        <details class="rounded-2xl border border-roseGold-100 bg-white p-4"><summary class="font-bold cursor-pointer">개별 홀 상세 비교 <span class="text-xs font-normal text-gray-500">사진 · 옵션 · 후기</span></summary><div id="comparison-mobile" class="mt-4"></div></details>
+        <details id="individual-comparison" open class="rounded-2xl border border-roseGold-100 bg-white p-4"><summary class="font-bold cursor-pointer">개별 홀 상세 비교 <span class="text-xs font-normal text-gray-500">사진 · 옵션 · 후기</span></summary><div id="comparison-mobile" class="mt-4"></div></details>
         <details class="bg-white rounded-2xl border border-roseGold-100 p-4"><summary class="font-bold cursor-pointer">전체 항목 표로 보기 <span class="text-xs font-normal text-gray-500">가로로 스크롤하세요</span></summary>
         <div class="compare-scroll overflow-auto max-h-[72vh] mt-3">
           <table class="comparison-table w-full min-w-[96rem] text-left text-sm whitespace-nowrap">
@@ -585,20 +642,20 @@
 
       <section data-tab-content="checklist" class="hidden space-y-4">
         <div class="flex items-center justify-between gap-3">
-          <h2 class="text-xl font-bold">투어 체크리스트</h2>
+          <div><h2 class="text-xl font-bold">추가금 방지 체크리스트</h2><p class="text-xs text-gray-500 mt-1">계약 전에 금액과 조건을 서면으로 확인하세요.</p></div>
           <button type="button" id="reset-checklist" class="text-sm text-roseGold-700 underline min-h-11">체크 초기화</button>
         </div>
         <div class="bg-white rounded-2xl border border-roseGold-100 p-4 space-y-3">
           <label class="text-sm font-bold block">홀마다
             <select id="check-hall" class="mt-1 w-full border border-roseGold-200 rounded-xl px-3 py-2 text-sm font-normal bg-white"></select>
           </label>
-          <div>
-            <h3 class="text-sm font-bold">데이터로 자동 측정</h3>
+          <details>
+            <summary class="text-sm font-bold cursor-pointer">저장된 홀 정보 확인</summary>
             <p class="mt-1 text-xs text-gray-500">이미 저장된 가격·위치·홀 정보를 체크리스트 답으로 보여줍니다. 없는 정보만 아래에서 직접 체크하세요.</p>
             <div id="hall-auto-checks" class="mt-3 grid grid-cols-2 gap-2"></div>
-          </div>
-          <div class="rounded-xl bg-amber-50 p-3 text-xs leading-relaxed text-amber-900"><strong>투어 순서 팁</strong> · 덜 원하는 홀에서 질문과 거절을 먼저 연습하고, 가장 원하는 홀은 비교 견적을 모은 뒤 마지막에 가세요.<p id="tour-order" class="mt-1 font-semibold"></p><p class="mt-1">당일 혜택은 계약서 전체 금액과 취소 조건을 확인하기 전에는 결정 이유로 삼지 마세요.</p></div>
-          <div id="hall-checklist" class="grid md:grid-cols-2 gap-4"></div>
+          </details>
+          <div class="rounded-xl bg-amber-50 p-3 text-xs leading-relaxed text-amber-900"><strong>최종 견적 확인</strong> · 식대 × 보증 인원 + 대관료 + 필수비용 + 선택 옵션 + 별도 세금·봉사료. 무료 서비스도 적용 조건과 기한을 계약서에 적어두세요.<p id="tour-order" class="hidden"></p></div>
+          <div id="hall-checklist" class="space-y-4"></div>
         </div>
         <details id="booking-route-guide" class="bg-white rounded-2xl border border-roseGold-100 p-4">
           <summary class="cursor-pointer font-bold">직접 예약 · 멕마웨 · 다이렉트 비교</summary>
@@ -619,7 +676,7 @@
         <details class="bg-white rounded-2xl border border-roseGold-100 p-4">
           <summary class="cursor-pointer font-bold">공통 체크 <span class="font-normal text-xs text-gray-500">필요할 때 펼치세요</span></summary>
           <p class="mt-3 text-xs text-gray-500">홀과 상관없이 이 브라우저에 남습니다.</p>
-          <div id="checklist-container" class="mt-3 grid md:grid-cols-2 gap-4"></div>
+          <div id="checklist-container" class="mt-3 space-y-4"></div>
         </details>
       </section>
 
@@ -1520,6 +1577,17 @@
         "다이렉트 최초·최종 보증 200명 조건과 멕마웨 해당 홀의 혜택 조건을 확인했는가",
         "다른 경로 문의·상담 접수 전 최초 예약 인정과 중복 예약 제한을 확인했는가",
       ] });
+      const COST_CHECKS = [
+        ["cost-tax", "세금까지 포함한 최종 총액", "부가세·봉사료 포함 여부와 적용 대상을 견적서에 적었나요?"],
+        ["cost-required", "필수비용 누락 확인", "생화·연출·음향·진행도우미·혼구용품·폐백의 필수 여부와 금액을 받았나요?"],
+        ["cost-guests", "보증 인원·초과 정산", "보증 변경 마감, 미달·초과 인원, 소인·업체 식사·식권 정산 기준을 받았나요?"],
+        ["cost-drinks", "음주류·식사 추가비", "음료·주류·혼주 식사·시식의 포함 범위와 추가 단가를 확인했나요?"],
+        ["cost-vendors", "지정업체·반입비", "스냅·영상·사회자 강제 옵션과 외부업체 반입비·위약금이 없는지 확인했나요?"],
+        ["cost-benefits", "혜택의 조건과 기한", "당일 계약·후기 작성·보증 인원 조건, 미충족 시 추가금과 서비스 범위를 적었나요?"],
+        ["cost-extras", "당일 발생할 부대비용", "주차 초과·장비·추가 꽃·시간 연장비와 선택 옵션 미신청 시 0원을 확인했나요?"],
+        ["cost-contract", "계약금·변경·취소", "계약금의 총액 포함, 잔금, 날짜 변경·취소·환불 조건을 서면으로 받았나요?"],
+      ];
+
       const AUTO_CHECK_KEYS = new Set(["0-0", "0-1", "1-3", "2-0", "2-1", "2-2", "3-1"]);
 
       let state = loadState();
@@ -1998,9 +2066,7 @@
         const selected = candidates.filter((v) => comparisonSelection.includes(v.comparisonKey));
         const fields = [["meal","식대"],["rental","대관료"],["minGuests","보증 인원"],["interval","예식 간격"]];
         const differences = fields.filter(([key]) => new Set(selected.map((v) => activePersonalQuote(v)?.[key] ?? v[key] ?? null)).size > 1);
-        const common = fields.filter(([key]) => !differences.some(([k]) => k === key));
-        const values = (v, list) => list.map(([key,label]) => `<p>${label}: ${esc(key === "meal" || key === "rental" ? won(activePersonalQuote(v)?.[key] ?? v[key]) : (activePersonalQuote(v)?.[key] ?? v[key] ?? "미확인"))}</p>`).join("");
-        document.getElementById("quote-tools").innerHTML = `<section class="rounded-2xl bg-white border p-4 space-y-3">${targetFormHtml()}<label class="block text-sm font-bold">견적 조건 찾기<input id="quote-condition" value="${esc(quoteCondition)}" placeholder="예: 2027년 5월, 토요일, 오후" class="block mt-2 w-full border rounded-lg p-2 font-normal" /></label><p class="text-sm font-bold">나란히 비교할 개별 홀 · 최대 3곳</p><div class="flex flex-wrap gap-2">${candidates.map((v) => `<button type="button" data-compare-pick="${esc(v.comparisonKey)}" aria-pressed="${comparisonSelection.includes(v.comparisonKey)}" class="min-h-11 rounded-lg border p-2 text-xs ${comparisonSelection.includes(v.comparisonKey) ? "bg-violet-100" : ""}">${esc(v.name)}${v.roomName ? " · " + esc(v.roomName) : ""}</button>`).join("")}</div><p id="compare-status" role="status" class="text-xs"></p>${selected.length > 1 ? `<p class="rounded-lg bg-amber-50 p-2 text-xs font-semibold">차이가 있는 항목: ${esc(differences.map(([,label]) => label).join(" · ") || "공개 기본값은 같습니다.")}</p>` : ""}${selected.length ? `<div class="overflow-x-auto"><div class="grid gap-3" style="grid-template-columns:repeat(${selected.length},minmax(240px,1fr))">${selected.map((v) => `<article class="min-w-0 rounded-xl border p-3"><button data-open="${esc(v.id)}" data-open-room="${esc(v.roomId || "")}" class="font-bold underline text-sm">${esc(v.name)}${v.roomName ? " · " + esc(v.roomName) : ""}</button><div class="my-2 text-xs font-semibold text-amber-900">${values(v, differences)}</div>${common.length ? `<details class="text-xs my-2"><summary>같은 항목 ${common.length}개</summary>${values(v, common)}</details>` : ""}${v.roomName ? `<p class="text-xs font-bold text-violet-800">${esc(v.roomName)}</p>` : ""}${photoTag(v,"mt-2 w-full h-36 object-cover rounded-lg")}${optionComparisonHtml(v)}${quoteRecordsHtml(v)}</article>`).join("")}</div></div>` : ""}</section>`;
+        document.getElementById("quote-tools").innerHTML = `<section class="rounded-2xl bg-white border p-4 space-y-3">${targetFormHtml()}<label class="block text-sm font-bold">견적 조건 찾기<input id="quote-condition" value="${esc(quoteCondition)}" placeholder="예: 2027년 5월, 토요일, 오후" class="block mt-2 w-full border rounded-lg p-2 font-normal" /></label><p class="text-sm font-bold">나란히 비교할 개별 홀 · 최대 4곳</p><div class="flex flex-wrap gap-2">${candidates.map((v) => `<button type="button" data-compare-pick="${esc(v.comparisonKey)}" aria-pressed="${comparisonSelection.includes(v.comparisonKey)}" class="min-h-11 rounded-lg border p-2 text-xs ${comparisonSelection.includes(v.comparisonKey) ? "bg-violet-100" : ""}">${esc(v.name)}${v.roomName ? " · " + esc(v.roomName) : ""}</button>`).join("")}</div><p id="compare-status" role="status" class="text-xs"></p>${selected.length > 1 ? `<p class="rounded-lg bg-amber-50 p-2 text-xs font-semibold">차이가 있는 항목: ${esc(differences.map(([,label]) => label).join(" · ") || "공개 기본값은 같습니다.")}</p>` : ""}${selected.length ? `<div class="detail-compare-grid">${selected.map((v) => detailedComparisonHtml(v)).join("")}</div>` : ""}</section>`;
       }
       function refreshPlanner() {
         renderAll();
@@ -2042,8 +2108,8 @@
         if (!button) return;
         const id = button.dataset.comparePick;
         if (comparisonSelection.includes(id)) comparisonSelection = comparisonSelection.filter((v) => v !== id);
-        else if (comparisonSelection.length < 3) comparisonSelection.push(id);
-        else { document.getElementById("compare-status").textContent = "최대 3곳입니다. 선택한 후보를 눌러 해제하세요."; return; }
+        else if (comparisonSelection.length < 4) comparisonSelection.push(id);
+        else { document.getElementById("compare-status").textContent = "최대 4곳입니다. 선택한 후보를 눌러 해제하세요."; return; }
         renderTable(buildView());
       });
       document.addEventListener("submit", (event) => {
@@ -2463,7 +2529,7 @@
         const photos = safeImage(venue.image)
           ? [venue.image,...(venue.extraImages || [])].map((src) => ({src,room:venue.roomId,name:venue.roomName || "단독홀"}))
           : rooms.filter((r) => safeImage(r.image)).map((r) => ({src:r.image,room:r.id,name:r.name}));
-        return photos.length ? `<div class="photo-strip" aria-label="${esc(venue.name)} 사진 모음">${photos.map((p) => `<button type="button" class="venue-hero" data-open="${esc(venue.id)}" ${p.room ? `data-open-room="${esc(p.room)}"` : ""} data-gallery-photo="${esc(safeImage(p.src))}"><img src="${esc(safeImage(p.src))}" alt="${esc(venue.name + ' · ' + p.name)}" loading="lazy" /><span class="venue-hero-label">${esc(p.name)}${!venue.roomId && rooms.length ? " · 눌러서 이 홀 선택" : ""}</span></button>`).join("")}</div><div class="photo-index"><span>공개 사진 · 촬영·리뉴얼 적용일 미확인</span><span>${photos.length > 1 ? photos.length + "장 · 옆으로 넘기기 →" : "눌러서 확대 ↗"}</span></div>` : '<div class="photo-placeholder"><strong>공간은 투어에서 확인해요</strong><span class="text-xs">확인된 홀 사진이 아직 없어요</span></div><div class="photo-index">단독홀 · 실제 분위기는 방문해서 확인</div>';
+        return photos.length ? `<div class="photo-strip" aria-label="${esc(venue.name)} 사진 모음">${photos.map((p) => `<button type="button" class="venue-hero" data-open="${esc(venue.id)}" ${p.room ? `data-open-room="${esc(p.room)}"` : ""} data-gallery-photo="${esc(safeImage(p.src))}"><img src="${esc(safeImage(p.src))}" alt="${esc(venue.name + ' · ' + p.name)}" loading="lazy" onerror="this.hidden=true;this.parentElement.classList.add('photo-failed')" /><span class="photo-error-message">사진을 불러오지 못했어요</span><span class="venue-hero-label">${esc(p.name)}${!venue.roomId && rooms.length ? " · 눌러서 이 홀 선택" : ""}</span></button>`).join("")}</div><div class="photo-index"><span>공개 사진 · 촬영·리뉴얼 적용일 미확인</span><span>${photos.length > 1 ? photos.length + "장 · 옆으로 넘기기 →" : "눌러서 확대 ↗"}</span></div>` : '<div class="photo-placeholder"><strong>공간은 투어에서 확인해요</strong><span class="text-xs">확인된 홀 사진이 아직 없어요</span></div><div class="photo-index">단독홀 · 실제 분위기는 방문해서 확인</div>';
       }
 
       function familyText(venue) {
@@ -2663,6 +2729,26 @@
         return active.concat(parked);
       }
 
+      function comparisonPhotoHtml(venue) {
+        const src = safeImage(venue.image);
+        const label = venue.roomScoped && !venue.roomId ? "세부 홀을 선택해 주세요" : "등록된 사진이 없어요";
+        return `<div class="compare-photo ${src ? "" : "is-missing"}">${src ? `<img src="${esc(src)}" alt="${esc(venue.name + " " + (venue.roomName || ""))} 전경" loading="lazy" onerror="this.hidden=true;this.parentElement.classList.add('is-missing')" />` : ""}<span class="compare-photo-fallback"><strong>${esc(label)}</strong><small>사진 유무와 관계없이 같은 기준으로 비교해요</small></span></div>`;
+      }
+
+      function detailedComparisonHtml(venue) {
+        const fields = [["소개 식대",venue.meal ? won(venue.meal) : "미확인"],["소개 대관료",Number.isFinite(venue.rental) ? won(venue.rental) : "미확인"],["소개 최소보증",venue.minGuests ? venue.minGuests + "명" : "날짜별 확인"],["예식 간격",venue.interval ? venue.interval + "분" : "홀 선택 필요"]];
+        const options = (venue.options || []).filter((o) => o.required || o.service).slice(0,4);
+        return `<article class="detail-compare-card ${venue.parked ? "opacity-70" : ""}" data-compare-venue="${esc(venue.id)}" data-compare-room="${esc(venue.roomId || "")}">
+          ${comparisonPhotoHtml(venue)}
+          <div class="compare-heading"><p>${esc(venue.district || "")}${venue.parked ? " · 보류" : ""}</p><h3>${esc(venue.name)}</h3>${roomPickerHtml(venue)}</div>
+          <div class="compare-quote">${recentQuoteHtml(venue)}</div>
+          <dl class="compare-facts">${fields.map(([label,value]) => `<div><dt>${esc(label)}</dt><dd>${esc(value)}</dd></div>`).join("")}<div class="compare-wide-fact"><dt>꽃장식</dt><dd>${esc(venue.flower === "포함" ? "대관 포함" : venue.flower || "미확인")}</dd></div><div class="compare-wide-fact"><dt>음주류</dt><dd>${esc(venue.drinks || "포함 여부 확인")}</dd></div></dl>
+          <div class="compare-access"><p>${esc(venue.station || "역 정보 미확인")}</p><small>${esc(venue.parking || "주차 정보 미확인")}</small><div class="compare-option-preview">${options.length ? options.map((o) => `<span>${esc(o.name)} · ${o.service ? "서비스" : Number.isFinite(o.price) ? won(o.price) : "비용 확인"}</span>`).join("") : '<span>필수 옵션·진행비는 견적서 확인</span>'}</div></div>
+          <div class="compare-disclosures"><details><summary>필수·선택 옵션</summary>${optionComparisonHtml(venue)}</details><details><summary>견적 근거·사진·후기</summary>${quoteRecordsHtml(venue)}${roomGalleryHtml(venue)}<p class="text-xs mt-2">${esc(venue.foodReview || "확인된 실제 식사 후기 부족")}</p>${cafeSourcesHtml(venue)}<p class="text-xs mt-2">${esc(quoteFormula(venue))}</p></details></div>
+          <div class="compare-footer"><button type="button" data-open="${esc(venue.id)}" ${venue.roomId ? `data-open-room="${esc(venue.roomId)}"` : ""}>상세·상담 견적 보기 →</button></div>
+        </article>`;
+      }
+
       function renderTable(view) {
         renderPriorityOptionPicker();
         renderQuoteTools(view);
@@ -2676,39 +2762,7 @@
         });
         document.getElementById("table-sort").value = tableSort.key;
         document.getElementById("table-direction").textContent = tableSort.direction === 1 ? "낮은 순" : "높은 순";
-        document.getElementById("comparison-mobile").innerHTML = rows
-          .map((venue) => {
-            const totals = quoteTotals(venue);
-            const totalText = totals ? won(totals.low) + (totals.high !== totals.low ? "~" + won(totals.high) : "") : "계산 안 함";
-            const flowerText = venue.flower === "포함" ? "대관에 포함" : Number(venue.flower) > 0 ? won(venue.flower) : "미입력";
-            return `<article class="bg-white rounded-2xl border overflow-hidden ${venue.parked ? "border-gray-200 opacity-70" : "border-roseGold-100"}">
-              ${photoTag(venue, "w-full h-36 rounded-xl object-cover")}
-              <div class="p-4 pb-0">${roomPickerHtml(venue)}</div><div class="p-4 pb-3 flex items-start justify-between gap-3">
-                <div>
-                  <p class="text-xs font-semibold ${venue.parked ? "text-gray-500" : "text-roseGold-700"}">${venue.parked ? "보류 · " + esc(venue.parkReason) : rank.get(venue.id) + "순위"} · ${esc(venue.district)}</p>
-                  <button type="button" data-open="${esc(venue.id)}" class="mt-1 text-left text-lg font-bold underline decoration-roseGold-300">${esc(venue.name)}</button>
-                </div>
-                <div class="text-right shrink-0">
-                  <p class="text-[11px] text-gray-500">소개 정가 / 과거 할인 기록</p>
-                  <p class="font-bold text-roseGold-800">${esc(totalText)}<br><span class="text-xs text-emerald-700">${esc(bestDiscount(venue) ? won(bestDiscount(venue).total) : venue.discountQuotes?.length ? "총액 미확인" : "근거 없음")}</span></p>
-                </div>
-              </div>
-              <div class="px-4 pb-4">${recentQuoteHtml(venue)}</div>
-              <div class="border-y border-amber-100 bg-amber-50/50 p-4 space-y-3">
-                <details><summary class="text-xs font-semibold text-gray-600">소개 가격으로 계산한 예산·이동 보기</summary>${visualSummaryHtml(venue)}</details>
-                <details class="text-[11px] text-gray-600"><summary class="cursor-pointer font-semibold text-amber-900">가격 근거·계산식 보기</summary><div class="mt-2 space-y-2"><p><span class="font-semibold">할인 근거</span> ${esc(discountText(venue))}</p>${venue.platformBenefits ? `<p class="text-emerald-800"><span class="font-semibold">예약 경로 혜택</span> ${esc(benefitText(venue))}</p>` : ""}<p>${esc(quoteFormula(venue))}</p></div></details>
-              </div>
-              <details class="border-b border-sky-100 bg-sky-50/40 p-4 text-xs leading-relaxed"><summary class="font-semibold text-sky-900 cursor-pointer">필수·선택 옵션 보기</summary>${optionComparisonHtml(venue)}</details>
-              <div class="p-4 text-xs leading-relaxed">
-                ${roomGalleryHtml(venue)}
-                <p class="text-gray-500">${esc(venue.station || "역 정보 미확인")}</p>
-                ${markText(venue) ? `<p class="text-roseGold-700">${esc(markText(venue))}</p>` : ""}
-                ${venue.foodReview ? `<details class="text-gray-600"><summary class="cursor-pointer">후기 근거 ${venue.foodReviewCount}건 · ${esc(venue.foodReviewLatest)}</summary><p class="mt-1">${esc(venue.foodReview)}</p></details>` : ""}
-                ${venue.note ? `<p class="mt-1 text-gray-600">${esc(venue.note)}</p>` : ""}
-              </div>
-            </article>`;
-          })
-          .join("");
+        document.getElementById("comparison-mobile").innerHTML = rows.map((venue) => detailedComparisonHtml(venue)).join("");
         document.getElementById("comparison-body").innerHTML = rows
           .map((venue) => {
             const totals = quoteTotals(venue);
@@ -3303,8 +3357,13 @@
           .join("");
       }
 
+      function costChecksHtml(saved, attr) {
+        const completed = COST_CHECKS.filter(([key]) => saved[key]).length;
+        return `<div class="cost-check-section"><div class="cost-check-heading"><h3>추가금 방지 · 핵심 8가지</h3><span role="status">${completed} / ${COST_CHECKS.length} 확인</span></div><p>말로 안내받은 내용은 견적서·계약서에 남긴 뒤 체크하세요.</p><div class="cost-check-grid">${COST_CHECKS.map(([key,title,description]) => `<label class="cost-check-item"><input type="checkbox" ${attr}="${key}" ${saved[key] ? "checked" : ""} /><span><strong>${esc(title)}</strong><small>${esc(description)}</small></span></label>`).join("")}</div></div>`;
+      }
+
       function checkGroups(saved, attr) {
-        return CHECKLIST.map((group, groupIndex) => {
+        return costChecksHtml(saved, attr) + '<details class="legacy-checks"><summary>기존 투어 체크·저장 기록 더 보기</summary><div class="grid md:grid-cols-2 gap-4 mt-3">' + CHECKLIST.map((group, groupIndex) => {
           const items = group.items
             .map((item, itemIndex) => {
               const key = groupIndex + "-" + itemIndex;
@@ -3313,7 +3372,7 @@
             })
             .join("");
           return `<div class="space-y-2"><h3 class="font-bold text-sm">${esc(group.title)}</h3>${items}</div>`;
-        }).join("");
+        }).join("") + '</div></details>';
       }
 
       function paintDetailChecks() {
@@ -3352,7 +3411,7 @@
 
       function renderChecklist() {
         const saved = readJSON("wedding_checklist", {});
-        document.getElementById("checklist-container").innerHTML = CHECKLIST.map((group, groupIndex) => {
+        document.getElementById("checklist-container").innerHTML = costChecksHtml(saved, "data-check") + '<details class="legacy-checks"><summary>기존 공통 체크·저장 기록 더 보기</summary><div class="grid md:grid-cols-2 gap-4 mt-3">' + CHECKLIST.map((group, groupIndex) => {
           const items = group.items
             .map((item, itemIndex) => {
               const key = groupIndex + "-" + itemIndex;
@@ -3360,7 +3419,7 @@
             })
             .join("");
           return `<div class="bg-white rounded-2xl border border-roseGold-100 p-4 space-y-2"><h3 class="font-bold">${esc(group.title)}</h3>${items}</div>`;
-        }).join("");
+        }).join("") + '</div></details>';
         const select = document.getElementById("check-hall");
         const view = buildView();
         const venues = view.ranked.concat(view.parked);
@@ -3858,11 +3917,13 @@
       });
 
       document.getElementById("checklist-container").addEventListener("change", () => {
-        const data = {};
+        const data = readJSON("wedding_checklist", {});
         document.querySelectorAll("#checklist-container input").forEach((box) => {
           data[box.dataset.check] = box.checked;
         });
         localStorage.setItem("wedding_checklist", JSON.stringify(data));
+        const section = document.querySelector("#checklist-container .cost-check-heading span");
+        if (section) section.textContent = COST_CHECKS.filter(([key]) => data[key]).length + " / " + COST_CHECKS.length + " 확인";
       });
       document.getElementById("check-hall").addEventListener("change", renderChecklist);
       document.getElementById("hall-checklist").addEventListener("change", (event) => {
