@@ -189,14 +189,76 @@
       .comparison-table th:nth-child(10), .comparison-table td:nth-child(10) {
         border-left: 2px solid #f5d9d3;
       }
+
+      /* Keep the tour shortlist readable before opening detailed research. */
+      html { scroll-padding-top: 100px; }
+      body { background: #faf8f5; color: #292721; }
+      main { max-width: 1160px !important; }
+      .skip-link { position:fixed; top:-100px; left:16px; z-index:100; background:white; padding:12px 20px; border:2px solid #9b3b29; border-radius:12px; }
+      .skip-link:focus { top:12px; }
+      .tour-intro { display:flex; justify-content:space-between; align-items:center; gap:24px; padding:28px; border:1px solid #eadfd5; border-radius:24px; background:linear-gradient(120deg,#fffaf4,#f3ede5); }
+      .tour-eyebrow { color:#8a4d36; font-size:11px; font-weight:700; letter-spacing:.16em; }
+      .tour-intro h2 { font-size:28px; font-weight:700; letter-spacing:-.06em; margin:5px 0; }
+      .tour-intro p { color:#6b625a; font-size:13px; }
+      .tour-actions { display:flex; gap:8px; flex-shrink:0; }
+      .tour-actions button { min-height:44px; padding:10px 16px; border-radius:12px; background:white; border:1px solid #dfcfc1; font-size:13px; font-weight:700; }
+      .tour-actions button:first-child { background:#764531; border-color:#764531; color:white; }
+      #shortlist-status { margin-top:12px; font-size:12px; color:#764531; }
+      .candidate-tools { display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:8px; }
+      .candidate-tools > details { flex:1 1 240px; }
+      #venue-list { grid-template-columns:repeat(2,minmax(0,1fr)); gap:20px; }
+      .candidate-card { padding:14px !important; border-color:#e8e0d7; box-shadow:0 3px 12px #49372305; }
+      .candidate-card .candidate-heading { min-height:60px; }
+      .photo-strip img { height:230px; }
+      .photo-placeholder { height:230px; display:flex; flex-direction:column; justify-content:center; align-items:center; border-radius:12px; background:linear-gradient(135deg,#efe9e0,#e1d7ca); color:#726457; gap:8px; }
+      .photo-placeholder strong { font-size:20px; font-weight:500; }
+      .photo-index { font-size:11px; min-height:32px; }
+      .quote-preview { margin:12px 4px 0; padding:14px; border:1px solid #e9ded2; background:#fcfaf7; border-radius:12px; }
+      .quote-preview small { display:block; color:#78695b; font-size:11px; }
+      .quote-preview strong { display:block; color:#69422f; font-size:21px; letter-spacing:-.04em; margin:2px 0; }
+      .quote-preview p { font-size:12px; color:#635e57; }
+      .quote-preview .quote-caution { color:#855526; font-size:11px; margin-top:7px; }
+      .snapshot { margin-top:12px; }
+      .candidate-actions > button { background:#f5eee7; border-radius:10px; padding:0 12px; margin:8px 0; }
+      .detail-shortcuts { display:flex; gap:8px; overflow-x:auto; padding:0 20px 12px; background:white; }
+      .detail-shortcuts button { min-height:40px; border:1px solid #e8ded5; border-radius:100px; padding:6px 14px; white-space:nowrap; font-size:12px; color:#764531; }
+      #detail-price-summary, #detail-quote-records, #detail-options, #detail-reviews { scroll-margin-top:145px; }
+      nav[aria-label="화면"] button[aria-current="page"] { background:#f3e8df; color:#763f2b; font-weight:700; }
+      nav[aria-label="화면"] button { transition:background .15s; }
+      #comparison-mobile > article { border-color:#e8e0d7; }
+      @media (max-width:639px) {
+        .tour-intro { display:block; padding:16px; border-radius:18px; }
+        .tour-intro .tour-eyebrow { display:none; }
+        .tour-intro > div > p { font-size:12px; }
+        .tour-intro h2 { margin:0 0 4px; }
+        #shortlist-status { margin-top:8px; }
+        .candidate-tools { display:grid; grid-template-columns:1fr 1fr; align-items:start; }
+        .candidate-tools summary { font-size:13px; }
+        .candidate-tools summary > span { display:none; }
+        .candidate-tools > details:has([open]), .candidate-tools > details[open] { grid-column:1 / -1; }
+        .tour-intro h2 { font-size:24px; }
+        .tour-actions { margin-top:16px; }
+        .tour-actions button { flex:1; }
+        #venue-list { grid-template-columns:minmax(0,1fr); gap:16px; }
+        .photo-strip img, .photo-placeholder { height:200px; }
+        .candidate-card { padding:12px !important; }
+        nav[aria-label="화면"] > div { padding:6px 8px; gap:4px; }
+        nav[aria-label="화면"] button { border-radius:12px; min-height:48px; }
+        .candidate-tools { gap:6px; }
+        .candidate-tools > details { flex-basis:100%; padding-top:4px; padding-bottom:4px; }
+        #venue-modal > [role="dialog"] > :first-child { padding:14px 16px; }
+        #venue-modal > [role="dialog"] > .p-5 { padding:16px; }
+      }
+      @media (prefers-reduced-motion:reduce) { *, *::before, *::after { scroll-behavior:auto !important; transition:none !important; } }
     </style>
   </head>
   <body class="bg-roseGold-50 text-gray-800 min-h-full flex flex-col antialiased">
+    <a class="skip-link" href="#main-content">본문으로 건너뛰기</a>
     <header class="bg-white border-b border-roseGold-200 sticky top-0 z-50 shadow-sm">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 flex items-center justify-between gap-3">
         <div>
           <h1 class="text-lg font-bold text-gray-900 tracking-tight">웨딩홀 투어 프리뷰</h1>
-          <p class="text-xs text-gray-500">구파발 · 봉천에서 어디부터 갈지 정합니다</p>
+          <p class="text-xs text-gray-500">우리의 후보를 비교하고, 투어에서 확인할 것을 기록해요</p>
         </div>
         <nav class="hidden md:flex flex-wrap gap-1 bg-roseGold-100/60 p-1 rounded-xl" aria-label="화면">
           <button type="button" data-tab-btn="map" data-tab-style="desk" class="px-4 py-2 text-sm font-medium rounded-lg bg-white text-roseGold-700 shadow-sm">후보</button>
@@ -222,8 +284,13 @@
       </div>
     </div>
 
-    <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 pt-4 pb-24 md:py-6 space-y-4 md:space-y-6">
+    <main id="main-content" tabindex="-1" class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 pt-4 pb-24 md:py-6 space-y-4 md:space-y-6">
       <section data-tab-content="map" class="space-y-4">
+        <div class="tour-intro">
+          <div><span class="tour-eyebrow">OUR WEDDING VENUE</span><h2>우리에게 맞는 한 곳을 찾아요</h2><p>마음에 드는 공간부터, 견적과 하객 동선까지 차근차근.</p><div id="shortlist-status" role="status"></div></div>
+          <div class="tour-actions"><button type="button" data-tab-btn="table">견적 비교하기 →</button><button type="button" data-tab-btn="memo">투어 기록</button></div>
+        </div>
+        <div class="candidate-tools">
         <details class="bg-white rounded-2xl border border-roseGold-100 px-4 py-2"><summary class="font-bold cursor-pointer">추천 순위 보기</summary><div id="recommendation" class="pb-3" aria-live="polite"></div></details>
 
         <details class="bg-white rounded-2xl border border-roseGold-100 shadow-sm px-4 py-3 space-y-2">
@@ -248,6 +315,7 @@
           <p id="radius-note" class="text-xs text-slate-500"></p>
         </details>
 
+        </div>
         <div class="candidate-layout">
           <div class="min-w-0">
             <div class="flex flex-wrap justify-between items-center gap-2 mb-3"><h2 class="font-bold text-lg">웨딩홀 후보</h2><button id="show-candidate-map" type="button" class="text-sm text-roseGold-700 underline min-h-11">지도 보기</button></div>
@@ -503,7 +571,9 @@
           </div>
           <button type="button" id="detail-close" class="text-gray-500 min-h-11 min-w-11" aria-label="닫기">닫기</button>
         </div>
+        <nav class="detail-shortcuts" aria-label="홀 상세 바로가기"><button type="button" data-detail-jump="detail-price-summary">금액 요약</button><button type="button" data-detail-jump="detail-quote-records">상담 견적</button><button type="button" data-detail-jump="detail-options">옵션·혜택</button><button type="button" data-detail-jump="detail-reviews">후기</button></nav>
         <div class="p-5 space-y-4 text-sm">
+          <div id="detail-price-summary"></div>
           <div id="detail-gallery"></div>
           <div class="space-y-2">
             <button type="button" id="detail-photo-open" class="hidden w-full text-left" aria-label="홀 사진 확대"><img id="detail-photo" alt="" class="w-full max-h-64 object-cover rounded-2xl bg-roseGold-50" /><span class="block text-xs underline mt-1">사진을 눌러 확대하세요</span></button>
@@ -524,7 +594,7 @@
           </div>
           <div id="detail-visual-summary"></div>
           <details class="rounded-xl border border-roseGold-100 p-3"><summary class="font-bold cursor-pointer">홀 조건·이동 상세</summary><div id="detail-room" class="mt-2"></div><p id="detail-times" class="mt-2 text-xs text-gray-500"></p></details>
-          <div id="detail-price-summary"></div><div id="detail-quote-records"></div>
+          <div id="detail-quote-records"></div>
           <div id="detail-score-breakdown"></div>
 
           <details class="rounded-xl border border-roseGold-100 p-3"><summary class="cursor-pointer font-bold">내 점수 입력</summary><div id="detail-scores" class="mt-3 space-y-2"></div></details>
@@ -1831,7 +1901,7 @@
           const missing = quoteMissing(q, venue);
           const active = activePersonalQuote(venue)?.id === q.id;
           const tax = q.personal ? personalCalculation(q, venue) : null;
-          return `<article class="border-t pt-2 text-xs leading-relaxed"><p class="font-bold">${esc(q.label)} · ${q.comparisonEligible === false ? "범위 최저 조합 · 계약 견적 아님" : /지난 예식 조건/.test(q.note || "") ? "과거 조건" : q.total == null ? "총액 미확인" : "기본 합계 계산 가능"}${active ? " · 비교 적용 중" : ""}</p><p>${esc(q.date || (q.month ? q.month + " · 일자 미확인" : "날짜 미확인"))} ${esc(q.time || "시간 미확인")} · ${esc(q.hall || "홀 미확인")} · ${q.minGuests || "보증 미확인"}${q.minGuests ? "명" : ""}</p><p>식대 ${esc(won(q.meal))} × 보증 + 대관 ${esc(won(q.rental))} + 꽃·필수 ${esc(won(q.required))}</p>${q.flowerPrice != null ? `<p>확인된 생화 금액 ${esc(won(q.flowerPrice))} · 기타 필수비용 미확인</p>` : ""}<p>기본 합계 ${esc(won(q.total))}${tax ? " · 선택 포함 " + esc(won(tax.total)) : ""}</p>${q.personal ? `<p>봉사료 ${esc(q.serviceMode === "included" ? "포함" : q.serviceMode === "separate" ? q.servicePercent + "% 별도 · " + (q.serviceBase === "subtotal" ? "기본+옵션" : "식대") : "미확인")} · 부가세 ${esc(q.vatMode === "included" ? "포함" : q.vatMode === "separate" ? q.vatPercent + "% 별도 · " + ({meal:"식대", subtotal:"기본+옵션", total:"봉사료 포함 소계"}[q.vatBase] || "봉사료 포함 소계") : "미확인")}</p>${tax.total != null ? `<p>선택 옵션 ${esc(won(tax.options))} · 봉사료 ${esc(won(tax.service))} · 부가세 ${esc(won(tax.vat))}</p>` : ""}` : `<p>봉사료 ${q.serviceRate ? Math.round(q.serviceRate * 100) + "% 반영" : "포함 여부 원문 확인"} · 부가세 ${q.vatMode === "included" ? "식대 포함 확인" : "조건 원문 확인"}</p>`}<p class="text-amber-800">${missing.length ? "확인할 항목: " + esc(missing.join(" · ")) : "금액·세금·선택 옵션 확인 완료"}</p>${targetDifferences(Object.assign({}, q, {guests:q.minGuests})).map((text) => `<p>${esc(text)}</p>`).join("")}<p>${esc(q.note || "")}</p>${safeUrl(q.url) ? `<a class="underline text-roseGold-700" href="${esc(safeUrl(q.url))}" target="_blank" rel="noreferrer">견적 원문</a>` : "공개 원문 링크 없음"} · ${esc(q.checkedAt || "확인일 미기록")}${q.personal ? `<div class="flex flex-wrap gap-2 mt-2">${[["apply",active ? "비교 적용 해제" : "이 견적으로 비교"],["edit","수정"],["copy","복제"],["delete","삭제"]].map(([action,label]) => `<button type="button" data-quote-action="${action}" data-quote-id="${esc(q.id)}" data-quote-venue="${esc(venue.id)}" class="min-h-11 border rounded-lg px-2">${label}</button>`).join("")}</div>` : ""}</article>`;
+          return `<article class="border-t pt-2 text-xs leading-relaxed"><p class="font-bold">${esc(q.label)} · ${q.comparisonEligible === false ? (/최저 조합/.test(q.note || "") ? "범위 최저 조합 · 계약 견적 아님" : "조건 미확인 · 순위 미반영") : /지난 예식 조건/.test(q.note || "") ? "과거 조건" : q.total == null ? "총액 미확인" : "기본 합계 계산 가능"}${active ? " · 비교 적용 중" : ""}</p><p>${esc(q.date || (q.month ? q.month + " · 일자 미확인" : "날짜 미확인"))} ${esc(q.time || "시간 미확인")} · ${esc(q.hall || "홀 미확인")} · ${q.minGuests || "보증 미확인"}${q.minGuests ? "명" : ""}</p><p>식대 ${esc(won(q.meal))} × 보증 + 대관 ${esc(won(q.rental))} + 꽃·필수 ${esc(won(q.required))}</p>${q.flowerPrice != null ? `<p>확인된 생화 금액 ${esc(won(q.flowerPrice))} · 기타 필수비용 미확인</p>` : ""}<p>기본 합계 ${esc(won(q.total))}${tax ? " · 선택 포함 " + esc(won(tax.total)) : ""}</p>${q.personal ? `<p>봉사료 ${esc(q.serviceMode === "included" ? "포함" : q.serviceMode === "separate" ? q.servicePercent + "% 별도 · " + (q.serviceBase === "subtotal" ? "기본+옵션" : "식대") : "미확인")} · 부가세 ${esc(q.vatMode === "included" ? "포함" : q.vatMode === "separate" ? q.vatPercent + "% 별도 · " + ({meal:"식대", subtotal:"기본+옵션", total:"봉사료 포함 소계"}[q.vatBase] || "봉사료 포함 소계") : "미확인")}</p>${tax.total != null ? `<p>선택 옵션 ${esc(won(tax.options))} · 봉사료 ${esc(won(tax.service))} · 부가세 ${esc(won(tax.vat))}</p>` : ""}` : `<p>봉사료 ${q.serviceRate ? Math.round(q.serviceRate * 100) + "% 반영" : "포함 여부 원문 확인"} · 부가세 ${q.vatMode === "included" ? "식대 포함 확인" : "조건 원문 확인"}</p>`}<p class="text-amber-800">${missing.length ? "확인할 항목: " + esc(missing.join(" · ")) : "금액·세금·선택 옵션 확인 완료"}</p>${targetDifferences(Object.assign({}, q, {guests:q.minGuests})).map((text) => `<p>${esc(text)}</p>`).join("")}<p>${esc(q.note || "")}</p>${safeUrl(q.url) ? `<a class="underline text-roseGold-700" href="${esc(safeUrl(q.url))}" target="_blank" rel="noreferrer">견적 원문</a>` : "공개 원문 링크 없음"} · ${esc(q.checkedAt || "확인일 미기록")}${q.personal ? `<div class="flex flex-wrap gap-2 mt-2">${[["apply",active ? "비교 적용 해제" : "이 견적으로 비교"],["edit","수정"],["copy","복제"],["delete","삭제"]].map(([action,label]) => `<button type="button" data-quote-action="${action}" data-quote-id="${esc(q.id)}" data-quote-venue="${esc(venue.id)}" class="min-h-11 border rounded-lg px-2">${label}</button>`).join("")}</div>` : ""}</article>`;
         }).join("") || '<p class="text-xs">해당 조건의 확인된 견적이 없습니다.</p>'}</div></details>`;
       }
       function personalQuoteForm(venue) {
@@ -2319,7 +2389,7 @@
         const photos = safeImage(venue.image)
           ? [venue.image,...(venue.extraImages || [])].map((src) => ({src,room:venue.roomId,name:venue.roomName || "단독홀"}))
           : rooms.filter((r) => safeImage(r.image)).map((r) => ({src:r.image,room:r.id,name:r.name}));
-        return photos.length ? `<div class="photo-strip" aria-label="${esc(venue.name)} 사진 모음">${photos.map((p) => `<button type="button" class="venue-hero" data-open="${esc(venue.id)}" ${p.room ? `data-open-room="${esc(p.room)}"` : ""} data-gallery-photo="${esc(safeImage(p.src))}"><img src="${esc(safeImage(p.src))}" alt="${esc(venue.name + ' · ' + p.name)}" loading="lazy" /><span class="venue-hero-label">${esc(p.name)}${!venue.roomId && rooms.length ? " · 눌러서 이 홀 선택" : ""}</span></button>`).join("")}</div><div class="photo-index"><span>공개 사진 · 촬영·리뉴얼 적용일 미확인</span><span>${photos.length > 1 ? photos.length + "장 · 옆으로 넘기기 →" : "눌러서 확대 ↗"}</span></div>` : '<div class="rounded-xl bg-slate-100 h-40 flex items-center justify-center text-sm text-gray-500">사진 확인 중</div>';
+        return photos.length ? `<div class="photo-strip" aria-label="${esc(venue.name)} 사진 모음">${photos.map((p) => `<button type="button" class="venue-hero" data-open="${esc(venue.id)}" ${p.room ? `data-open-room="${esc(p.room)}"` : ""} data-gallery-photo="${esc(safeImage(p.src))}"><img src="${esc(safeImage(p.src))}" alt="${esc(venue.name + ' · ' + p.name)}" loading="lazy" /><span class="venue-hero-label">${esc(p.name)}${!venue.roomId && rooms.length ? " · 눌러서 이 홀 선택" : ""}</span></button>`).join("")}</div><div class="photo-index"><span>공개 사진 · 촬영·리뉴얼 적용일 미확인</span><span>${photos.length > 1 ? photos.length + "장 · 옆으로 넘기기 →" : "눌러서 확대 ↗"}</span></div>` : '<div class="photo-placeholder"><strong>공간은 투어에서 확인해요</strong><span class="text-xs">확인된 홀 사진이 아직 없어요</span></div><div class="photo-index">단독홀 · 실제 분위기는 방문해서 확인</div>';
       }
 
       function familyText(venue) {
@@ -2353,6 +2423,15 @@
         box.innerHTML = `<p class="text-xs font-semibold text-roseGold-700 mb-2">먼저 살펴볼 후보</p><ol>${items}</ol>`;
       }
 
+      function recentQuoteHtml(venue) {
+        const records = (venue.discountQuotes || []).filter((q) => q.checkedAt === "2026-11-13" && q.meal > 0 && Number.isFinite(q.rental) && q.minGuests > 0);
+        if (!records.length) return `<div class="quote-preview"><small>상담 견적</small><strong>${venue.roomScoped && !venue.roomId ? "세부 홀을 선택해 주세요" : "날짜별 조건 확인"}</strong><p>${venue.roomScoped && !venue.roomId ? "사진에서 홀을 고르면 해당 견적을 볼 수 있어요." : "상세에서 공개 가격과 상담 기록을 확인하세요."}</p></div>`;
+        const amounts = records.map((q) => q.meal * q.minGuests + q.rental + (Number.isFinite(q.required) ? q.required : 0));
+        const low = Math.min(...amounts), high = Math.max(...amounts);
+        const complete = records.every((q) => q.serviceMode === "included" && q.vatMode === "included" && Number.isFinite(q.required));
+        return `<div class="quote-preview"><small>제공 견적 · ${records.every((q) => q.minGuests === records[0].minGuests) ? records[0].minGuests + "명 기준" : "보증 인원별"}</small><strong>${esc(won(low))}${low !== high ? " ~ " + esc(won(high)) : ""}</strong><p>${esc(records.map((q) => [q.date || q.month || "날짜 미확인", q.time, q.hall].filter(Boolean).join(" · ")).join(" / "))}</p><p class="quote-caution">${complete ? "세금 포함 · 당일 계약 등 적용 조건 확인" : "기본 합계 · 미확인 세금·필수비용 별도 확인"}</p></div>`;
+      }
+
       function rowHtml(venue, rank, movable) {
         const moves = movable
           ? `<div class="flex shrink-0">
@@ -2371,8 +2450,8 @@
           <button type="button" data-open="${esc(venue.id)}" class="candidate-heading">
             <span><span class="block text-xs text-gray-500">${venue.parked ? "보류" : rank + "순위"} · ${esc(venue.district)}</span><span class="block text-base font-bold mt-1">${esc(venue.name)}</span></span>
           </button>
-          <div class="snapshot"><div><small>₩ 비교 총액</small><strong>${comparisonTotal(venue) != null ? esc(won(comparisonTotal(venue))) : "홀·조건 확인"}</strong></div><div><small>신랑 · 직선 추정</small><strong>${venue.groomMin}분</strong></div><div><small>신부 · 직선 추정</small><strong>${venue.brideMin}분</strong></div></div>
-          <div class="candidate-actions"><button type="button" data-open="${esc(venue.id)}" class="text-sm font-semibold text-roseGold-700 min-h-11">사진·견적 상세 →</button><details><summary class="text-xs text-gray-500 cursor-pointer">후보 관리</summary><div class="flex flex-wrap items-center">${holdControl}${moves}</div></details></div>
+          ${recentQuoteHtml(venue)}<div class="snapshot"><div><small>예식 간격</small><strong>${venue.interval ? esc(venue.interval) + "분" : "홀 선택 필요"}</strong></div><div><small>신랑 · 직선 추정</small><strong>${venue.groomMin}분</strong></div><div><small>신부 · 직선 추정</small><strong>${venue.brideMin}분</strong></div></div>
+          <div class="candidate-actions"><button type="button" data-open="${esc(venue.id)}" class="text-sm font-semibold text-roseGold-700 min-h-11">견적·상세 보기 →</button><details><summary class="text-xs text-gray-500 cursor-pointer">후보 관리</summary><div class="flex flex-wrap items-center">${holdControl}${moves}</div></details></div>
         </article>`;
       }
 
@@ -2382,7 +2461,8 @@
         const held = parked.length
           ? `<h3 class="text-xs font-bold text-slate-500 pt-2">조건 밖 · 보류</h3>` + parked.map((venue) => rowHtml(venue, "보류", false)).join("")
           : "";
-        document.getElementById("venue-list").innerHTML = live + held;
+        document.getElementById("shortlist-status").textContent = "현재 후보 " + view.ranked.length + "곳 · 보류 " + view.parked.length + "곳";
+        document.getElementById("venue-list").innerHTML = live + held || '<div class="rounded-2xl border bg-white p-6 text-sm"><p class="font-bold">현재 조건에 맞는 후보가 없어요</p><p class="mt-2 text-gray-500">후보 필터에서 예산·반경을 조정하거나 보류 후보를 포함해 보세요.</p></div>';
       }
 
       function renderCards(view) {
@@ -2522,12 +2602,13 @@
                   <button type="button" data-open="${esc(venue.id)}" class="mt-1 text-left text-lg font-bold underline decoration-roseGold-300">${esc(venue.name)}</button>
                 </div>
                 <div class="text-right shrink-0">
-                  <p class="text-[11px] text-gray-500">정가 / 할인가</p>
+                  <p class="text-[11px] text-gray-500">소개 정가 / 과거 할인 기록</p>
                   <p class="font-bold text-roseGold-800">${esc(totalText)}<br><span class="text-xs text-emerald-700">${esc(bestDiscount(venue) ? won(bestDiscount(venue).total) : venue.discountQuotes?.length ? "총액 미확인" : "근거 없음")}</span></p>
                 </div>
               </div>
+              <div class="px-4 pb-4">${recentQuoteHtml(venue)}</div>
               <div class="border-y border-amber-100 bg-amber-50/50 p-4 space-y-3">
-                ${visualSummaryHtml(venue)}
+                <details><summary class="text-xs font-semibold text-gray-600">소개 가격으로 계산한 예산·이동 보기</summary>${visualSummaryHtml(venue)}</details>
                 <details class="text-[11px] text-gray-600"><summary class="cursor-pointer font-semibold text-amber-900">가격 근거·계산식 보기</summary><div class="mt-2 space-y-2"><p><span class="font-semibold">할인 근거</span> ${esc(discountText(venue))}</p>${venue.platformBenefits ? `<p class="text-emerald-800"><span class="font-semibold">예약 경로 혜택</span> ${esc(benefitText(venue))}</p>` : ""}<p>${esc(quoteFormula(venue))}</p></div></details>
               </div>
               <details class="border-b border-sky-100 bg-sky-50/40 p-4 text-xs leading-relaxed"><summary class="font-semibold text-sky-900 cursor-pointer">필수·선택 옵션 보기</summary>${optionComparisonHtml(venue)}</details>
@@ -2690,6 +2771,7 @@
         document.querySelectorAll("[data-tab-btn]").forEach((button) => {
           const on = button.dataset.tabBtn === tabId;
           button.setAttribute("aria-current", on ? "page" : "false");
+          if (!button.dataset.tabStyle) return;
           if (button.dataset.tabStyle === "mobile") {
             button.className = "min-h-12 text-[11px] font-medium " + (on ? "text-roseGold-700" : "text-gray-500");
           } else {
@@ -3091,14 +3173,14 @@
           const discounted = discountRange(venue);
           const regularText = regular ? won(regular.low) + (regular.high !== regular.low ? "~" + won(regular.high) : "") : "계산할 숫자 부족";
           const discountedText = !discounted ? "총액을 계산할 수 있는 기록 없음" : discounted.low === discounted.high ? won(discounted.low) : won(discounted.low) + "~" + won(discounted.high);
-          summary.innerHTML = `<div class="rounded-2xl border border-amber-200 bg-amber-50 p-4">
-            <p class="text-[11px] font-semibold text-amber-900">금액 요약</p>${activePersonalQuote(venue) ? `<p class="mt-2 rounded-lg bg-violet-100 p-2 text-xs font-bold text-violet-900">내 상담 견적 적용 · 선택·세금 포함 ${esc(won(comparisonTotal(venue)))}</p>` : ""}
+          summary.innerHTML = recentQuoteHtml(venue) + `<details class="mt-3 rounded-2xl border border-amber-200 bg-amber-50 px-4 py-2">
+            <summary class="text-xs font-semibold text-amber-900 cursor-pointer">공개 소개 가격·과거 기록 참고</summary>${activePersonalQuote(venue) ? `<p class="mt-2 rounded-lg bg-violet-100 p-2 text-xs font-bold text-violet-900">내 상담 견적 적용 · 선택·세금 포함 ${esc(won(comparisonTotal(venue)))}</p>` : ""}
             <div class="mt-2 grid grid-cols-2 gap-3">
               <div><p class="text-xs text-gray-500">정가</p><p class="mt-1 font-bold text-gray-900">${esc(regularText)}</p></div>
               <div><p class="text-xs text-gray-500">할인가 기록${discounted ? " " + discounted.count + "건" : ""}</p><p class="mt-1 font-bold text-emerald-700">${esc(discountedText)}</p></div>
             </div>
             <p class="mt-2 text-[11px] leading-relaxed text-gray-500">후기·제공 자료에서 총액 계산이 가능한 기록의 최저~최고입니다. 날짜·시간·보증 인원에 따라 달라지며 상담 확정가가 아닙니다.</p>
-          </div>`;
+          </details>`;
         }
       }
 
@@ -3253,6 +3335,8 @@
       }
 
       document.addEventListener("click", (event) => {
+        const jump = event.target.closest("[data-detail-jump]");
+        if (jump) { const target = document.getElementById(jump.dataset.detailJump); if (target?.tagName === "DETAILS") target.open = true; target?.scrollIntoView({block:"start"}); return; }
         const tab = event.target.closest("[data-tab-btn]");
         if (tab) switchTab(tab.dataset.tabBtn);
         const tableHeader = event.target.closest("[data-table-sort]");

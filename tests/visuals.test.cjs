@@ -31,3 +31,19 @@ test('photo index labels unselected rooms and routes each photo to its own room'
   assert.ok(selected.includes('b2.avif'));
   assert.ok(!selected.includes('a.avif'));
 });
+test('recent quote previews distinguish basic amounts, taxes and room selection', () => {
+  const begin=html.indexOf('      function recentQuoteHtml(');
+  const finish=html.indexOf('\n      }',begin)+'\n      }'.length;
+  runInNewContext(html.slice(begin,finish),context);
+  const quotes=[{checkedAt:'2026-11-13',date:'2027-02-13',meal:54000,rental:2100000,minGuests:200,required:200000},{checkedAt:'2026-11-13',date:'2027-02-20',meal:49000,rental:1500000,minGuests:200,required:200000}];
+  const output=context.recentQuoteHtml({discountQuotes:quotes});
+  assert.ok(output.includes('11500000 ~ 13100000'));
+  assert.ok(output.includes('기본 합계') && output.includes('200명 기준'));
+  assert.ok(output.includes('2027-02-13') && output.includes('2027-02-20'));
+  const missing=context.recentQuoteHtml({roomScoped:true,discountQuotes:[]});
+  assert.ok(missing.includes('세부 홀을 선택'));
+  const complete=context.recentQuoteHtml({discountQuotes:[{...quotes[0],serviceMode:'included',vatMode:'included'}]});
+  assert.ok(complete.includes('세금 포함'));
+  const requiredUnknown=context.recentQuoteHtml({discountQuotes:[{...quotes[0],required:null,serviceMode:'included',vatMode:'included'}]});
+  assert.ok(requiredUnknown.includes('미확인 세금·필수비용'));
+});
